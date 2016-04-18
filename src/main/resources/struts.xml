@@ -6,7 +6,7 @@
 <struts>
  
     <constant name="struts.devMode" value="true" />
-    <package name="pcpnru" extends="struts-default">
+    <package name="dsc" extends="struts-default">
  		<global-results>
 		    <result name="nologin">/login.jsp</result>
 		</global-results>
