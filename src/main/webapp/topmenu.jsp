@@ -13,7 +13,7 @@
             	<li class="divider"></li>
                 <li><a href="projectmaster.jsp">สร้าง ชื่อโครงการ</a></li>   
                 <li class="divider"></li>
-                <li><a href="subjobmaster.jsp">สร้าง  โมดูล</a></li>
+                <li><a href="subjobmaster.jsp">สร้าง  กิจกรรม</a></li>
                 <li class="divider"></li>
                 <li><a href="childsubjobmaster.jsp">สร้าง  หมวด</a></li>
                 <li class="divider"></li>

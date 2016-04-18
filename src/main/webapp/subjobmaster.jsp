@@ -49,28 +49,28 @@
 
 	<body>
 		 <div><%@include file="topmenu.jsp" %></div>
-		 <h3 class="align-center">สร้างชื่อโมดูล</h3>
+		 <h3 class="align-center">สร้างชื่อกิจกรรม</h3>
 		 <form action="subjobMaster" method="post">
 		 <div class="example" data-text="รายละเอียด">
          <div class="grid">
 		  	<div class="row cells12">
 		  		<div class="cell colspan3"> 
-		        	รหัส-ชื่อ โมดูล
+		        	รหัส-ชื่อ กิจกรรม
 			        <div class="input-control text full-size"> 
 					    <s:textfield id="subjobcode" name="subjobMaster.subjobCode" readonly="true"  />
 					    <s:hidden id="subjobcodehd" name="subjobMaster.subjobCodeHD" />
 					</div> 
 				</div>
 		        <div class="cell colspan5"> 
-		        	ชื่อโมดูล
+		        	ชื่อกิจกรรม
 			        <div class="input-control text full-size"> 
 					    <s:textfield id="subjobname" name="subjobMaster.subjobName" required="" />
 					</div>
 				</div> 
 				<div class="cell colspan4"><br>
-					  <button class="button success" type="submit" name="add">สร้างชื่อโมดูล</button> 
-					  <button class="button primary" type="submit" name="update">แก้ไขชื่อโมดูล</button> 
-					  <button class="button danger" type="submit" name="delete">ลบชื่อโมดูล</button>
+					  <button class="button success" type="submit" name="add">สร้างชื่อกิจกรรม</button> 
+					  <button class="button primary" type="submit" name="update">แก้ไขชื่อกิจกรรม</button> 
+					  <button class="button danger" type="submit" name="delete">ลบชื่อกิจกรรม</button>
 				</div> 
 		    </div>
 		 </div>  
@@ -81,9 +81,9 @@
                 <thead>
                 <tr> 
                 	<th>เลขที่</th>
-                    <th>รหัส-โมดูล</th>
-                    <th>ชื่อ-โมดูล</th> 
-                    <th>วันที่-โมดูล</th> 
+                    <th>รหัส-กิจกรรม</th>
+                    <th>ชื่อ-กิจกรรม</th> 
+                    <th>วันที่-กิจกรรม</th> 
                 </tr>
                 </thead> 
                   

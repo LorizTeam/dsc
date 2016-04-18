@@ -54,7 +54,7 @@
 			        <div class="grid">
 			        	<div class="row cells12">
 			        		<div class="cell colspan4"> 
-					        	โมดูล
+					        	กิจกรรม
 						        <div class="input-control text full-size">
 								    <select id="subjobcode" name="subjobcode">
 										    <% 
