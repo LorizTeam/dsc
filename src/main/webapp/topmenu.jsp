@@ -2,8 +2,8 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" pageEncoding="utf-8"%>
 <%@ page import="pcpnru.utilities.*" %>
 
-<div class="app-bar green" data-role="appbar">	
-		 <a href="index.jsp" style="width: 20%;margin-top: 0;padding-top: 0" class="app-bar-element branding"><img  src="images/pnru.png" /></a>
+<div class="app-bar red" data-role="appbar">	
+		 <a href="index.jsp" style="width: 20%;margin-top: 0;padding-top: 0" class="app-bar-element branding"><img  src="img/dsc.jpg" /></a>
 		<ul class="app-bar-menu  small-dropdown">
         <li><a href="index.jsp"><span class="mif-home"></span> หน้าหลัก</a></li>
         <li>
@@ -13,7 +13,7 @@
             	<li class="divider"></li>
                 <li><a href="projectmaster.jsp">สร้าง ชื่อโครงการ</a></li>   
                 <li class="divider"></li>
-                <li><a href="subjobmaster.jsp">สร้าง  กิจกรรม</a></li>
+                <li><a href="subjobmaster.jsp">สร้าง  โมดูล</a></li>
                 <li class="divider"></li>
                 <li><a href="childsubjobmaster.jsp">สร้าง  หมวด</a></li>
                 <li class="divider"></li>
