@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="project" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d500a9ce-4d5d-4efa-b5b9-0b0d74e01c94">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="104"/>
+	<property name="ireport.y" value="123"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\sourceIreport\\pranakorn\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmprojectcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmyear" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select *, b.project_name, path_report
+FROM path_report, projectplan_header a inner join project_master b on(b.project_code = a.project_code)
+inner join projectplan_detail c on(c.project_code = a.project_code
+and c.year = a.year)
+WHERE a.project_code = $P{prmprojectcode} and a.year = $P{prmyear}
+GROUP BY a.project_code]]>
+	</queryString>
+	<field name="path_report" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="project_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="target" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datetime_response" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="project_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datetime" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subjob_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="childsubjobcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gcostcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gcostcode_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="budget" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="97" splitType="Stretch">
+			<textField>
+				<reportElement x="84" y="0" width="384" height="20" uuid="f9019c08-4d27-4329-ab1c-6c74909c5443"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="13" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ประมาณการรายได้ รายจ่าย ประจำปีงบประมาณ พ.ศ "+$F{year}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="555" height="20" uuid="01f2ab3b-85c9-4ac4-aad1-1cfa4a89cb78"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="13" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{project_name}+" : ศูนย์วัฒนธรรมพระนคร มหาวิทยาลัยราชภัฏพระนคร"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="40" width="527" height="20" uuid="2ee09b82-4b64-4b2a-bf4c-89018c978d4a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="13" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{project_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="62" width="555" height="1" uuid="e6da6ff0-ab19-490e-87f3-6bf12784c560"/>
+			</line>
+			<line>
+				<reportElement x="0" y="63" width="1" height="34" uuid="d71d0608-a782-43e8-bce0-86698e83dca2"/>
+			</line>
+			<line>
+				<reportElement x="554" y="63" width="1" height="34" uuid="24c5fcb8-89e6-41b7-b23f-c38468cab07e"/>
+			</line>
+			<line>
+				<reportElement x="27" y="63" width="1" height="34" uuid="364c1a5a-eed6-4aef-b04f-c6ce7ad19332"/>
+			</line>
+			<line>
+				<reportElement x="347" y="63" width="1" height="34" uuid="7e45bec1-b47e-4f8d-a4aa-96399610b2cc"/>
+			</line>
+			<line>
+				<reportElement x="413" y="63" width="1" height="34" uuid="dbfbc378-89c5-43fb-ab2f-ed2f776e32cc"/>
+			</line>
+			<line>
+				<reportElement x="451" y="63" width="1" height="34" uuid="659e812e-56cc-4fb2-a6ed-adb175260888"/>
+			</line>
+			<line>
+				<reportElement x="516" y="63" width="1" height="34" uuid="012ca831-41b1-4ecf-a476-35380638925c"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="67" width="26" height="25" uuid="36e08b2c-240d-4d3e-899f-d229a07e9099"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เลขที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="132" y="67" width="118" height="25" uuid="ae94ff89-013d-41db-8a44-54ad113e959d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[รายการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="66" width="58" height="27" uuid="e013474f-439d-400c-8e69-80abdc2806e3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[รายได้
+หน่วย : บาท]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="66" width="58" height="27" uuid="a61fba1d-4a90-47f3-9e7b-91ca2625d9e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[รายจ่าย
+หน่วย : บาท]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="66" width="39" height="27" uuid="26aa8a18-ea48-4b4d-ac17-382e4c42052d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[คิดเป็น
+ร้อยละ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="516" y="66" width="38" height="27" uuid="dfe561fe-9469-4331-9e9b-45de3141f55f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[คิดเป็น
+ร้อยละ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="96" width="555" height="1" uuid="575d4a35-9eac-4482-8ee1-eb8f5d3b2c79"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="153" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="-1" width="555" height="154" uuid="e273cce5-f320-4441-8007-0a0e2d92d950"/>
+				<subreportParameter name="prmprojectcode">
+					<subreportParameterExpression><![CDATA[$P{prmprojectcode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="prmyear">
+					<subreportParameterExpression><![CDATA[$P{prmyear}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$F{path_report} + "rep_projectdt_receive.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="469" y="0" width="86" height="16" uuid="a83557ac-1ac8-486f-bfc4-68740f6cc2c5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="11" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+    <constant name="struts.devMode" value="true" />
+ 	
+    <package name="information" extends="struts-default">
+    	<global-results>
+		    <result name="nologin">/login.jsp</result>
+		    <result name="noauth">/no-authen.jsp</result>
+		</global-results>
+		
+		<!--						 Vender						 -->
+		
+		<action name="entrancvendor" class="InformationAction.VendorAction" method="entrancVendor">
+      		<result name="success">/vendor.jsp</result>
+    	</action>
+		
+		<action name="vendor" class="InformationAction.VendorAction" method="create">
+      		<result name="success">/vendor.jsp</result>
+    	</action>
+    	
+    	<action name="windows_entrancvendor" class="InformationAction.VendorAction" method="windows_entrancvendor">
+      		<result name="success">/vendor.jsp</result>
+    	</action>
+		<!--						 Vender						 -->
+    </package>
+</struts>

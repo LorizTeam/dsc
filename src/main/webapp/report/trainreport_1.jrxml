@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="trainreport_1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a8c070b-25f7-4b20-acbb-248cb305ebb7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="prmmatcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+b.doctypecode,
+b.`status`,
+a.matcode,
+a.serial,
+a.matname,
+b.docyear,
+b.docno,
+b.docmonth,
+b.docdate,
+b.docbycode,
+b.docbyname
+FROM
+mmmatdt AS c
+INNER JOIN mmmathd AS b ON b.doctypecode = c.doctypecode AND b.docno = c.docno
+INNER JOIN mmmaterial AS a ON a.serial = c.serial AND a.matcode = c.matcode
+where a.matcode like '%$P!{prmmatcode}%'
+order by b.docmonth,a.matcode]]>
+	</queryString>
+	<field name="doctypecode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="matcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="serial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="matname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docyear" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docmonth" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docbycode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docbyname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="count_serial_matcode" class="java.lang.Integer" resetType="Group" resetGroup="matcode" calculation="Count">
+		<variableExpression><![CDATA[$F{serial}]]></variableExpression>
+	</variable>
+	<variable name="groupmonth_count" class="java.lang.Integer" resetType="Group" resetGroup="docmonth" calculation="Count">
+		<variableExpression><![CDATA[$F{serial}]]></variableExpression>
+	</variable>
+	<group name="docmonth" keepTogether="true">
+		<groupExpression><![CDATA[$F{docmonth}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="34" y="0" width="155" height="20" uuid="9f5639f3-6a0a-4687-afbd-6e0c29eab3a9"/>
+					<textElement>
+						<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["เดือน"+$F{docmonth}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="29">
+				<textField>
+					<reportElement x="199" y="0" width="132" height="29" uuid="0a5da368-a133-4d2c-9b23-e5e3135adcf1"/>
+					<textElement>
+						<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{groupmonth_count}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="matcode">
+		<groupExpression><![CDATA[$F{matcode}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="34" y="0" width="191" height="20" uuid="f84b6c11-6fcd-4841-9845-a0b6d7dd1f0d"/>
+					<textElement>
+						<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Matcode "+$F{matcode}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField>
+					<reportElement x="34" y="0" width="366" height="20" uuid="b7c0124a-dd61-45e9-8630-23afb2c2e2a8"/>
+					<textElement>
+						<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["มี Serial ทั้งหมด "+$V{count_serial_matcode}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="189" y="14" width="169" height="46" uuid="bd790bf7-7654-4e17-8655-d8e050f0a1a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Train Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="22" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="208" y="0" width="100" height="20" uuid="db1f8efd-30e8-4d08-8fb6-56662389d396"/>
+				<textElement>
+					<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[serial]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="34" y="8" width="100" height="20" uuid="10c4f26d-7056-4751-bbd1-6c188cb1bba9"/>
+				<textElement>
+					<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{matcode_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="208" y="8" width="100" height="20" uuid="b0fca765-1fc7-467b-9bfd-5e8c2877e85b"/>
+				<textElement>
+					<font pdfFontName="angsd___.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

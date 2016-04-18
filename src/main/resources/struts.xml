@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+ 
+    <constant name="struts.devMode" value="true" />
+    <package name="pcpnru" extends="struts-default">
+ 		<global-results>
+		    <result name="nologin">/login.jsp</result>
+		</global-results>
+ 		<!-- 							MASTER 							-->
+
+        <action name="projectMaster" class="pcpnru.projectAction.ProjectMasterAction" method="execute">
+      		<result name="success">/projectmaster.jsp</result>
+    	</action>
+    	<!-- 		ProjectMaster 		 -->
+    	
+    	<!-- 		SubjobMaster 		 -->
+        <action name="subjobMaster" class="pcpnru.projectAction.SubjobMasterAction" method="execute">
+      		<result name="success">/subjobmaster.jsp</result>
+    	</action>
+    	<!-- 		SubjobMaster 		 -->
+    	
+    	<!-- 		ChildSubjobMaster 		 -->
+        <action name="childSubjobMaster" class="pcpnru.projectAction.ChildSubjobMasterAction" method="execute">
+      		<result name="success">/childsubjobmaster.jsp</result>
+    	</action>
+    	<!-- 		ChildSubjobMaster 		 -->
+    	
+    	<action name="costcodeMaster" class="pcpnru.projectAction.CostcodeMasterAction" method="execute">
+      		<result name="success">/costcodemaster.jsp</result>
+    	</action>
+    	
+    	<!-- 		SubjobMaster 		 -->
+        
+    	<!-- 		SubjobMaster 		 -->
+    	
+    	<action name="groupcostcodeMaster" class="pcpnru.masterAction.GroupcostcodeAction" method="execute">
+      		<result name="success">/groupcostcode-receive.jsp</result>
+      		<result name="requisition">/groupcostcode-requisition.jsp</result>
+    	</action>
+    	
+    	<action name="grpGcostcodeMaster" class="pcpnru.masterAction.GrpGcostcodeAction" method="execute">
+      		<result name="success">/grp-gcostcode-receive.jsp</result>
+    	</action>
+    	
+    	<action name="windowGroupcostcodeMaster" class="pcpnru.masterAction.WindowGroupcostcodeAction" method="execute">
+      		<result name="success">/window-groupcostcode-receive.jsp</result> 
+      		<result name="requisition">/window-groupcostcode-requisition.jsp</result>
+    	</action>
+    	 
+    	 <action name="windowRequisitionToReceive" class="pcpnru.projectAction.WindowRequisitionToReceiveAction" method="execute">
+      		<result name="success">/window-requisition-to-receive.jsp</result>
+    	</action>
+    	<!-- 							MASTER 							-->
+    	
+    	
+    	<!-- 		Receive 		 -->   
+    	
+    	<action name="receive1" class="pcpnru.projectAction.Receive1Action" method="execute">
+      		<result name="success">/receive-2.jsp</result>
+      		<result name="error">/receive-1.jsp</result>
+    	</action>
+    	
+    	<action name="receive2" class="pcpnru.projectAction.Receive2Action" method="execute">
+      		<result name="success">/receive-2.jsp</result>
+      		<result name="print">/report/receipt.jsp</result>
+    	</action> 
+    	<!-- 		receive print report 		 -->
+    	<action name="receiveReport" class="pcpnru.projectAction.ReceiveReportAction" method="execute">
+      		<result name="success">/receive-2.jsp</result>
+      		<result name="print">/report/receipt.jsp</result>
+    	</action>
+    	<!-- 		receive print report 		 -->
+    	<!-- 		Receive 		 -->
+    	
+    	<!-- 		Select-Receive 		 -->
+    	<action name="selectReceive1" class="pcpnru.projectAction.SelectReceive1Action" method="execute">
+      		<result name="error">/select_receive-1.jsp</result>
+      		<result name="success">/select_receive-2.jsp</result>
+    	</action>
+    	
+    	<action name="selectReceive2" class="pcpnru.projectAction.SelectReceive2Action" method="execute">
+      		<result name="error">/select_receive-2.jsp</result>
+      		<result name="success">/select_receive-3.jsp</result>
+    	</action>
+    	
+    	<action name="selectreceive" class="pcpnru.projectAction.Receive2Action" method="execute">
+      		<result name="success">/select_receive-3.jsp</result>
+      		<result name="print">/report/receipt.jsp</result>
+    	</action>
+    	<!-- 		Select-Receive 		 --> 
+        
+        
+        
+        <!-- 		ProjectHD	 -->
+        <action name="projecthd" class="pcpnru.projectAction.ProjectHDAction" method="execute">
+      		<result name="success">/projecthd.jsp</result>
+    	</action>
+        
+        <!-- freeze project -->
+        <action name="projectHdFreeze" class="pcpnru.projectAction.ProjectHDAction" method="freeze">
+      		<result name="success">/projecthd.jsp</result>
+    	</action>
+        <!-- 		ProjectHD	 -->
+        
+        <!-- 		ProjectDT Receive	 -->
+        <action name="projectdtreceive" class="pcpnru.projectAction.ProjectDTReceiveAction" method="execute">
+      		<result name="success">/projectdt-receive.jsp</result>
+    	</action> 
+        <!-- 		ProjectDT Receive	 -->
+        
+        <!-- 		ProjectDT Receive PCC	 -->
+        <action name="projectdtreceivepcc" class="pcpnru.projectAction.ProjectDTReceivePCCAction" method="execute">
+      		<result name="success">/projectdt-receive-pcc.jsp</result>
+    	</action> 
+        <!-- 		ProjectDT Receive	 -->
+        
+        <!-- 		ProjectDT Charges	 -->
+        <action name="projectdtcharges" class="pcpnru.projectAction.ProjectDTChargesAction" method="execute">
+      		<result name="success">/projectdt-charges.jsp</result>
+    	</action> 
+        <!-- 		ProjectDT Charges	 -->
+        
+        
+        
+        
+        <!-- 		Requisition	 -->
+        
+        <action name="requisition" class="pcpnru.projectAction.RequisitionAction" method="execute">
+      		<result name="success">/requisition-1.jsp</result>
+    	</action> 
+    	
+        <!-- 		Requisition	 -->
+        
+        <!-- 		Create Central Budget	 -->
+    	<action name="createCentralBudget" class="pcpnru.projectAction.CreateCentralBudgetAction" method="execute">
+      		<result name="success">/create_central_budget.jsp</result>
+      		<result name="authen">/no-authen.jsp</result>
+      		<result name="login">/login.jsp</result>
+    	</action>
+    	<!-- 		Create Central Budget	 -->
+        <!-- 		Central Budget	 -->
+    	<action name="createCentralBudget" class="pcpnru.projectAction.CentralBudgetAction" method="create">
+      		<result name="success">/central-budget.jsp</result>
+      		<result name="authen">/no-authen.jsp</result>
+      		<result name="login">/login.jsp</result>
+    	</action>
+    	<action name="centralBudget" class="pcpnru.projectAction.CentralBudgetAction" method="execute">
+      		<result name="success">/central-budget.jsp</result> 
+    	</action>
+    	<action name="cbgBegin" class="pcpnru.projectAction.CentralBudgetApproveAction" method="begin">
+      		<result name="success">/central-budget-approve.jsp</result>
+    	</action>
+    	<action name="centralBudgetApprove" class="pcpnru.projectAction.CentralBudgetApproveAction" method="execute">
+      		<result name="success">/central-budget-approve.jsp</result>
+    	</action> 
+    	<action name="windowCentralBudgetApprove" class="pcpnru.projectAction.WindowCentralBudgetApproveAction" method="execute">
+      		<result name="success">/window-centralbudget-approve.jsp</result>
+    	</action> 
+    	<action name="windowCentralBudgetApprove_pj" class="pcpnru.projectAction.WindowCentralBudgetApproveAction" method="execute_projectdt">
+      		<result name="success">/window-centralbudget-approve.jsp</result>
+    	</action>  
+    	<!-- 		Central Budget	 -->
+        
+        <!-- 		Rocking Budget	 -->
+        
+        <action name="createRockingBudget" class="pcpnru.projectAction.RockingBudgetAction" method="create">
+      		<result name="success">/rocking-budget.jsp</result>
+      		<result name="authen">/no-authen.jsp</result>
+      		<result name="login">/login.jsp</result>
+    	</action> 
+        
+        <action name="rockingBudget" class="pcpnru.projectAction.RockingBudgetAction" method="execute">
+      		<result name="success">/rocking-budget.jsp</result>
+    	</action>  
+    	
+    	<action name="rbgBegin" class="pcpnru.projectAction.RockingBudgetApproveAction" method="begin">
+      		<result name="success">/rocking-budget-approve.jsp</result>
+    	</action> 
+    	
+    	<action name="rockingBudgetApprove" class="pcpnru.projectAction.RockingBudgetApproveAction" method="execute">
+      		<result name="success">/rocking-budget-approve.jsp</result>
+      		<result name="authen">/no-authen.jsp</result>
+    	</action> 
+    	
+    	<action name="windowRockingBudgetApprove" class="pcpnru.projectAction.WindowRockingBudgetApproveAction" method="execute">
+      		<result name="success">/window-rockingbudget-approve.jsp</result>
+    	</action> 
+    	
+    	<action name="windowRockingBudgetApprove_pj" class="pcpnru.projectAction.WindowRockingBudgetApproveAction" method="execute_projectdt">
+      		<result name="success">/window-rockingbudget-approve.jsp</result>
+    	</action> 
+        <!-- 		Rocking Budget	 -->
+        
+        <!-- 		Receive and Requisition print report 		 -->
+    	<action name="receiveRequisitionReport" class="pcpnru.projectAction.ReceiveRequisitionReportAction" method="execute">
+      		<result name="success">/reportreceiveandrequisition.jsp</result>
+      		<result name="print">/report/repreceiveandrequisition.jsp</result>
+    	</action>
+    	<!-- 		Receive and Requisition print report 		 -->
+    	
+    	 <!-- 		Personnel Master		 -->
+    	<action name="personnelMaster" class="pcpnru.masterAction.PersonnelAction" method="execute">
+      		<result name="success">/personnel.jsp</result> 
+    	</action>
+    	<!-- 		Personnel Master		 -->
+    	
+    	<!-- 		profile Master		 -->
+    	<action name="profileMaster" class="pcpnru.masterAction.PersonnelAction" method="execute_profile">
+      		<result name="success">/profile.jsp</result>
+    	</action>
+    	
+    	<action name="profile" class="pcpnru.masterAction.PersonnelAction" method="update_profile">
+      		<result name="success">/profile.jsp</result> 
+    	</action>
+    	<!-- 		profile Master		 -->
+    	
+    	
+    	<!-- 		Authen Master		 -->
+    	<action name="authenMaster" class="pcpnru.masterAction.AuthenAction" method="execute">
+      		<result name="success">/authen.jsp</result> 
+    	</action>
+    	<!-- 		Authen Master		 -->
+    	
+    	<!-- 		Page Master		 -->
+    	<action name="pageMaster" class="pcpnru.masterAction.PageAction" method="execute">
+      		<result name="success">/page.jsp</result> 
+    	</action>
+    	<!-- 		Page Master		 -->
+    	
+    	<!-- 		Page Group Master		 -->
+    	<action name="pageGroupMaster" class="pcpnru.masterAction.PageGroupAction" method="execute">
+      		<result name="success">/page-group.jsp</result> 
+    	</action>
+    	<!-- 		Page Group Master		 -->
+    	
+    	<!-- 		Page Authen		 -->
+    	<action name="authenPageMaster" class="pcpnru.masterAction.AuthenPageAction" method="execute">
+      		<result name="success">/authen_page.jsp</result> 
+    	</action>
+    	<!-- 		Page Authen		 -->
+        
+    </package>
+ 	<include file="struts-user.xml"></include>
+ 	<include file="struts-pr.xml"></include>
+ 	<include file="struts-po.xml"></include>
+ 	<include file="struts-information.xml"></include>
+ 	<include file="struts-inventory.xml"></include>
+</struts>

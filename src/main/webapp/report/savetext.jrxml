@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="savetext" language="groovy" pageWidth="595" pageHeight="842" columnWidth="499" leftMargin="48" rightMargin="48" topMargin="20" bottomMargin="20" uuid="9952a62f-9311-4391-926a-afe9255740a8">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\sourceIreport\\pranakorn\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmdocno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmyear" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT path_report,  a.docno,a.`year`,a.record_approve_hd,a.record_approve_t,a.record_approve_date,a.record_approve_title,a.record_approve_rian,
+a.record_approve_des1,a.record_approve_des2,a.record_approve_des3,a.record_approve_cen,a.record_approve_dep,a.thaidate_report,
+b.docno,b.`year`,b.numthai_itemno,b.itemno,b.description,b.numthai_qty,b.qty,b.unit
+FROM path_report,
+record_approve_hd as a
+INNER JOIN record_approve_dt as b ON a.docno = b.docno AND a.`year` = b.`year`
+WHERE a.docno = $P{prmdocno} and a.year = $P{prmyear}
+order by b.itemno]]>
+	</queryString>
+	<field name="path_report" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_hd" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_t" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_title" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_rian" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_des1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_des2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_des3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_cen" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_approve_dep" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="thaidate_report" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numthai_itemno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="itemno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numthai_qty" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="qty" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="276" splitType="Stretch">
+			<staticText>
+				<reportElement x="84" y="25" width="100" height="37" uuid="c01626d6-c52a-41e5-bbf6-b9823e4ea7d1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="22" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[บันทึกข้อความ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="63" width="45" height="22" uuid="60c153a4-d162-4b94-846a-a3fa8c81da00"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ส่วนราชการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="88" width="15" height="22" uuid="68fda606-d5e4-4cb8-a43c-4e97e97c8bb2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="88" width="20" height="22" uuid="d3ee1dc3-d901-4bc8-8d12-8323695855d3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="113" width="24" height="22" uuid="45d21781-826f-4baf-a1b4-cdcf0175ab36"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เรื่อง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="138" width="25" height="22" uuid="64d3237c-3964-492b-a9b7-e2c155efd6b9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เรียน]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="169" width="499" height="84" uuid="007fb152-770d-41da-8784-26b9ab11f458"/>
+				<textElement>
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\t"+$F{record_approve_des1}+"\n\n\t"+$F{record_approve_des2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="252" width="321" height="20" uuid="4b58c0de-6342-40fb-ab1a-4cdc7ad51ee0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\tจึงขออนุมัติเบิกจ่าย มีรายการ คุณลักษณะเฉพาะดังนี้"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="56" height="63" uuid="1b97dcb7-b142-4722-adf9-f2557a962f54"/>
+				<imageExpression><![CDATA[$F{path_report}+"Thai_Government_Garuda.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="48" y="63" width="257" height="22" uuid="10283fe7-2099-44eb-98f5-b5ffa2e0d686"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{record_approve_hd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="88" width="95" height="22" uuid="caa43775-16ba-461d-8b3f-9da16823848f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{record_approve_t}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="128" y="88" width="95" height="22" uuid="65381b1c-b124-4fb6-8a19-a5cedff72098"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thaidate_report}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="113" width="395" height="22" uuid="b9f0cc85-9e9b-4fb8-8ec4-a64d9f90aabe"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{record_approve_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="23" y="138" width="396" height="22" uuid="ae55e11c-704a-41d5-a55f-b8e53588cf61"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{record_approve_rian}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="2" width="351" height="20" uuid="c2681b35-2c05-44fa-a0cf-72886b5af083"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\t"+$F{numthai_itemno}+". "+$F{description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="2" width="92" height="20" uuid="3a88e3e2-1dc0-4977-9473-d0dc266b606e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numthai_qty}+"  "+$F{unit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="127" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="7" width="499" height="56" uuid="d44bd3c4-e410-4d2f-a28b-ed01c9ed89d2"/>
+				<textElement>
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\t"+$F{record_approve_des3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="306" y="82" width="171" height="20" uuid="f1159c49-b95b-44e5-a8da-01909d522fbc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+$F{record_approve_cen}+")"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="306" y="101" width="171" height="20" uuid="2a74f0c0-5de9-4cc1-9409-f8628fd3fc57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{record_approve_dep}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="342" y="80" width="100" height="1" uuid="a1a8d864-b919-4300-96db-c05796423a19"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+    <constant name="struts.devMode" value="true" />
+ 
+    <package name="inventory" extends="struts-default">
+    	<global-results>
+		    <result name="gologin">/login.jsp</result>
+		    <result name="nologin">/nologin.jsp</result>
+		    <result name="noauth">/no-authen.jsp</result>
+		</global-results>
+		
+		
+		<action name="unitMaster" class="pcpnru.projectAction.UnitMasterAction" method="execute">
+      		<result name="success">/unitmaster.jsp</result>
+    	</action>
+    	
+    	<action name="windows_entranc_unitMaster" class="pcpnru.projectAction.UnitMasterAction" method="windows_entrancprotype">
+      		<result name="success">/unitmaster.jsp</result>
+    	</action>
+    	
+    	<action name="protypemaster" class="pcpnru.inventoryAction.ProductTypeAction" method="execute">
+      		<result name="success">/producttype.jsp</result>
+    	</action>
+    	
+    	<action name="windows_entranc_protypemaster" class="pcpnru.inventoryAction.ProductTypeAction" method="windows_entrancprotype">
+      		<result name="success">/producttype.jsp</result>
+    	</action>
+    	
+    	<action name="brandmaster" class="pcpnru.inventoryAction.BrandAction" method="execute">
+      		<result name="success">/brand.jsp</result>
+    	</action>
+    	
+    	<action name="windows_entranc_brandmaster" class="pcpnru.inventoryAction.BrandAction" method="windows_entrancbrand">
+      		<result name="success">/brand.jsp</result>
+    	</action>
+    	
+    	<action name="productgroupmaster" class="pcpnru.inventoryAction.ProductGroupAction" method="execute">
+      		<result name="success">/productgroup.jsp</result>
+    	</action>
+    	
+    	<action name="windows_entranc_productgroupmaster" class="pcpnru.inventoryAction.ProductGroupAction" method="windows_entrancprogroup">
+      		<result name="success">/productgroup.jsp</result>
+    	</action>
+    	
+    	<action name="product" class="pcpnru.inventoryAction.ProductAction" method="execute">
+      		<result name="success">/product.jsp</result>
+    	</action>
+    	
+    	<action name="windows_product" class="pcpnru.inventoryAction.ProductAction" method="windows_entrancprogroup">
+      		<result name="success">/product.jsp</result>
+    	</action>
+		
+    </package>
+</struts>

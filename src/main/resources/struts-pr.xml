@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+    <constant name="struts.devMode" value="true" />
+ 	<constant name="struts.multipart.maxSize" value="5000000" />
+ 	
+    <package name="pr" extends="struts-default">
+    	<global-results>
+		    <result name="nologin">/login.jsp</result>
+		</global-results>
+		
+		<action name="createrecordApprove" class="pcpnru.masterAction.RecordApproveAction" method="create">
+      		<result name="success">/record-approve.jsp</result>
+    	</action>
+        
+        <action name="recordApprove" class="pcpnru.masterAction.RecordApproveAction" method="execute">
+        	<interceptor-ref name="defaultStack"/>
+	        <interceptor-ref name="fileUpload">
+				<param name="maximumSize">5000000</param>
+				<param name="allowedTypes"> image/jpeg,image/gif,image/png</param>
+			</interceptor-ref>
+		    <interceptor-ref name="validation"/>
+    		<interceptor-ref name="workflow"/>
+      		<result name="success">/record-approve.jsp</result>
+      		<result name="print">/savetext-report.jsp</result>
+      		<result name="alertmsg">/record-approve.jsp</result>
+      		<result name="input">/record-approve.jsp</result>
+    	</action> 
+    	 
+    	<action name="windowsPR" class="pcpnru.masterAction.RecordApproveAction" method="entrancSearch">
+      		<result name="success">/window-pr.jsp</result>
+    	</action>
+    	
+    	<action name="searchPR" class="pcpnru.masterAction.RecordApproveAction" method="HistoryPR">
+      		<result name="search">/window-pr.jsp</result>
+      		<result name="viewdetail">/record-approve.jsp</result>
+      		<result name="create">/record-approve.jsp</result>
+    	</action>
+    	
+    	<action name="prApprove" class="pcpnru.masterAction.RecordApproveAction" method="entrancPrApprove">
+      		<result name="success">/pr-approve.jsp</result>
+    	</action>
+    	
+    	<action name="window_viewDetail" class="pcpnru.masterAction.RecordApproveAction" method="window_viewDetail">
+      		<result name="viewdetail">/record-approve.jsp</result>
+    	</action>
+    	
+    	<action name="po_openwindowsPR" class="pcpnru.masterAction.RecordApproveAction" method="entrancSearch_byPOpage">
+      		<result name="success">/window-pr.jsp</result>
+    	</action>
+    </package>
+</struts>

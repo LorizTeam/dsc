@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="0a2cf72f-5926-45a2-9245-745e1c4dd2e6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="prmdocno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmthb" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmprojectcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM receivehd a inner join receivedt b on(a.docno = b.docno and b.projectcode = a.projectcode)
+where a.docno = $P{prmdocno} and a.projectcode = $P{prmprojectcode} order by itemno]]>
+	</queryString>
+	<field name="docno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vol" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="projectcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="project_year" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gcostcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="docdate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="day" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="month" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amountfrom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="local" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receiveamount" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="changeamount" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="approve_tobank" class="java.lang.String">
+		<fieldDescription><![CDATA[นำเงินเข้าธนาคาร]]></fieldDescription>
+	</field>
+	<field name="itemno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="costcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receivedetail" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="qty" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amounttotal" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="sumamount" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{amounttotal}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="177" splitType="Stretch">
+			<staticText>
+				<reportElement x="336" y="38" width="130" height="47" uuid="617652f5-353b-4fc6-8615-b42e8c7eb76b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="22" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ใบเสร็จรับเงิน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="569" y="95" width="77" height="32" uuid="de6d6917-6075-4f35-98a4-1af38dd11095"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[สถานที่]]></text>
+			</staticText>
+			<line>
+				<reportElement x="645" y="123" width="156" height="1" uuid="f53b421d-363c-4fd6-be14-b82a77af557c"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="1" y="102" width="29" height="26" uuid="51234ba6-5d69-4ee6-9dbb-aa9adcefc684"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="102" width="31" height="26" uuid="37165ab7-e1f4-401c-9477-736a302a72ff"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เดือน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="194" y="102" width="19" height="26" uuid="0d6ae5a2-2eea-48f1-b0fd-28b69c025138"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[พ.ศ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="32" y="123" width="50" height="1" uuid="18b6aa8b-c9e4-4829-ac4e-e3d1ccab66be"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="113" y="123" width="79" height="1" uuid="3e26b1df-0ba5-4108-b525-5d38be644bed"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="215" y="123" width="64" height="1" uuid="1bba4419-67a2-41af-8881-5d4493f3c8fd"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="5" y="0" width="37" height="23" uuid="42a2ea59-72b7-4399-b978-44178cbc3967"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[เล่มที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="682" y="2" width="48" height="22" uuid="f5d732ea-8237-43dd-928b-c6a1891155ce"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เลขที่]]></text>
+			</staticText>
+			<line>
+				<reportElement x="731" y="21" width="71" height="1" uuid="e527f936-ed6b-4d7c-b8d6-e2052b36b6da"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="33" y="20" width="72" height="1" uuid="9e75f5e5-f9bc-4418-aee8-9fd5359d3b27"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="1" y="134" width="1" height="43" uuid="0b11ee31-1492-4231-a04f-7fc059ecd781"/>
+			</line>
+			<line>
+				<reportElement x="2" y="134" width="800" height="1" uuid="3b5a89ef-f3a1-424e-ad87-fe4a91b9fc2e"/>
+			</line>
+			<line>
+				<reportElement x="801" y="134" width="1" height="43" uuid="e7067b77-1fb6-48f4-a1e0-17626873ef0a"/>
+			</line>
+			<line>
+				<reportElement x="2" y="176" width="800" height="1" uuid="adf33204-712f-4019-8d38-85ce85dc2edf"/>
+			</line>
+			<staticText>
+				<reportElement x="4" y="146" width="97" height="26" uuid="f3acc124-4105-40b6-8cad-405c666ed957"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ได้รับเงินจาก]]></text>
+			</staticText>
+			<line>
+				<reportElement x="101" y="171" width="444" height="1" uuid="21b4116d-7274-434f-9dc2-cc8148a36cfa"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="651" y="101" width="152" height="23" uuid="c923e8fb-4c86-4cf8-9eb6-a8d00ed9e94a"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{local}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="150" width="437" height="23" uuid="26a501d1-cfce-4527-8037-9ae044aaf00a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountfrom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="102" width="32" height="23" uuid="8a7e6ba8-241d-4c75-b041-f98f564c869a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{day}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="103" width="71" height="23" uuid="754ca3f8-1110-4e4b-93e3-8d739ac8a99a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{month}.equals("01") ? "มกราคม" :
+( $F{month}.equals("02") ? "กุมภาพันธ์" :
+( $F{month}.equals("03") ? "มีนาคม" :
+( $F{month}.equals("04") ? "เมษายน" :
+( $F{month}.equals("05") ? "พฤษภาคม" :
+( $F{month}.equals("06") ? "มิถุนายน" :
+( $F{month}.equals("07") ? "กรกฎาคม" :
+( $F{month}.equals("08") ? "สิงหาคม" :
+( $F{month}.equals("09") ? "กันยายน" :
+( $F{month}.equals("10") ? "ตุลาคม" :
+( $F{month}.equals("11") ? "พฤศจิกายน" : "ธันวาคม" )))))))))))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="102" width="55" height="23" uuid="2428b710-cb23-4684-957e-3c5388ab401a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="18" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="719" y="145" width="67" height="26" uuid="14445757-401e-4d36-9ca1-553fe0d5b24f"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ราคารวม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="611" y="145" width="82" height="26" uuid="919f79ce-4e1b-4a49-bd1e-48b6877114a4"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ราคาต่อหน่วย]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="733" y="1" width="67" height="21" uuid="c4ef624e-bca0-4a96-b095-02bd793719d4"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="553" y="146" width="52" height="26" uuid="30cbe743-a364-4fb2-8318-5c982af8dff0"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[จำนวน]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="36" y="0" width="67" height="21" uuid="b6d54c50-f036-4e97-b10c-2c1a67552924"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vol}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<line>
+				<reportElement x="613" y="0" width="1" height="43" uuid="05ffda15-05e2-4ceb-a57b-fbb471c8111f"/>
+			</line>
+			<line>
+				<reportElement x="697" y="0" width="1" height="43" uuid="4f7a8e4f-59eb-4810-8cb1-36eae62a564b"/>
+			</line>
+			<line>
+				<reportElement x="801" y="0" width="1" height="43" uuid="e8fdba35-9f18-4a53-8439-a14ae11dc137"/>
+			</line>
+			<line>
+				<reportElement x="4" y="41" width="797" height="1" uuid="7cae363b-b94f-4e9c-9ef3-b5522f283e17"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="17" y="16" width="528" height="23" uuid="23912265-77a5-4e57-9cf8-8d6f125344db"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="702" y="16" width="93" height="23" uuid="6f5daef8-7d87-4f0f-8840-919ead10f166"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amounttotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="623" y="17" width="69" height="23" uuid="aecf1a4f-2c99-42f6-b7e7-89c4c5a19f4b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="558" y="17" width="48" height="23" uuid="95c77168-a4de-4763-bafd-d68feff10975"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="81" splitType="Stretch">
+			<line>
+				<reportElement x="697" y="0" width="1" height="43" uuid="6dc984c9-1921-4c20-aaf6-48c0981f184b"/>
+			</line>
+			<line>
+				<reportElement x="801" y="0" width="1" height="43" uuid="5e7df6fd-26b6-4294-9a42-2feeab813f5b"/>
+			</line>
+			<line>
+				<reportElement x="698" y="42" width="103" height="1" uuid="61dbb4ac-b48d-409c-b51b-3fe452ac284c"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="14" y="12" width="97" height="26" uuid="19afadd2-8818-430a-802a-7efd1938e992"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[จำนวนเงิน]]></text>
+			</staticText>
+			<line>
+				<reportElement x="111" y="37" width="572" height="1" uuid="ebdc7bab-584b-44a1-937d-9341a19f86b1"/>
+			</line>
+			<staticText>
+				<reportElement x="137" y="55" width="97" height="26" uuid="ffab4d60-c922-48bd-954a-b20eb8bf4d5d"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[(ลงชื่อ)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="233" y="80" width="312" height="1" uuid="f246a478-7ea6-4007-8724-55317ae13468"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="545" y="55" width="97" height="26" uuid="0525ad04-83bb-43ae-991c-b310ebb9b217"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ผู้รับเงิน]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="702" y="12" width="92" height="23" uuid="110a3e18-b27d-4a87-b227-f36920573bd0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumamount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="14" width="558" height="23" uuid="5cfe51f4-da0a-41eb-88e2-95393db3fc96"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="20" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{prmthb}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

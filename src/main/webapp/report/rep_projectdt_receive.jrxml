@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="makesubreport_subreport1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="722a1752-4351-4159-87c1-fcf0590944c1">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\sourceIreport\\pranakorn\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmprojectcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmyear" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select e.project_name, e.project_code, a.subjob_code, b.subjob_name, a.childsubjobcode, c.childsubjobname, a.gcostcode,
+a.gcostcode_name, a.budget, a.datetime_response, f.year,path_report
+from projectplan_detail a
+INNER JOIN subjob_master AS b ON b.subjob_code = a.subjob_code
+INNER JOIN childsubjob_master AS c ON a.childsubjobcode = c.childsubjobcode AND b.subjob_code = c.subjob_code
+INNER JOIN groupcostcode_master AS d ON d.gcostcode = a.gcostcode
+INNER JOIN project_master as e ON e.project_code = a.project_code
+INNER JOIN projectplan_header AS f ON f.project_code = a.project_code and f.year = a.year
+join path_report
+where a.subjob_code in ('0003')
+and f.project_code = $P{prmprojectcode} and f.year = $P{prmyear}
+ORDER BY a.subjob_code, a.childsubjobcode, a.gcostcode]]>
+	</queryString>
+	<field name="project_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="project_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subjob_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subjob_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="childsubjobcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="childsubjobname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gcostcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gcostcode_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="budget" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datetime_response" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="path_report" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="sumbudget" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{budget}]]></variableExpression>
+	</variable>
+	<group name="subjob">
+		<groupExpression><![CDATA[$F{subjob_code}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="41" y="0" width="177" height="20" uuid="098c132c-b039-4e76-b3be-97ffda14b0a2"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="8" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{subjob_name}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="19" width="555" height="1" uuid="9cfab2e9-762f-44a4-abc8-e04ff02868ce"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="-1" width="1" height="21" uuid="a08f6c01-89a3-4a44-b5af-256bf37aaa7c"/>
+				</line>
+				<line>
+					<reportElement x="554" y="-1" width="1" height="21" uuid="c5f76a48-74ca-4df9-91ad-2ccc54575960"/>
+				</line>
+				<line>
+					<reportElement x="27" y="-1" width="1" height="21" uuid="d9ec038b-bb6d-4b5d-8e05-7d6ac84dbb4f"/>
+				</line>
+				<line>
+					<reportElement x="286" y="-1" width="1" height="21" uuid="e6b92496-6ef1-48a2-9c5e-e5c994f7bc49"/>
+				</line>
+				<line>
+					<reportElement x="368" y="-1" width="1" height="21" uuid="a76d1514-f1e1-4660-8f04-1eb133ea0bb1"/>
+				</line>
+				<line>
+					<reportElement x="420" y="-1" width="1" height="21" uuid="a5c938a9-9683-4597-a18a-5edfe66dc0fc"/>
+				</line>
+				<line>
+					<reportElement x="504" y="-1" width="1" height="21" uuid="cf1deb92-156c-47c0-a9b4-a8e5f76afcac"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="childsubjob">
+		<groupExpression><![CDATA[$F{childsubjobcode}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="53" y="0" width="177" height="20" uuid="35598b14-731b-44ad-a02d-88a3db07c716"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="8" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{childsubjobname}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="19" width="555" height="1" uuid="071bc62f-87ee-4955-b55d-4733d177a8a0"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="-1" width="1" height="21" uuid="bd0e7a08-198e-4779-819f-589c4e92b920"/>
+				</line>
+				<line>
+					<reportElement x="554" y="-1" width="1" height="21" uuid="6a42293b-7e34-4dd0-b82d-c20b4390c161"/>
+				</line>
+				<line>
+					<reportElement x="27" y="-1" width="1" height="21" uuid="bac85c0b-3e1b-4e27-a10d-f823e845dd89"/>
+				</line>
+				<line>
+					<reportElement x="286" y="-1" width="1" height="21" uuid="988c6bd1-6496-4e08-b3a1-e95a4445f6ee"/>
+				</line>
+				<line>
+					<reportElement x="368" y="-1" width="1" height="21" uuid="128e79bf-1271-47d7-b74c-21acb0cd3fff"/>
+				</line>
+				<line>
+					<reportElement x="420" y="-1" width="1" height="21" uuid="5f68109f-4874-4199-afdb-0ea497bbffe8"/>
+				</line>
+				<line>
+					<reportElement x="504" y="-1" width="1" height="21" uuid="1adb7b2e-0025-468b-b052-dd3e5ab197f4"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="23" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="22" width="555" height="1" uuid="73d68b78-b1ff-4480-ac83-d299fa999927"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="3093e2f4-fcc4-4e2f-bede-b6ef472853b2"/>
+			</line>
+			<staticText>
+				<reportElement x="30" y="2" width="236" height="20" uuid="51ff5d53-4805-4274-acc0-7c1a582f220f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[สรุปประมาณการ จำแนกตามกิจกรรม]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="1" height="22" uuid="ce486f46-bbe9-4333-9eba-b6d6e733a01f"/>
+			</line>
+			<line>
+				<reportElement x="554" y="1" width="1" height="22" uuid="e9704f75-5483-4764-b545-4926c248e61e"/>
+			</line>
+			<line>
+				<reportElement x="27" y="1" width="1" height="22" uuid="1971ec50-6fe8-4626-bfb6-356e1714a31a"/>
+			</line>
+			<staticText>
+				<reportElement x="6" y="2" width="17" height="20" uuid="4022004e-5c05-4752-bbf6-2a4ee981417f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<line>
+				<reportElement x="286" y="1" width="1" height="22" uuid="2998c5a8-2d20-4c30-8b46-b97806bdc64a"/>
+			</line>
+			<line>
+				<reportElement x="368" y="1" width="1" height="22" uuid="0a0fa2cc-6d1e-4dec-bccd-f6514e11b688"/>
+			</line>
+			<line>
+				<reportElement x="420" y="1" width="1" height="22" uuid="2bdb39be-1d8c-42b2-85c5-252e03c84787"/>
+			</line>
+			<line>
+				<reportElement x="504" y="1" width="1" height="22" uuid="6fd9e82b-742b-4d55-863b-ae1b523e9403"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="66" y="0" width="219" height="20" uuid="94ac060a-884d-4b7f-bb25-fa6ae8f6c194"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["- "+$F{gcostcode_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="288" y="0" width="77" height="20" uuid="76d62716-9890-43e9-b7ad-3cd385c44719"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{budget}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" uuid="f4591be7-5fb7-41e0-bfdf-2d40474d5d59"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="-1" width="1" height="21" uuid="111ed371-e063-409c-9157-d15832801f37"/>
+			</line>
+			<line>
+				<reportElement x="554" y="-1" width="1" height="21" uuid="e249d736-3d54-45a4-ad87-2ba5dbb7a068"/>
+			</line>
+			<line>
+				<reportElement x="27" y="-1" width="1" height="21" uuid="1701149e-f015-448d-8051-7ed938630b3b"/>
+			</line>
+			<line>
+				<reportElement x="286" y="-1" width="1" height="21" uuid="5e33c5e7-ec14-4b64-918c-75936b259f09"/>
+			</line>
+			<line>
+				<reportElement x="368" y="-1" width="1" height="21" uuid="db6a06b8-2a9a-4520-84cc-19d4c3d6d6c6"/>
+			</line>
+			<line>
+				<reportElement x="504" y="-1" width="1" height="21" uuid="714af264-2b08-4b08-8cf6-e00b72a95547"/>
+			</line>
+			<line>
+				<reportElement x="420" y="-1" width="1" height="21" uuid="a8bb1c2b-f38f-4d39-8ee1-398d5a3bc8dd"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="121" splitType="Stretch">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="288" y="0" width="77" height="20" uuid="24b7fdf2-55b3-401e-9ded-a57e94b21e8a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumbudget}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="230" y="0" width="36" height="20" uuid="4b65369d-443e-4dac-8a77-2f56d38457e4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true" pdfFontName="tahoma.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[รวม]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="1" height="21" uuid="66404001-80dd-428e-904b-4dfe313e1e45"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="21" uuid="40af9a3e-4e05-4b6a-a157-f433fa0c57b4"/>
+			</line>
+			<line>
+				<reportElement x="0" y="20" width="555" height="1" uuid="5ba711a3-bef6-42a6-8478-3070e8aa3c4b"/>
+			</line>
+			<line>
+				<reportElement x="27" y="0" width="1" height="21" uuid="1644b707-ad5a-4992-a88e-e398d1e6a073"/>
+			</line>
+			<line>
+				<reportElement x="286" y="-1" width="1" height="21" uuid="3cfae336-c88a-48a7-8562-8599156ed811"/>
+			</line>
+			<line>
+				<reportElement x="368" y="-1" width="1" height="21" uuid="3e7eb23d-7a77-49fd-8bc4-b086acd28438"/>
+			</line>
+			<line>
+				<reportElement x="504" y="0" width="1" height="21" uuid="a1bf9f89-6db4-4325-af66-0a0a2c74003e"/>
+			</line>
+			<line>
+				<reportElement x="420" y="-1" width="1" height="21" uuid="bf0153c5-730d-4272-920f-bc7dc67312a8"/>
+			</line>
+			<subreport>
+				<reportElement x="0" y="21" width="555" height="100" uuid="4c17232e-f804-4649-9df0-671fc5604a84"/>
+				<subreportParameter name="prmprojectcode">
+					<subreportParameterExpression><![CDATA[$P{prmprojectcode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="prmyear">
+					<subreportParameterExpression><![CDATA[$P{prmyear}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$F{path_report}+"rep_projectdt_charges.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>
