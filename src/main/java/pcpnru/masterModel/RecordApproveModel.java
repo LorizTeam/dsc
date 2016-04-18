@@ -6,7 +6,7 @@ public class RecordApproveModel {
 
 	private String record_approve_hd;
 	private String record_approve_t;
-	private String record_approve_date;
+	private String record_approve_date,record_approve_send;
 	private String record_approve_title;
 	private String record_approve_rian;
 	private String record_approve_des1;
@@ -36,11 +36,11 @@ public class RecordApproveModel {
 	public RecordApproveModel(String forwhat, String s1, String s2, String s3, String s4, String s5, String s6) {
 		if (forwhat.equals("prhd")) {
 			this.docno = s1;
-			this.record_approve_title = s2;
-			this.record_approve_cen = s3;
-			this.create_by = s4;
-			this.year = s5;
-			this.record_approve_date = s6;
+			this.create_by = s2;
+			this.year = s3;
+			this.record_approve_date = s4;
+			this.create_name = s5;
+			this.approve_status = s6;
 		}
 	}
 
@@ -177,9 +177,17 @@ public class RecordApproveModel {
 		this.alertmsg = "";
 	}
 	// Reset --------------------------------------------------------
-
+	
 	public String getApprove_status() {
 		return approve_status;
+	}
+
+	public String getRecord_approve_send() {
+		return record_approve_send;
+	}
+
+	public void setRecord_approve_send(String record_approve_send) {
+		this.record_approve_send = record_approve_send;
 	}
 
 	public String getCreate_name() {

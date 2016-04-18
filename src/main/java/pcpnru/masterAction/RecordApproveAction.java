@@ -79,51 +79,23 @@ public class RecordApproveAction extends ActionSupport {
 		DateUtil dateUtil = new DateUtil();
 		String record_approve_date = recordApproveModel.getRecord_approve_date();
 		record_approve_date = dateUtil.CnvToYYYYMMDDEngYear(record_approve_date, '-');
-
+		String record_approve_send = recordApproveModel.getRecord_approve_send();
+		record_approve_send = dateUtil.CnvToYYYYMMDDEngYear(record_approve_send, '-');
 		Validate valid = new Validate();
 		if (save != null) {
 
 			try {
 
 				if (!recordApproveModel.equals("True")) {
-					ra.AddRecordApprovehd(docno, year, recordApproveModel.getRecord_approve_hd(),
-							recordApproveModel.getRecord_approve_t(), record_approve_date,
-							recordApproveModel.getRecord_approve_title(), recordApproveModel.getRecord_approve_rian(),
-							recordApproveModel.getRecord_approve_des1(), recordApproveModel.getRecord_approve_des2(),
-							recordApproveModel.getRecord_approve_des2(), recordApproveModel.getRecord_approve_cen(),
-							recordApproveModel.getRecord_approve_dep(), username, recordApproveModel.getVendor_id(),
-							recordApproveModel.getTotal_amount());
+					ra.AddRecordApprovehd(docno, year, record_approve_date, record_approve_send, 
+							username, recordApproveModel.getVendor_id());
 
 					recordApproveModel.setSaved("True");
 				} else {
-					ra.UpdateApprovehd(docno, year, recordApproveModel.getRecord_approve_hd(),
-							recordApproveModel.getRecord_approve_t(), record_approve_date,
-							recordApproveModel.getRecord_approve_title(), recordApproveModel.getRecord_approve_rian(),
-							recordApproveModel.getRecord_approve_des1(), recordApproveModel.getRecord_approve_des2(),
-							recordApproveModel.getRecord_approve_des2(), recordApproveModel.getRecord_approve_cen(),
-							recordApproveModel.getRecord_approve_dep(), username, recordApproveModel.getVendor_id(),
-							recordApproveModel.getTotal_amount(), recordApproveModel.getApprove_status());
-				}
-
-				String filePath = request.getSession().getServletContext().getRealPath("/") + "img/";
-				String filename = this.toBeUploadedFileName;
-				String pathimg_todb = "";
-				if (valid.Check_String_notnull_notempty(filename)) {
-					String[] nameimg = filename.split("[.]");
-					if (nameimg.length > 2) {
-						recordApproveModel.setAlertmsg("กรุณาทำการลบ . ในชื่อของรูปภาพด้วยค่ะ");
-						return "alertmsg";
-					}
-					File fileToCreate = new File(filePath,
-							dateUtil.GetDatetime_YYYY_MM_DD_HH_MM_SS() + "." + nameimg[1]);
-					pathimg_todb = "img/" + fileToCreate.getName();
-					FileUtils.copyFile(this.toBeUploaded, fileToCreate);
-
-					ra.Add_PurchaseRequest_Image(docno, year, pathimg_todb);
-
+					ra.UpdateApprovehd(docno, year, record_approve_date, record_approve_send, 
+							username, recordApproveModel.getVendor_id(), recordApproveModel.getApprove_status());
 				}
 				recordApproveModel.setApprove_status("CA");
-				recordApproveModel.setImg_path(pathimg_todb);
 				recordApproveModel.reset_ListItem();
 				recordApproveModel.reset_alert();
 			} catch (Exception e) {
@@ -151,36 +123,17 @@ public class RecordApproveAction extends ActionSupport {
 			String unit_id = ra.Get_Product(product_code);
 
 			if (ra.CheckHaveAddHD(docno)) {
+				
 				ra.AddRecordApprovedt(docno, year, product_code, qty, unit_id, username);
+				
 			} else {
-				ra.AddRecordApprovehd(docno, year, recordApproveModel.getRecord_approve_hd(),
-						recordApproveModel.getRecord_approve_t(), record_approve_date,
-						recordApproveModel.getRecord_approve_title(), recordApproveModel.getRecord_approve_rian(),
-						recordApproveModel.getRecord_approve_des1(), recordApproveModel.getRecord_approve_des2(),
-						recordApproveModel.getRecord_approve_des2(), recordApproveModel.getRecord_approve_cen(),
-						recordApproveModel.getRecord_approve_dep(), username, recordApproveModel.getVendor_id(),
-						recordApproveModel.getTotal_amount());
+				
+				ra.AddRecordApprovehd(docno, year, record_approve_date, record_approve_send, 
+						username, recordApproveModel.getVendor_id());
 				ra.AddRecordApprovedt(docno, year, product_code, qty, unit_id, username);
 
 				recordApproveModel.setSaved("True");
-
-				String filePath = request.getSession().getServletContext().getRealPath("/") + "img/";
-				String filename = this.toBeUploadedFileName;
-				String pathimg_todb = "";
-				if (valid.Check_String_notnull_notempty(filename)) {
-					String[] nameimg = filename.split("[.]");
-					if (nameimg.length > 2) {
-						recordApproveModel.setAlertmsg("กรุณาทำการลบ . ในชื่อของรูปภาพด้วยค่ะ");
-						return "alertmsg";
-					}
-					File fileToCreate = new File(filePath,
-							dateUtil.GetDatetime_YYYY_MM_DD_HH_MM_SS() + "." + nameimg[1]);
-					pathimg_todb = "img/" + fileToCreate.getName();
-					FileUtils.copyFile(this.toBeUploaded, fileToCreate);
-
-					ra.Add_PurchaseRequest_Image(docno, year, pathimg_todb);
-
-				}
+				
 			}
 			recordApproveModel.setApprove_status("CA");
 
@@ -191,18 +144,10 @@ public class RecordApproveAction extends ActionSupport {
 
 			create();
 		} else if (send_approve != null) {
-			ra.UpdateApprovehd(docno, year, recordApproveModel.getRecord_approve_hd(),
-					recordApproveModel.getRecord_approve_t(), record_approve_date,
-					recordApproveModel.getRecord_approve_title(), recordApproveModel.getRecord_approve_rian(),
-					recordApproveModel.getRecord_approve_des1(), recordApproveModel.getRecord_approve_des2(),
-					recordApproveModel.getRecord_approve_des2(), recordApproveModel.getRecord_approve_cen(),
-					recordApproveModel.getRecord_approve_dep(), username, recordApproveModel.getVendor_id(),
-					recordApproveModel.getTotal_amount(), recordApproveModel.getApprove_status());
+			ra.UpdateApprovehd(docno, year, record_approve_date, record_approve_send, 
+					username, recordApproveModel.getVendor_id(), recordApproveModel.getApprove_status());
 			recordApproveModel.setApprove_status(recordApproveModel.getApprove_status());
 		}
-
-		List ResultImageList = ra.GET_PurchaseRequest_Image(recordApproveModel.getDocno(), year, "");
-		request.setAttribute("ResultImageList", ResultImageList);
 
 		List ListRecordApproveDT = ra.ListRecordApproveDT(docno, "", year);
 		request.setAttribute("ListRecordApproveDT", ListRecordApproveDT);
@@ -252,7 +197,7 @@ public class RecordApproveAction extends ActionSupport {
 		DateUtil dateutil = new DateUtil();
 
 		request.setAttribute("ListResultPRSearch",
-				new RecordApproveDB().GetListPR_Header("", "", "", dateutil.curMonth(), dateutil.curYear()));
+				new RecordApproveDB().GetListPR_Header("", "", dateutil.curMonth(), dateutil.curYear()));
 		recordApproveModel = new RecordApproveModel();
 		recordApproveModel.setFromwindow("true");
 
@@ -263,7 +208,7 @@ public class RecordApproveAction extends ActionSupport {
 
 		HttpServletRequest request = ServletActionContext.getRequest();
 
-		request.setAttribute("ListResultPRSearch", new RecordApproveDB().GetListPR_Header("", "", "", "", "", "WA"));
+		request.setAttribute("ListResultPRSearch", new RecordApproveDB().GetListPR_Header("", "", "", "WA"));
 		recordApproveModel = new RecordApproveModel();
 		recordApproveModel.setFromwindow("po");
 
@@ -299,27 +244,16 @@ public class RecordApproveAction extends ActionSupport {
 				if (recordApproveModel.getFromwindow().equals("po")) {
 
 					request.setAttribute("ListResultPRSearch",
-							new RecordApproveDB().GetListPR_Header(recordApproveModel.getDocno(),
-									recordApproveModel.getRecord_approve_title(), new DateUtil()
-											.CnvToYYYYMMDDEngYear(recordApproveModel.getRecord_approve_date(), '-'),
+							new RecordApproveDB().GetListPR_Header(recordApproveModel.getDocno(), new DateUtil().CnvToYYYYMMDDEngYear(recordApproveModel.getRecord_approve_date(), '-'),
 							recordApproveModel.getRecord_approve_month(), year, "WA"));
 
-					List ResultImageList = new RecordApproveDB()
-							.GET_PurchaseRequest_Image(recordApproveModel.getDocno(), year, "");
-					request.setAttribute("ResultImageList", ResultImageList);
 
 				} else {
 
 					request.setAttribute("ListResultPRSearch",
-							new RecordApproveDB().GetListPR_Header(recordApproveModel.getDocno(),
-									recordApproveModel.getRecord_approve_title(), new DateUtil()
-											.CnvToYYYYMMDDEngYear(recordApproveModel.getRecord_approve_date(), '-'),
+							new RecordApproveDB().GetListPR_Header(recordApproveModel.getDocno(), new DateUtil().CnvToYYYYMMDDEngYear(recordApproveModel.getRecord_approve_date(), '-'),
 							recordApproveModel.getRecord_approve_month(), year));
-
-					List ResultImageList = new RecordApproveDB()
-							.GET_PurchaseRequest_Image(recordApproveModel.getDocno(), year, "");
-					request.setAttribute("ResultImageList", ResultImageList);
-
+					
 				}
 
 			}
@@ -337,27 +271,15 @@ public class RecordApproveAction extends ActionSupport {
 			recordApproveModel = new RecordApproveModel();
 			recordApproveModel.setDocno(MapResultValue.get("docno").toString());
 			recordApproveModel.setYear(year);
-			recordApproveModel.setRecord_approve_hd(MapResultValue.get("record_approve_hd").toString());
-			recordApproveModel.setRecord_approve_t(MapResultValue.get("record_approve_t").toString());
 			recordApproveModel.setRecord_approve_date(MapResultValue.get("record_approve_date").toString());
-			recordApproveModel.setRecord_approve_title(MapResultValue.get("record_approve_title").toString());
-			recordApproveModel.setRecord_approve_rian(MapResultValue.get("record_approve_rian").toString());
-			recordApproveModel.setRecord_approve_des1(MapResultValue.get("record_approve_des1").toString());
-			recordApproveModel.setRecord_approve_des2(MapResultValue.get("record_approve_des2").toString());
-			recordApproveModel.setRecord_approve_des3(MapResultValue.get("record_approve_des3").toString());
-			recordApproveModel.setRecord_approve_cen(MapResultValue.get("record_approve_cen").toString());
-			recordApproveModel.setRecord_approve_dep(MapResultValue.get("record_approve_dep").toString());
+			recordApproveModel.setRecord_approve_send(MapResultValue.get("record_approve_send").toString());
 			recordApproveModel.setCreate_by(MapResultValue.get("create_by").toString());
 			recordApproveModel.setVendor_id(MapResultValue.get("vendor_id").toString());
-			recordApproveModel.setTotal_amount((Double) MapResultValue.get("total_amount"));
 			recordApproveModel.setVendor_name(MapResultValue.get("vendor_name").toString());
 			recordApproveModel.setApprove_status(MapResultValue.get("approve_status").toString());
 			recordApproveModel.setFromwindow(fromwindow);
 			List ListRecordApproveDT = ra.ListRecordApproveDT(recordApproveModel.getDocno(), "", year);
 			request.setAttribute("ListRecordApproveDT", ListRecordApproveDT);
-
-			List ResultImageList = ra.GET_PurchaseRequest_Image(recordApproveModel.getDocno(), year, "");
-			request.setAttribute("ResultImageList", ResultImageList);
 
 			forwardText = "viewdetail";
 		}
@@ -374,8 +296,7 @@ public class RecordApproveAction extends ActionSupport {
 		if (search != null) {
 
 			request.setAttribute("ListResultPRSearch",
-					new RecordApproveDB().GetListPR_Header(recordApproveModel.getDocno(),
-							recordApproveModel.getRecord_approve_title(), recordApproveModel.getRecord_approve_date(),
+					new RecordApproveDB().GetListPR_Header(recordApproveModel.getDocno(), recordApproveModel.getRecord_approve_date(),
 							recordApproveModel.getRecord_approve_month(), recordApproveModel.getYear()));
 			recordApproveModel.Approve_pr();
 
@@ -394,9 +315,9 @@ public class RecordApproveAction extends ActionSupport {
 				}
 
 			}
-			request.setAttribute("ListResultPRSearch", new RecordApproveDB().GetListPR_Header("", "", "", "", ""));
+			request.setAttribute("ListResultPRSearch", new RecordApproveDB().GetListPR_Header("", "", "", ""));
 		} else {
-			request.setAttribute("ListResultPRSearch", new RecordApproveDB().GetListPR_Header("", "", "", "", ""));
+			request.setAttribute("ListResultPRSearch", new RecordApproveDB().GetListPR_Header("", "", "", ""));
 		}
 
 		return SUCCESS;
@@ -416,27 +337,16 @@ public class RecordApproveAction extends ActionSupport {
 		recordApproveModel = new RecordApproveModel();
 		recordApproveModel.setDocno(MapResultValue.get("docno").toString());
 		recordApproveModel.setYear(year);
-		recordApproveModel.setRecord_approve_hd(MapResultValue.get("record_approve_hd").toString());
-		recordApproveModel.setRecord_approve_t(MapResultValue.get("record_approve_t").toString());
 		recordApproveModel.setRecord_approve_date(MapResultValue.get("record_approve_date").toString());
-		recordApproveModel.setRecord_approve_title(MapResultValue.get("record_approve_title").toString());
-		recordApproveModel.setRecord_approve_rian(MapResultValue.get("record_approve_rian").toString());
-		recordApproveModel.setRecord_approve_des1(MapResultValue.get("record_approve_des1").toString());
-		recordApproveModel.setRecord_approve_des2(MapResultValue.get("record_approve_des2").toString());
-		recordApproveModel.setRecord_approve_des3(MapResultValue.get("record_approve_des3").toString());
-		recordApproveModel.setRecord_approve_cen(MapResultValue.get("record_approve_cen").toString());
-		recordApproveModel.setRecord_approve_dep(MapResultValue.get("record_approve_dep").toString());
+		recordApproveModel.setRecord_approve_send(MapResultValue.get("record_approve_send").toString());
 		recordApproveModel.setCreate_by(MapResultValue.get("create_by").toString());
 		recordApproveModel.setVendor_id(MapResultValue.get("vendor_id").toString());
-		recordApproveModel.setTotal_amount((Double) MapResultValue.get("total_amount"));
 		recordApproveModel.setVendor_name(MapResultValue.get("vendor_name").toString());
 		recordApproveModel.setApprove_status(MapResultValue.get("approve_status").toString());
 		recordApproveModel.setFromwindow(fromwindow);
 		List ListRecordApproveDT = ra.ListRecordApproveDT(recordApproveModel.getDocno(), "", year);
 		request.setAttribute("ListRecordApproveDT", ListRecordApproveDT);
-
-		List ResultImageList = ra.GET_PurchaseRequest_Image(recordApproveModel.getDocno(), year, "");
-		request.setAttribute("ResultImageList", ResultImageList);
+		
 		return "viewdetail";
 	}
 }
