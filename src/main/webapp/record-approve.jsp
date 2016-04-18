@@ -203,9 +203,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	         </div>
 	         	
 	         	<div class="row cells12">
-	         		<div class="cell colspan1"> </div>
-					   
-	         	
+					<div class="cell colspan4"></div>
 	         		<div class="cell colspan2"> 
 			        	วันที่ออกใบขออนุมัติซื้อ
 				        <div class="input-control text full-size">
@@ -224,7 +222,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 			<div class="grid">
 			 	<div class="row cells12">
-	         		<div class="cell colspan1"> </div>
+	         		<div class="cell colspan4"></div>
 	         		<div class="cell colspan4"> 
 			        	ชื่อร้านค้าที่แนะนำ
 				        <div class="input-control text full-size">
