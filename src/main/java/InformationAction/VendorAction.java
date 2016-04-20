@@ -52,7 +52,9 @@ public class VendorAction extends ActionSupport {
 			vendor_id = vendt.GetHighest_VendorID();
 			vendor_id = vendt.PlusOneID_FormatID(vendor_id);
 			String vendor_name = vendormodel.getVendor_name();
-			vendt.Add_Vendor(vendor_id, vendor_name, username);
+			vendt.Add_Vendor(vendor_id, vendor_name, username, vendormodel.getVendor_address(),
+					vendormodel.getVendor_road(), vendormodel.getVendor_subdistrict(), vendormodel.getVendor_district(), vendormodel.getVendor_province(),
+					vendormodel.getVendor_postcode(), vendormodel.getVendor_mobile(), vendormodel.getVendor_tel(), vendormodel.getVendor_tel_ext());
 			vendormodel.clear_vendor();
 
 		} else if (delete != null) {
@@ -88,7 +90,9 @@ public class VendorAction extends ActionSupport {
 			if (new Validate().Check_String_notnull_notempty(vendormodel.getAlertmsg()))
 				vendormodel.setAlertmsg("");
 
-			vendt.Update_Vendor(vendormodel.getVendor_id(), vendormodel.getVendor_name(), username);
+			vendt.Update_Vendor(vendormodel.getVendor_id(), vendormodel.getVendor_name(), username, vendormodel.getVendor_address(),
+					vendormodel.getVendor_road(), vendormodel.getVendor_subdistrict(), vendormodel.getVendor_district(), vendormodel.getVendor_province(),
+					vendormodel.getVendor_postcode(), vendormodel.getVendor_mobile(), vendormodel.getVendor_tel(), vendormodel.getVendor_tel_ext());
 			vendormodel.clear_vendor();
 		}
 

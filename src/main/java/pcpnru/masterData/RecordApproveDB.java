@@ -143,6 +143,44 @@ public class RecordApproveDB {
 		return rowsupdate;
 	}
 	
+	public int UpdateApprovehd(String docno, String year, String record_approve_date, String record_approve_send, 
+			String create_by, String vendor_id, String approve_status,int credit_day) throws Exception {
+
+		String sqlStmt = "update record_approve_hd "
+				+ "set record_approve_date =?"
+				+ ", record_approve_send =?, thaidate_report =?, vendor_id =? , approve_status=?, credit_day =? "
+				+ "where docno =? and year  =?";
+
+		String[] splitdate = record_approve_date.split("-");
+
+		ThaiNumber thnumber = new ThaiNumber();
+		ThaiMonth thmonth = new ThaiMonth();
+
+		String thaidate_report = (thnumber.CenverT_To_ThaiNumberic(splitdate[2]) + "-"
+				+ thmonth.Convert_To_ThaiMonth(record_approve_date) + "-" + thnumber
+						.CenverT_To_ThaiNumberic(String.valueOf(Integer.parseInt(splitdate[0]) + 543)).replace(",", ""))
+								.replace("-", " ");
+
+		conn = agent.getConnectMYSql();
+		conn.setAutoCommit(false);
+
+		ppStmt = conn.prepareStatement(sqlStmt);
+		ppStmt.setDate(1, Date.valueOf(record_approve_date));
+		ppStmt.setDate(2, Date.valueOf(record_approve_send));
+		ppStmt.setString(3, thaidate_report);
+		ppStmt.setString(4, vendor_id);
+		ppStmt.setString(5, approve_status);
+		ppStmt.setInt(6, credit_day);
+		ppStmt.setString(7, docno);
+		ppStmt.setString(8, year);
+
+		int rowsupdate = ppStmt.executeUpdate();
+		conn.commit();
+		ppStmt.close();
+		conn.close();
+		return rowsupdate;
+	}
+	
 	public int UpdateApprovehd(String docno, String year, String record_approve_hd, String record_approve_t,
 			String record_approve_date, String record_approve_title, String record_approve_rian,
 			String record_approve_des1, String record_approve_des2, String record_approve_des3,
@@ -268,6 +306,41 @@ public class RecordApproveDB {
 		ppStmt.setString(5, thaidate_report);
 		ppStmt.setString(6, create_by);
 		ppStmt.setString(7, vendor_id);
+		ppStmt.executeUpdate();
+		conn.commit();
+		ppStmt.close();
+		conn.close();
+	}
+	
+	public void AddRecordApprovehd(String docno, String year, String record_approve_date, String record_approve_send, 
+			String create_by, String vendor_id,int credit_day) throws Exception {
+
+		String dateTime = "";
+		String sqlStmt = "INSERT IGNORE INTO record_approve_hd(docno, year, record_approve_date, record_approve_send, "
+				+ "thaidate_report,create_by,create_datetime,vendor_id,credit_day) "
+				+ "VALUES (?,?,?,?,?,?,now(),?,?)";
+
+		String[] splitdate = record_approve_date.split("-");
+
+		ThaiNumber thnumber = new ThaiNumber();
+		ThaiMonth thmonth = new ThaiMonth();
+
+		String thaidate_report = (thnumber.CenverT_To_ThaiNumberic(splitdate[2]) + "-"
+				+ thmonth.Convert_To_ThaiMonth(record_approve_date) + "-" + thnumber
+						.CenverT_To_ThaiNumberic(String.valueOf(Integer.parseInt(splitdate[0]) + 543)).replace(",", ""))
+								.replace("-", " ");
+		// System.out.println(sqlStmt);
+		conn = agent.getConnectMYSql();
+		conn.setAutoCommit(false);
+		ppStmt = conn.prepareStatement(sqlStmt);
+		ppStmt.setString(1, docno);
+		ppStmt.setString(2, year);
+		ppStmt.setDate(3, Date.valueOf(record_approve_date));
+		ppStmt.setDate(4, Date.valueOf(record_approve_send));
+		ppStmt.setString(5, thaidate_report);
+		ppStmt.setString(6, create_by);
+		ppStmt.setString(7, vendor_id);
+		ppStmt.setInt(8, credit_day);
 		ppStmt.executeUpdate();
 		conn.commit();
 		ppStmt.close();
@@ -672,13 +745,13 @@ public class RecordApproveDB {
 		return mapresultGet;
 	}*/
 	
-	public Map GetAllValueHeader_byDocno(String docno, String year) throws IOException, Exception {
+	/*public Map GetAllValueHeader_byDocno(String docno, String year) throws IOException, Exception {
 		Map mapresultGet = new HashMap();
 
 		String sqlQuery = "SELECT docno,`year`+543 as year,"
 				+ "CONCAT(substr(record_approve_date from 9 for 2),\"-\",substr(record_approve_date from 6 for 2),\"-\",year(record_approve_date)+543) as record_approve_date,"
 				+ "CONCAT(substr(record_approve_send from 9 for 2),\"-\",substr(record_approve_send from 6 for 2),\"-\",year(record_approve_send)+543) as record_approve_send,"
-				+ "record_approve_hd.create_by,b.vendor_id,b.vendor_name,approve_status "
+				+ "record_approve_hd.create_by,b.vendor_id,b.vendor_name,approve_status,thaidate_report "
 				+ "FROM `record_approve_hd` "
 				+ "inner join vendor_master as b on (record_approve_hd.vendor_id = b.vendor_id) WHERE "
 				+ "docno = '" + docno + "' and year = '" + year + "'";
@@ -691,12 +764,50 @@ public class RecordApproveDB {
 			mapresultGet.put("docno", rs.getString("docno"));
 			mapresultGet.put("year", rs.getString("year"));
 			mapresultGet.put("record_approve_date", rs.getString("record_approve_date"));
-			mapresultGet.put("record_approve_date", rs.getString("record_approve_send"));
+			mapresultGet.put("record_approve_send", rs.getString("record_approve_send"));
 			mapresultGet.put("thaidate_report", rs.getString("thaidate_report"));
 			mapresultGet.put("create_by", rs.getString("create_by"));
 			mapresultGet.put("vendor_id", rs.getString("vendor_id"));
 			mapresultGet.put("vendor_name", rs.getString("vendor_name"));
 			mapresultGet.put("approve_status", rs.getString("approve_status"));
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (pStmt.isClosed())
+			pStmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return mapresultGet;
+	}*/
+	
+	public Map GetAllValueHeader_byDocno(String docno, String year) throws IOException, Exception {
+		Map mapresultGet = new HashMap();
+
+		String sqlQuery = "SELECT docno,`year`+543 as year,"
+				+ "CONCAT(substr(record_approve_date from 9 for 2),\"-\",substr(record_approve_date from 6 for 2),\"-\",year(record_approve_date)+543) as record_approve_date,"
+				+ "CONCAT(substr(record_approve_send from 9 for 2),\"-\",substr(record_approve_send from 6 for 2),\"-\",year(record_approve_send)+543) as record_approve_send,"
+				+ "record_approve_hd.create_by,b.vendor_id,b.vendor_name,approve_status,thaidate_report,credit_day "
+				+ "FROM `record_approve_hd` "
+				+ "inner join vendor_master as b on (record_approve_hd.vendor_id = b.vendor_id) WHERE "
+				+ "docno = '" + docno + "' and year = '" + year + "'";
+
+		conn = agent.getConnectMYSql();
+		pStmt = conn.createStatement();
+		rs = pStmt.executeQuery(sqlQuery);
+
+		while (rs.next()) {
+			mapresultGet.put("docno", rs.getString("docno"));
+			mapresultGet.put("year", rs.getString("year"));
+			mapresultGet.put("record_approve_date", rs.getString("record_approve_date"));
+			mapresultGet.put("record_approve_send", rs.getString("record_approve_send"));
+			mapresultGet.put("thaidate_report", rs.getString("thaidate_report"));
+			mapresultGet.put("create_by", rs.getString("create_by"));
+			mapresultGet.put("vendor_id", rs.getString("vendor_id"));
+			mapresultGet.put("vendor_name", rs.getString("vendor_name"));
+			mapresultGet.put("approve_status", rs.getString("approve_status"));
+			mapresultGet.put("credit_day", rs.getInt("credit_day"));
 		}
 
 		if (!rs.isClosed())

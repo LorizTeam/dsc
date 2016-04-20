@@ -70,9 +70,13 @@ public class VendorData {
 		return vendor_id;
 	}
 
-	public boolean Add_Vendor(String vendor_id, String vendor_name, String create_by) throws IOException, Exception {
+	public boolean Add_Vendor(String vendor_id, String vendor_name, String create_by, String vendor_address,
+			String vendor_road, String vendor_subdistrict, String vendor_district, String vendor_province,
+			String vendor_postcode, String vendor_mobile, String vendor_tel, String vendor_tel_ext) throws IOException, Exception {
 
-		String sqlQuery = "insert ignore into vendor_master(vendor_id,vendor_name,create_by,create_datetime) values (?,?,?,now())";
+		String sqlQuery = "insert ignore into vendor_master(vendor_id, vendor_name, create_by, create_datetime, vendor_address,"
+				+ "vendor_road, vendor_subdistrict, vendor_district, vendor_province,"
+				+ "vendor_postcode, vendor_mobile, vendor_tel, vendor_tel_ext) values (?,?,?,now(),?,?,?,?,?,?,?,?,?)";
 
 		conn = agent.getConnectMYSql();
 		conn.setAutoCommit(false);
@@ -80,6 +84,15 @@ public class VendorData {
 		ppStmt.setString(1, vendor_id);
 		ppStmt.setString(2, vendor_name);
 		ppStmt.setString(3, create_by);
+		ppStmt.setString(4, vendor_address);
+		ppStmt.setString(5, vendor_road);
+		ppStmt.setString(6, vendor_subdistrict);
+		ppStmt.setString(7, vendor_district);
+		ppStmt.setString(8, vendor_province);
+		ppStmt.setString(9, vendor_postcode);
+		ppStmt.setString(10, vendor_mobile);
+		ppStmt.setString(11, vendor_tel);
+		ppStmt.setString(12, vendor_tel_ext);
 		int rowsupdate = ppStmt.executeUpdate();
 		conn.commit();
 
@@ -130,7 +143,9 @@ public class VendorData {
 			ResultList.add(
 					new VendorModel(rs.getString("vendor_id"), rs.getString("vendor_name"), rs.getString("create_by"),
 							new DateUtil().CnvYYYYMMDDToYYYYMMDDThaiYear(rs.getString("create_datetime"), "-"),
-							rs.getString("update_by"), rs.getString("update_datetime")));
+							rs.getString("update_by"), rs.getString("update_datetime"), rs.getString("vendor_address"), rs.getString("vendor_road"),
+							rs.getString("vendor_subdistrict"), rs.getString("vendor_district"), rs.getString("vendor_province"), rs.getString("vendor_postcode"),
+							rs.getString("vendor_mobile"), rs.getString("vendor_tel"), rs.getString("vendor_tel_ext")));
 		}
 
 		if (!rs.isClosed())
@@ -187,17 +202,31 @@ public class VendorData {
 		return resultboolean;
 	}
 
-	public void Update_Vendor(String vendor_id, String update_vendor_name, String update_by)
+	public void Update_Vendor(String vendor_id, String update_vendor_name, String update_by, String vendor_address,
+			String vendor_road, String vendor_subdistrict, String vendor_district, String vendor_province,
+			String vendor_postcode, String vendor_mobile, String vendor_tel, String vendor_tel_ext)
 			throws IOException, Exception {
 
-		String sqlQuery = "update vendor_master set vendor_name = ?,update_by = ?,update_datetime = now() where vendor_id = ?";
+		String sqlQuery = "update vendor_master set vendor_name = ?, update_by = ?, update_datetime = now(), vendor_address= ?,"
+				+ "vendor_road= ?, vendor_subdistrict= ?, vendor_district= ?, vendor_province= ?, "
+				+ "vendor_postcode= ?, vendor_mobile= ?, vendor_tel= ?, vendor_tel_ext= ? "
+				+ "where vendor_id = ? ";
 
 		conn = agent.getConnectMYSql();
 		conn.setAutoCommit(false);
 		ppStmt = conn.prepareStatement(sqlQuery);
-		ppStmt.setString(3, vendor_id);
+		ppStmt.setString(12, vendor_id);
 		ppStmt.setString(1, update_vendor_name);
 		ppStmt.setString(2, update_by);
+		ppStmt.setString(3, vendor_address);
+		ppStmt.setString(4, vendor_road);
+		ppStmt.setString(5, vendor_subdistrict);
+		ppStmt.setString(6, vendor_district);
+		ppStmt.setString(7, vendor_province);
+		ppStmt.setString(8, vendor_postcode);
+		ppStmt.setString(9, vendor_mobile);
+		ppStmt.setString(10, vendor_tel);
+		ppStmt.setString(11, vendor_tel_ext);
 		ppStmt.executeUpdate();
 		conn.commit();
 

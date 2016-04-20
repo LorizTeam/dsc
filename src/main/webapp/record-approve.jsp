@@ -80,11 +80,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 <div class="row cells12 " >
 		 			<div class="cell align-center colspan2">
 
-						<s:if test="%{#fromwindow=='true'}">
+						<s:if test="%{#fromwindow=='true'} ">
 						<a class="button success" id="back" href="windowsPR"><span class="mif-lg fg-white">ย้อนกลับ</span></a>
 						</s:if>
 						<s:elseif test="%{#fromwindow=='po'}">
-						<a class="button success" id="back" href="po_openwindowsPR"><span class="mif-lg fg-white">ย้อนกลับ</span></a>
+						</s:elseif>
+						<s:elseif test="%{#fromwindow=='view'}">
+							<a class="button success" id="back" href="searchPR"><span class="mif-lg fg-white">ย้อนกลับ</span></a>
 						</s:elseif>
 	         	 	</div>
 	         	 	<div class="cell align-center colspan3">
@@ -235,7 +237,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 					</div>  
 	         	</div>
-	         	
+	         	<div class="row cells12">
+	         		<div class="cell colspan4"></div>
+	         		<div class="cell colspan4"> 
+			        	จำนวนวันที่ให้เครดิต
+				        <div class="input-control text">
+						    <s:textfield name="recordApproveModel.credit_day" id="credit_day" required=""/>
+							</div>
+						</div>
+					</div>  
+	         	</div>
 
          	</div>
 		
@@ -247,6 +258,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</s:if>
 						<s:elseif test="%{#fromwindow=='po'}">
 							<a class="button success" id="back" href="po_openwindowsPR"><span class="mif-lg fg-white">ย้อนกลับ</span></a>
+						</s:elseif>
+						<s:elseif test="%{#fromwindow=='view'}">
+							<a class="button success" id="back" href="searchPR"><span class="mif-lg fg-white">ย้อนกลับ</span></a>
 						</s:elseif>
 	         	 	</div>
 	         	 	<div class="cell align-center colspan3">

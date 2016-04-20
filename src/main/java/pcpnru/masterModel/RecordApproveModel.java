@@ -20,6 +20,7 @@ public class RecordApproveModel {
 	private File toBeUploaded;
 	private String vendor_name, vendor_id, toBeUploadedFileName, toBeUploadedContentType, img_path;
 	private double total_amount;
+	private int credit_day;
 
 	// Vender --------------------------------------------------------
 
@@ -180,6 +181,14 @@ public class RecordApproveModel {
 	
 	public String getApprove_status() {
 		return approve_status;
+	}
+	
+	public int getCredit_day() {
+		return credit_day;
+	}
+
+	public void setCredit_day(int credit_day) {
+		this.credit_day = credit_day;
 	}
 
 	public String getRecord_approve_send() {

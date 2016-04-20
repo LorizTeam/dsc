@@ -114,8 +114,6 @@
 								<th>เลือกรายการ</th>
 								<th>สถานะ</th>
 								<th>รหัส PR</th>
-								<th>เรื่อง</th>
-								<th>ผู้อนุมัติ</th>
 								<th>ผู้ทำรายการ</th>
 								<th>ปี</th>
 								<th>วันที่ทำรายการ</th>
@@ -150,8 +148,6 @@
 											%>
 											</td>
 											<td><%=RAM.getDocno() %></td>
-											<td><%=RAM.getRecord_approve_title() %></td>
-											<td><%=RAM.getRecord_approve_cen() %></td>
 											<td><%=RAM.getCreate_by() %></td>
 											<td><%=RAM.getYear() %></td>
 											<td><%=RAM.getRecord_approve_date() %></td>

@@ -28,7 +28,7 @@
 			<div><%@include file="topmenu.jsp" %></div>
 		</s:else>
 		
-		<form action="vendor.action" method="post">
+		<form action="vendor" method="post">
 			<div class="grid" >
 				 <div class="row cells12 " >
 		 			<div class="cell align-center colspan2">
@@ -40,26 +40,111 @@
 					</div>
 				</div>
 			    <div class="example" data-text="Add">
+				    <div class="accordion" data-role="accordion">
+				    	<div class="frame active">
+				        <div class="heading">รหัสและชื่อร้านค้า</div>
+				        <div class="content">
+							<div class="row cells12 ">
+						 		<div class="cell colspan1"> </div>
+						 		<div class="cell colspan4">
+						 			รหัสผู้ขาย
+						 			<div class="input-control text"> 
+						 				<s:textfield name="vendormodel.vendor_id" id="vendor_id" readonly="true"/>
+						 			</div>
+						 		</div>
+						 		<div class="cell colspan4"> 
+						 			ชื่อของผู้ขาย
+						 			<div class="input-control text">
+						 				<s:textfield name="vendormodel.vendor_name" id="vendor_name" required=""/>
+						 			</div>
+						 		</div>
+						 	</div>
+						</div>
+				   		</div>
+				   		<div class="frame active">
+				        <div class="heading">ที่อยู่ของร้านค้า</div>
+				        <div class="content">
+							<div class="row cells12 ">
+						 		<div class="cell colspan1"> </div>
+						 		<div class="cell colspan4">
+						 			ที่อยู่
+						 			<div class="input-control text"> 
+						 				<s:textfield name="vendormodel.vendor_address" id="vendor_address" required=""/>
+						 			</div>
+						 		</div>
+						 		<div class="cell colspan4"> 
+						 			ถนน
+						 			<div class="input-control text">
+						 				<s:textfield name="vendormodel.vendor_road" id="vendor_road" required=""/>
+						 			</div>
+						 		</div>
+						 	</div>
+						 	<div class="row cells12 ">
+						 		<div class="cell colspan1"> </div>
+						 		<div class="cell colspan4">
+						 			ตำบล
+						 			<div class="input-control text"> 
+						 				<s:textfield name="vendormodel.vendor_subdistrict" id="vendor_subdistrict" required=""/>
+						 			</div>
+						 		</div>
+						 		<div class="cell colspan4"> 
+						 			อำเภอ
+						 			<div class="input-control text">
+						 				<s:textfield name="vendormodel.vendor_district" id="vendor_district" required=""/>
+						 			</div>
+						 		</div>
+						 	</div>
+						 	<div class="row cells12 ">
+						 		<div class="cell colspan1"> </div>
+						 		<div class="cell colspan4">
+						 			จังหวัด
+						 			<div class="input-control text"> 
+						 				<s:textfield name="vendormodel.vendor_province" id="vendor_province" required=""/>
+						 			</div>
+						 		</div>
+						 		<div class="cell colspan4"> 
+						 			รหัสไปรษณีย์
+						 			<div class="input-control text">
+						 				<s:textfield name="vendormodel.vendor_postcode" id="vendor_postcode" required=""/>
+						 			</div>
+						 		</div>
+						 	</div>
+						</div>
+				   		</div>
+				   		<div class="frame active">
+				        <div class="heading">การติดต่อ</div>
+				        <div class="content">
+							<div class="row cells12 ">
+						 		<div class="cell colspan1"> </div>
+						 		<div class="cell colspan4">
+						 			เบอร์โทรศัพท์ มือถือ
+						 			<div class="input-control text"> 
+						 				<s:textfield name="vendormodel.vendor_mobile" id="vendor_mobile" maxlength="10"/>
+						 			</div>
+						 		</div>
+						 		<div class="cell colspan7"> 
+						 			เบอร์โทรศัพท์
+						 			<div class="input-control text">
+						 				<s:textfield name="vendormodel.vendor_tel" id="vendor_tel"/>
+						 			</div>
+						 			ต่อ
+						 			<div class="input-control text">
+						 				<s:textfield name="vendormodel.vendor_tel_ext" id="vendor_tel_ext"/>
+						 			</div>
+						 		</div>
+						 	</div>
+						</div>
+				   		</div>
+				    </div>
 			        <div class="row cells12 ">
-				 		<div class="cell colspan1"> </div>
-				 		<div class="cell colspan4">
-				 			รหัสผู้ขาย
-				 			<div class="input-control text"> 
-				 				<s:textfield name="vendormodel.vendor_id" id="vendor_id" readonly="true"/>
-				 			</div>
-				 		</div>
-				 		<div class="cell colspan4"> 
-				 			ชื่อของผู้ขาย
-				 			<div class="input-control text">
-				 				<s:textfield name="vendormodel.vendor_name" id="vendor_name" required=""/>
-				 			</div>
-				 			
-				 			<button type="submit" class="button success" name="add" id="add"><span class="mif-plus mif-lg fg-white"></span></button>
-				 			<button type="submit" class="button primary" name="update" id="update"><span class="mif-checkmark mif-lg fg-white"></span></button>
-				 		</div>
-				 		
-				 	</div>
+			        	<div class="cell align-center colspan12"> 
+			        		<button type="submit" class="button success" name="add" id="add"><span class="mif-plus mif-lg fg-white"></span></button>
+			 				<button type="submit" class="button primary" name="update" id="update"><span class="mif-checkmark mif-lg fg-white"></span></button>
+			        	</div>
+			        </div>
 			    </div>
+		</form>
+		<form action="vendor" method="post">
 			    <div class="example" data-text="Display">
 			    	<table id="table_vendor" class="cell-border hover display compact nowrap" cellspacing="0" width="100%">
 		                <thead>
@@ -67,8 +152,15 @@
 		                	<th>ลบข้อมูล <input type="checkbox" id="checkall"></th>
 		                	<th>รหัสผู้ขาย</th>
 		                	<th>ชื่อผู้ขาย</th>
-		                    <th>วันที่เพิ่มข้อมูล</th>
-		                    
+		                    <th>ที่อยู่</th>
+		                    <th>ถนน</th>
+		                    <th>ตำบล</th>
+		                    <th>อำเภอ</th>
+		                    <th>จังหวัด</th>
+		                    <th>รหัสไปรษณีย์</th>
+		                    <th>เบอร์มือถือ</th>
+		                    <th>เบอร์โทรศัพท์</th>
+		                    <th>ต่อ</th>
 		                </tr>
 		                </thead> 
 		                <tbody>
@@ -88,8 +180,15 @@
 											<td class="vendor_id"><%=vendormodel.getVendor_id() %></td>
 										</s:else>
 					                	<td class="vendor_name"><%=vendormodel.getVendor_name() %></td>
-					                    <td><%=vendormodel.getCreate_datetime() %></td>
-					                    
+					                    <td class="vendor_address"><%=vendormodel.getVendor_address() %></td>
+					                    <td class="vendor_road"><%=vendormodel.getVendor_road() %></td>
+					                    <td class="vendor_subdistrict"><%=vendormodel.getVendor_subdistrict() %></td>
+					                    <td class="vendor_district"><%=vendormodel.getVendor_district() %></td>
+					                    <td class="vendor_province"><%=vendormodel.getVendor_province() %></td>
+					                    <td class="vendor_postcode"><%=vendormodel.getVendor_postcode() %></td>
+					                    <td class="vendor_mobile"><%=vendormodel.getVendor_mobile() %></td>
+				                    	<td class="vendor_tel"><%=vendormodel.getVendor_tel() %></td>
+					                    <td class="vendor_tel_ext"> <%=vendormodel.getVendor_tel_ext() %> </td>
 					                </tr>
 								
 			         	<%
@@ -100,14 +199,12 @@
 		                </tbody>
 		           	</table>
 		           	<div class="row cells12 ">
-				 		<div class="cell colspan4"> </div>
-				 		<div class="cell colspan4"> 
+				 		<div class="cell align-center colspan12"> 
 				 			<button type="submit" class="button danger" name="delete" id="delete"><span class="mif-minus mif-lg fg-white"></span></button>
 				 		</div>
 				 		
 				 	</div>
 			    </div> 
-		 	</div>
 		 	<s:hidden name="vendormodel.alertmsg" id="alertmsg"/>
 		 	<s:hidden name="vendormodel.fromwindow" id="fromwindow"/>
 		</form>
@@ -143,14 +240,20 @@
 				}
 			});
 			
-			$("#delete").click(function(){
-				$("#vendor_name").val("-");
-			});
 			$('#table_vendor tbody').on( 'click', 'tr', function () {
 		        if ( $(this).hasClass('selected') ) {
 		            $(this).removeClass('selected');
 		            $("#vendor_id").val("");
 		            $("#vendor_name").val("");
+		            $("#vendor_address").val("");
+		            $("#vendor_road").val("");
+		            $("#vendor_subdistrict").val("");
+		            $("#vendor_district").val("");
+		            $("#vendor_province").val("");
+		            $("#vendor_postcode").val("");
+		            $("#vendor_mobile").val("");
+		            $("#vendor_tel").val("");
+		            $("#vendor_tel_ext").val("");
 		        }
 		        else {
 		            table.$('tr.selected').removeClass('selected');
@@ -158,9 +261,17 @@
 		            var $index = $(this).index();
 		            $("#vendor_id").val($(".vendor_id").eq($index).text());
 		            $("#vendor_name").val($(".vendor_name").eq($index).text());
+		            $("#vendor_address").val($(".vendor_address").eq($index).text());
+		            $("#vendor_road").val($(".vendor_road").eq($index).text());
+		            $("#vendor_subdistrict").val($(".vendor_subdistrict").eq($index).text());
+		            $("#vendor_district").val($(".vendor_district").eq($index).text());
+		            $("#vendor_province").val($(".vendor_province").eq($index).text());
+		            $("#vendor_postcode").val($(".vendor_postcode").eq($index).text());
+		            $("#vendor_mobile").val($(".vendor_mobile").eq($index).text());
+		            $("#vendor_tel").val($(".vendor_tel").eq($index).text());
+		            $("#vendor_tel_ext").val($(".vendor_tel_ext").eq($index).text());
 		        }
 		    });
-			
 		});
 		</script>
 	</body>
