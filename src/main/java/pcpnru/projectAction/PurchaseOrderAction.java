@@ -1,10 +1,12 @@
 package pcpnru.projectAction;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.junit.runner.Request;
 
@@ -13,6 +15,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import pcpnru.projectData.PurchaseOrderDB;
 import pcpnru.projectModel.PurchaseOrderModel;
 import pcpnru.utilities.DateUtil;
+import pcpnru.utilities.Validate;
 
 public class PurchaseOrderAction extends ActionSupport {
 
@@ -20,12 +23,38 @@ public class PurchaseOrderAction extends ActionSupport {
 
 	public PurchaseOrderModel getPomodel() {
 		return pomodel;
-	}
-
+	} 
 	public void setPomodel(PurchaseOrderModel pomodel) {
 		this.pomodel = pomodel;
 	}
 
+	private File toBeUploaded; 
+	private String toBeUploadedFileName;  
+    private String toBeUploadedContentType;  
+	
+    public File getToBeUploaded() {
+		return toBeUploaded;
+	}
+
+	public void setToBeUploaded(File toBeUploaded) {
+		this.toBeUploaded = toBeUploaded;
+	}
+	public String getToBeUploadedFileName() {
+		return toBeUploadedFileName;
+	}
+
+	public void setToBeUploadedFileName(String toBeUploadedFileName) {
+		this.toBeUploadedFileName = toBeUploadedFileName;
+	}
+
+	public String getToBeUploadedContentType() {
+		return toBeUploadedContentType;
+	}
+
+	public void setToBeUploadedContentType(String toBeUploadedContentType) {
+		this.toBeUploadedContentType = toBeUploadedContentType;
+	}
+	
 	public String checkauthen() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
@@ -103,36 +132,73 @@ public class PurchaseOrderAction extends ActionSupport {
 		}
 
 		if (savehd != null) {
+			
+			String type = "";
+			
 			if (!pomodel.getPo_docno().equals("")) {
 				po_docno = pomodel.getPo_docno();
 				year = dateUtil.curYear();
+				
+				String po_docdate = pomodel.getPo_docdate();
+				if (!po_docdate.equals(""))
+					po_docdate = dateUtil.CnvToYYYYMMDDEngYear(po_docdate, '-');
+				type = pomodel.getType();
+				String vender = pomodel.getVender();
+				int credit_day = pomodel.getCredit_day();
+				double mulct_day = pomodel.getMulct_day();
+				String quotation_number = pomodel.getQuotation_number();
+				String quotation_date = pomodel.getQuotation_date();
+				if (!quotation_date.equals("") || !quotation_date.equals("-"))
+					quotation_date = dateUtil.CnvToYYYYMMDDEngYear(quotation_date, '-');
+
+				purchaseOrderDB.UpdatePOHD(po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date);
 			} else {
 				year = dateUtil.curYear();
 				po_docno = purchaseOrderDB.SelectUpdateDocNo(year);
-			}
+				
+				String po_docdate = pomodel.getPo_docdate();
+				if (!po_docdate.equals(""))
+					po_docdate = dateUtil.CnvToYYYYMMDDEngYear(po_docdate, '-');
+				type = pomodel.getType();
+				String vender = pomodel.getVender();
+				int credit_day = pomodel.getCredit_day();
+				double mulct_day = pomodel.getMulct_day();
+				String quotation_number = pomodel.getQuotation_number();
+				String quotation_date = pomodel.getQuotation_date();
+				if (!quotation_date.equals("") || !quotation_date.equals("-"))
+					quotation_date = dateUtil.CnvToYYYYMMDDEngYear(quotation_date, '-');
 
-			String po_docdate = pomodel.getPo_docdate();
-			if (!po_docdate.equals(""))
-				po_docdate = dateUtil.CnvToYYYYMMDDEngYear(po_docdate, '-');
-			String type = pomodel.getType();
-			String vender = pomodel.getVender();
-			int credit_day = pomodel.getCredit_day();
-			double mulct_day = pomodel.getMulct_day();
-			String quotation_number = pomodel.getQuotation_number();
-			String quotation_date = pomodel.getQuotation_date();
-			if (!quotation_date.equals("") || !quotation_date.equals("-"))
-				quotation_date = dateUtil.CnvToYYYYMMDDEngYear(quotation_date, '-');
+				purchaseOrderDB.AddPOHD(po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date);
+			}  
 
-			purchaseOrderDB.AddPOHD(po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number,
-					quotation_date);
-
+			Validate valid = new Validate();
+			String filePath = request.getSession().getServletContext().getRealPath("/")+"img/";
+	        String filename = this.toBeUploadedFileName;
+	        String pathimg_todb = "";
+	        if(valid.Check_String_notnull_notempty(filename)){
+	        	String[] nameimg = filename.split("[.]");
+	            if(nameimg.length > 2){
+	            	pomodel.setAlertmsg("กรุณาทำการลบ . ในชื่อของรูปภาพด้วยค่ะ");
+	            	return "alertmsg";
+	            }
+	            File fileToCreate = new File(filePath,dateUtil.GetDatetime_YYYY_MM_DD_HH_MM_SS()+"."+nameimg[1]);
+	            pathimg_todb = "img/"+fileToCreate.getName();
+	            FileUtils.copyFile(this.toBeUploaded, fileToCreate);
+	            
+	        purchaseOrderDB.Add_PurchaseRequest_Image(po_docno,year,pathimg_todb);
+	        }
+			
 			pomodel.setPo_docno(po_docno);
 
 			request.setAttribute("type", type);
 
 			List PRList = purchaseOrderDB.GetPRList(po_docno, year);
 			request.setAttribute("PRList", PRList);
+			
+			List ResultImageList = purchaseOrderDB.GET_PurchaseRequest_Image(po_docno, year, "");
+			request.setAttribute("ResultImageList", ResultImageList);
 		}
+		 
 
 		return SUCCESS;
 	}

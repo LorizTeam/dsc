@@ -36,7 +36,7 @@ public class PersonnelAction extends ActionSupport {
 				personnel_name = personnelMasterModel.getPersonnel_name(),
 				personnel_lastname = personnelMasterModel.getPersonnel_lastname(), dow = personnelMasterModel.getDow(),
 				dob = personnelMasterModel.getDob(), telephone = personnelMasterModel.getTelephone(),
-				address = personnelMasterModel.getAddress();
+				address = personnelMasterModel.getAddress(),manday = personnelMasterModel.getManday();
 
 		String add = request.getParameter("add");
 		String update = request.getParameter("update");
@@ -55,7 +55,7 @@ public class PersonnelAction extends ActionSupport {
 
 			try {
 				pn.AddPersonnelMaster(project_code, personnel_id, personnel_name, personnel_lastname, authen_type, dow,
-						dob, telephone, address, position);
+						dob, telephone, address, position, manday);
 				personnelMasterModel.reset();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -64,7 +64,7 @@ public class PersonnelAction extends ActionSupport {
 		} else if (update != null) {
 			try {
 				pn.UpdatePersonnelMaster(project_code, personnel_id, personnel_name, personnel_lastname, authen_type,
-						dow, dob, telephone, address, position);
+						dow, dob, telephone, address, position, manday);
 				personnelMasterModel.reset();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

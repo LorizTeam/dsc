@@ -248,7 +248,7 @@ public class RecordApproveAction extends ActionSupport {
 
 					request.setAttribute("ListResultPRSearch",
 							new RecordApproveDB().GetListPR_Header(recordApproveModel.getDocno(), new DateUtil().CnvToYYYYMMDDEngYear(recordApproveModel.getRecord_approve_date(), '-'),
-							recordApproveModel.getRecord_approve_month(), year, "WA"));
+							recordApproveModel.getRecord_approve_month(), year, "AP"));
 
 
 				} else {

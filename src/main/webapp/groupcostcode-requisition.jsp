@@ -40,7 +40,7 @@
 		<link href="css/select2.css" rel="stylesheet"> 
 		 
 	 	<script src="js/jquery-2.1.3.min.js"></script> 
-	 	<script src="js/metro.js"></script> 
+	 	<script src="js/metro.js"></script>
 	 	<script src="js/jquery.dataTables.min.js"></script> 
 	    <script src="js/select2.js"></script>      
   	 		
@@ -86,8 +86,27 @@
 				        <div class="input-control text full-size">
 						    <s:textfield name="groupcostcodemastermodel.amount" id="amount" required=""/>
 						</div>
+					</div> 
+	         	</div>
+	         	<div class="row cells12">
+	         		<div class="cell colspan12"> 
+						พนักงาน
+						<div class="input-control full-size" >
+                            <select name="emp" class="js-example-basic-multiple" multiple="multiple" data-placeholder="เลือก พนักงาน" required="required" >
+                            	<%List grouPersonnelMasterList = null;
+                                PersonnelMasterDB pn = new PersonnelMasterDB();
+                                grouPersonnelMasterList = pn.GetPersonnelList("", "", "", "", "");
+                                for (Iterator iterEpm = grouPersonnelMasterList.iterator(); iterEpm.hasNext();) {
+                                	PersonnelMasterModel pmInfo = (PersonnelMasterModel) iterEpm.next(); 
+                                %>
+                                	<option value="<%=pmInfo.getPersonnel_id()%>-<%=pmInfo.getManday()%>" ><%=pmInfo.getPersonnel_name()%> <%=pmInfo.getPersonnel_lastname()%> - <%=pmInfo.getManday()%></option>
+                                <%		}  
+								%> 
+                            </select>
+                        </div>
 					</div>
 	         	</div>
+	         	
 			  	<div class="row cells12">
 			  		 
 			        <div class="cell colspan6"> 
@@ -175,9 +194,26 @@
         });
         
         $("#project_code").select2();
+        $(".js-example-basic-multiple").select2();
         </script>
         
    		<script> 
+	   		$(".js-example-basic-multiple").change(function(){ 
+	   			 
+	   			var num = '';
+	   			num = $("#amount").val(); 
+	   			if(num==''){
+	   				num = 0;
+	   			}else{
+	   				num = num+1;
+	   			}
+	   			var e = $("#emp").val().split("-");
+	   			var t = $(".select2-selection__choice").text().split(" - ");
+	   			e = e[1]; 
+	   			 
+	   			$("#amount").val(num);
+	   		}); 
+   		
    			$("#amount").blur(function (){
    			var amount = $("#amount").val(); 
    			var t1 = "";
@@ -255,7 +291,7 @@
    			
             $('#table_project_req tbody').on( 'click', 'tr', function () {
             	
-            	var select2projectcode = $("#project_code").select2();
+            	var select2projectcode = $("#project_code").select2(); 
             	
     	        if ( $(this).hasClass('selected') ) {
     	            $(this).removeClass('selected');

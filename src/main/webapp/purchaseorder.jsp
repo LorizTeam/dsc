@@ -32,6 +32,8 @@ String project_code = "";
 		<link href="css/metro.css" rel="stylesheet">
         <link href="css/metro-icons.css" rel="stylesheet">
 		<link href="css/metro-schemes.css" rel="stylesheet"> 
+		<link href="css/sweetalert.css" rel="stylesheet" />
+		<link href="css/lightgallery.css" rel="stylesheet" />
 		<link href="css/bootstrap-datepicker3.css" rel="stylesheet"> 
 		<link href="css/jquery.dataTables.min.css" rel="stylesheet">
 		
@@ -39,6 +41,13 @@ String project_code = "";
 	    <script src="js/metro.js"></script>
         <script src="js/jquery.dataTables.min.js"></script> 
   		<script src="js/bootstrap-datepicker-th.js"></script>
+  		<script src="js/sweetalert.min.js"></script>
+		<script src="js/lightgallery.js"></script>
+		<script src="js/lg-fullscreen.js"></script>
+		<script src="js/lg-thumbnail.js"></script>
+		<script src="js/lg-zoom.js"></script>
+		<script src="js/lg-hash.js"></script>
+		<script src="js/lg-pager.js"></script>
 	</head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>สร้างใบ PO</title>
@@ -46,7 +55,7 @@ String project_code = "";
 <body>
 	<div><%@include file="topmenu.jsp" %></div>
 	<h3 class="align-center">ทำรายการสั่งซื้อ/สั่งจ้าง</h3>
-	<form action="poche" method="post" >
+	<form action="poche" method="post" enctype="multipart/form-data">
 		<div class="example" data-text="ข้อมูลใบ PR"> 
 	         <div class="grid">
 	         	<div class="row cells12">
@@ -74,13 +83,13 @@ String project_code = "";
 					<div class="cell colspan3 "> 
 			        	รหัส PR
 				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield readonly="true" />
+						    <s:textfield id="pre_loadpr1" readonly="true" />
 						</div>
 					</div>
 					<div class="cell colspan3"> 
 						วันที่สร้าง PR
 				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield readonly="true"/>
+						    <s:textfield id="date_loadpr" readonly="true"/>
 						</div>
 					</div>
 					<div class="cell colspan3"> </div>
@@ -131,6 +140,7 @@ String project_code = "";
 			 		</div>
 			 		<div class="cell colspan5"> </div>
 			 	</div>
+			 	 
 			 	<div class="row cells12">
 	         		<div class="cell colspan3"> </div> 
 					<div class="cell colspan3 "> 
@@ -216,7 +226,46 @@ String project_code = "";
 					<div class="cell colspan3"> </div>
 			 	</div>
 			</div>
+		</div> 
+		<div class="example" data-text="ใบเสนอราคา"> 
+	         <div class="grid">
+		<div class="row cells12"> 
+				<div class="cell colspan3"> </div>
+	         		<div class="cell colspan4"> 
+			        	แนบไฟล์รูปภาพ
+				        <div class="input-control text full-size">
+						    <s:file name="toBeUploaded" id="toBeUploaded"/> 
+						    <s:hidden name="pomodel.alertmsg" id="alertmsg"/>
+						</div>
+					</div>
+	         	</div>
+	         	<div class="accordion" data-role="accordion">
+			    	<div class="frame">
+			            <div class="heading">รูปภาพไฟล์แนบ</div>
+			            <div class="content">
+			            	<div id="lightgallery">
+			         	<%
+			         		if(request.getAttribute("ResultImageList") != null){
+			         			List ResultImageList = (List) request.getAttribute("ResultImageList");
+			         			for(Iterator imageIter = ResultImageList.iterator();imageIter.hasNext();){
+			         				PurchaseOrderModel poModel = (PurchaseOrderModel) imageIter.next();
+			         	%>		
+			         			
+									<a href="<%=poModel.getImg_path()%>">
+								      <img src="<%=poModel.getImg_path()%>" style="width: 10%; height: 10%" />
+								  	</a>
+								
+			         	<%
+			         			}
+			         		}
+			         	%>
+			         		</div>
+			            </div>
+			        </div>
+         		</div>
 		</div>
+		</div>
+		
 		<div class="grid">
          	<div class="row cells12">
 	       		<div class="cell colspan5"> </div> 
@@ -231,11 +280,18 @@ String project_code = "";
 	</form>
 <script type="text/javascript">
 function getpr() {
-	var load = window.open('/pcpnru/po_openwindowsPR','pr',
+	var load = window.open('/dsc/po_openwindowsPR','pr',
 	             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
 }
 
 $(function(){
+	
+	if($("#alertmsg").val() != ""){
+		swal("Error",$("#alertmsg").val() , "error");
+	}
+	
+	$('#lightgallery').lightGallery();
+	
 	var table = $('#table_po').DataTable( {
     	scrollY:        '47.5vh', 
     	scrollX: true,

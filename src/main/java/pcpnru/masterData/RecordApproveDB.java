@@ -539,59 +539,6 @@ public class RecordApproveDB {
 		}
 		return requestno;
 	}
-
-	public List<RecordApproveModel> GetListPR_Header(String pr_number, String pr_title, String pr_date, String pr_month,
-			String pr_year) throws IOException, Exception {
-
-		List<RecordApproveModel> ListPR = new ArrayList<RecordApproveModel>();
-
-		String sqlQuery = "SELECT docno,`year`+543 as year,record_approve_hd,record_approve_t,"
-				+ "CONCAT(substr(record_approve_date from 9 for 2),\"-\",substr(record_approve_date from 6 for 2),\"-\",year(record_approve_date)+543) as record_approve_date,record_approve_title,record_approve_rian,"
-				+ "record_approve_des1,record_approve_des2,record_approve_des3,"
-				+ "record_approve_cen,record_approve_dep,thaidate_report,create_by,"
-				+ "CONCAT(b.name,' ',b.lastname) as create_name,approve_status " + "FROM `record_approve_hd` a "
-				+ "INNER JOIN employee b on (a.create_by = b.username)"
-
-				+ "where ";
-
-		if (!pr_number.equals(""))
-			sqlQuery += "docno = '" + pr_number + "' and ";
-
-		if (!pr_title.equals(""))
-			sqlQuery += "record_approve_title like '%" + pr_title + "%' and ";
-
-		if (!pr_date.equals(""))
-			sqlQuery += "record_approve_date = '" + pr_date + "' and ";
-
-		if (!pr_month.equals(""))
-			sqlQuery += "MONTH(record_approve_date) = '" + pr_month + "' and ";
-
-		if (!pr_year.equals(""))
-			sqlQuery += "YEAR(record_approve_date) = '" + pr_year + "' and ";
-
-		sqlQuery += "docno != ''";
-
-		conn = agent.getConnectMYSql();
-		pStmt = conn.createStatement();
-		rs = pStmt.executeQuery(sqlQuery);
-
-		String forwhat = "prhd";
-
-		while (rs.next()) {
-			ListPR.add(new RecordApproveModel(forwhat, rs.getString("docno"), rs.getString("record_approve_title"),
-					rs.getString("record_approve_cen"), rs.getString("create_by"), rs.getString("year"),
-					rs.getString("record_approve_date"), rs.getString("create_name"), rs.getString("approve_status")));
-		}
-
-		if (!rs.isClosed())
-			rs.close();
-		if (pStmt.isClosed())
-			pStmt.close();
-		if (!conn.isClosed())
-			conn.close();
-
-		return ListPR;
-	}
 	
 	public List<RecordApproveModel> GetListPR_Header(String pr_number, String pr_date, String pr_month,
 			String pr_year) throws IOException, Exception {
@@ -642,26 +589,22 @@ public class RecordApproveDB {
 		return ListPR;
 	}
 	
-	public List<RecordApproveModel> GetListPR_Header(String pr_number, String pr_title, String pr_date, String pr_month,
+	public List<RecordApproveModel> GetListPR_Header(String pr_number, String pr_date, String pr_month,
 			String pr_year, String approve_status) throws IOException, Exception {
 
 		Validate validate = new Validate();
 		List<RecordApproveModel> ListPR = new ArrayList<RecordApproveModel>();
 
-		String sqlQuery = "SELECT docno,`year`+543 as year,record_approve_hd,record_approve_t,"
-				+ "CONCAT(substr(record_approve_date from 9 for 2),\"-\",substr(record_approve_date from 6 for 2),\"-\",year(record_approve_date)+543) as record_approve_date,record_approve_title,record_approve_rian,"
-				+ "record_approve_des1,record_approve_des2,record_approve_des3,"
-				+ "record_approve_cen,record_approve_dep,thaidate_report,create_by,"
+		String sqlQuery = "SELECT docno,`year`+543 as year,"
+				+ "CONCAT(substr(record_approve_date from 9 for 2),\"-\",substr(record_approve_date from 6 for 2),\"-\",year(record_approve_date)+543) as record_approve_date,"
+				+ "thaidate_report,create_by,"
 				+ "CONCAT(b.name,' ',b.lastname) as create_name,approve_status " + "FROM `record_approve_hd` a "
 				+ "INNER JOIN employee b on (a.create_by = b.username)"
 
 				+ "where ";
 
 		if (validate.Check_String_notnull_notempty(pr_number))
-			sqlQuery += "docno = '" + pr_number + "' and ";
-
-		if (validate.Check_String_notnull_notempty(pr_title))
-			sqlQuery += "record_approve_title like '%" + pr_title + "%' and ";
+			sqlQuery += "docno like '%" + pr_number + "%' and ";
 
 		if (validate.Check_String_notnull_notempty(pr_date))
 			sqlQuery += "record_approve_date = '" + pr_date + "' and ";
@@ -684,8 +627,8 @@ public class RecordApproveDB {
 		String forwhat = "prhd";
 
 		while (rs.next()) {
-			ListPR.add(new RecordApproveModel(forwhat, rs.getString("docno"), rs.getString("record_approve_title"),
-					rs.getString("record_approve_cen"), rs.getString("create_by"), rs.getString("year"),
+			ListPR.add(new RecordApproveModel(forwhat, rs.getString("docno"), "",
+					"", rs.getString("create_by"), rs.getString("year"),
 					rs.getString("record_approve_date"), rs.getString("create_name"), rs.getString("approve_status")));
 		}
 

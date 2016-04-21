@@ -1,6 +1,8 @@
 package pcpnru.projectData;
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,6 +10,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import pcpnru.masterModel.RecordApproveModel;
 import pcpnru.projectModel.CentralBudgetForm;
 import pcpnru.projectModel.PurchaseOrderModel;
 import pcpnru.utilities.DBConnect;
@@ -87,6 +90,20 @@ public class PurchaseOrderDB {
 		String sqlStmt = "INSERT IGNORE INTO po_hd(po_docno, year, docdate, type, vender, creditday, penaltype_perday, ref_quotation, ref_quotationdate) "
 				+ "VALUES ('" + po_docno + "','" + year + "','" + po_docdate + "','" + type + "','" + vender + "',"
 				+ credit_day + "," + mulct_day + ",'" + quotation_number + "','" + quotation_date + "')";
+		// System.out.println(sqlStmt);
+		pStmt = conn.createStatement();
+		pStmt.executeUpdate(sqlStmt);
+		pStmt.close();
+		conn.close();
+	}
+	public void UpdatePOHD(String po_docno, String year, String po_docdate, String type, String vender, int credit_day,
+			double mulct_day, String quotation_number, String quotation_date) throws Exception {
+		conn = agent.getConnectMYSql();
+
+		String sqlStmt = "UPDATE po_hd set docdate = '"+po_docdate+"', type = '" + type
+				+ "' , vender = '" + vender + "'," + "creditday = " + credit_day + " , penaltype_perday = " + mulct_day + ", ref_quotation = '"+quotation_number+"', "
+				+ "ref_quotationdate = '"+quotation_date+"' "
+				+ "WHERE po_docno = '" + po_docno + "' and year = '" + year + "'";
 		// System.out.println(sqlStmt);
 		pStmt = conn.createStatement();
 		pStmt.executeUpdate(sqlStmt);
@@ -249,4 +266,48 @@ public class PurchaseOrderDB {
 		}
 		return ck;
 	}
+	
+public void Add_PurchaseRequest_Image(String docno,String year,String img_path) throws IOException, Exception{
+		PreparedStatement ppStmt = null;
+		String sqlQuery = "insert ignore into po_imgref values (?,?,?)";
+		
+		conn = agent.getConnectMYSql();
+		ppStmt = conn.prepareStatement(sqlQuery);
+		ppStmt.setString(1, docno);
+		ppStmt.setString(2, year);
+		ppStmt.setString(3, img_path);
+		ppStmt.executeUpdate();
+		
+		if(!ppStmt.isClosed())
+			ppStmt.close();
+		if(!conn.isClosed())
+			conn.close();
+	}
+public List<PurchaseOrderModel> GET_PurchaseRequest_Image(String docno,String year,String img_path) throws IOException, Exception{
+	
+	String sqlQuery = "select * from po_imgref where ";
+	
+	if(!docno.equals("")) sqlQuery += "docno = '"+docno+"' and ";
+	if(!year.equals("")) sqlQuery += "year = '"+year+"' and ";
+	if(!img_path.equals("")) sqlQuery += "img_path = '"+img_path+"' and ";
+	
+	sqlQuery += "docno != ''";
+	
+	conn = agent.getConnectMYSql();
+	pStmt = conn.createStatement();
+	rs = pStmt.executeQuery(sqlQuery);
+	List<PurchaseOrderModel> ResultList = new ArrayList<PurchaseOrderModel>();
+	while (rs.next()) {
+		ResultList.add(new PurchaseOrderModel(rs.getString("img_path"),rs.getString("docno"),rs.getString("year")));
+	}
+	
+	if(!pStmt.isClosed())
+		pStmt.close();
+	if(!conn.isClosed())
+		conn.close();
+	
+	return ResultList;
+}
+
+
 }

@@ -9,6 +9,8 @@ public class PersonnelMasterModel {
 	private String authen_type_name;
 	private String project_code;
 	private String project_name;
+	
+	private String manday;
 
 	private String dow, dob, telephone, address, position, dateTime;
 
@@ -22,7 +24,7 @@ public class PersonnelMasterModel {
 
 	public PersonnelMasterModel(String forwhat, String personnel_id, String personnel_name, String personnel_lastname,
 			String authen_type, String authen_type_name, String project_code, String project_name, String dow,
-			String dob, String telephone, String address, String position, String dateTime) {
+			String dob, String telephone, String address, String position, String dateTime, String manday) {
 
 		if (forwhat.equals("personnel")) {
 			this.personnel_id = personnel_id;
@@ -38,6 +40,7 @@ public class PersonnelMasterModel {
 			this.address = address;
 			this.position = position;
 			this.dateTime = dateTime;
+			this.manday	= manday;
 		}
 	}
 
@@ -69,6 +72,7 @@ public class PersonnelMasterModel {
 		this.address = "";
 		this.position = "";
 		this.dateTime = "";
+		this.manday = "";
 	}
 
 	public String getPersonnel_id() {
@@ -197,6 +201,14 @@ public class PersonnelMasterModel {
 
 	public void setAuthen_type_name(String authen_type_name) {
 		this.authen_type_name = authen_type_name;
+	}
+
+	public String getManday() {
+		return manday;
+	}
+
+	public void setManday(String manday) {
+		this.manday = manday;
 	}
 
 }

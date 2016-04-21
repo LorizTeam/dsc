@@ -37,13 +37,13 @@ public class PersonnelMasterDB {
 			String personnel_lastname, String authen_type) throws Exception { // 30-05-2014
 		List grouPersonnelMasterList = new ArrayList();
 		String project_name = "", password = "", dow = "", dob = "", telephone = "", address = "", position = "",
-				dateTime = "", authen_type_name = "";
+				dateTime = "", authen_type_name = "", manday="";
 		try {
 
 			conn = agent.getConnectMYSql();
 
 			String sqlStmt = "SELECT a.project_code, a.username, a.`password`, a.`name`, a.lastname, a.dow, "
-					+ "a.dob, a.telephone, a.address, a.position, a.authen_type, a.datetime, b.project_name, c.authen_type_name "
+					+ "a.dob, a.telephone, a.address, a.position, a.authen_type, a.datetime, a.manday, b.project_name, c.authen_type_name "
 					+ "FROM employee a " + "INNER JOIN project_master b on(b.project_code = a.project_code) "
 					+ "INNER JOIN authen_master c on(c.authen_type = a.authen_type) " + "WHERE ";
 			if (!project_code.equals(""))
@@ -75,6 +75,7 @@ public class PersonnelMasterDB {
 				address = rs.getString("address");
 				position = rs.getString("position");
 				dateTime = rs.getString("datetime");
+				manday	= rs.getString("manday");
 
 				dow = dateUtil.CnvToDDMMYYYY_Date(dateUtil.CnvYYYYMMDDToYYYYMMDDThaiYear(dow, "-"), "-");
 				dob = dateUtil.CnvToDDMMYYYY_Date(dateUtil.CnvYYYYMMDDToYYYYMMDDThaiYear(dob, "-"), "-");
@@ -89,7 +90,7 @@ public class PersonnelMasterDB {
 
 				grouPersonnelMasterList.add(new PersonnelMasterModel(forwhat, personnel_id, personnel_name,
 						personnel_lastname, authen_type, authen_type_name, project_code, project_name, dow, dob,
-						telephone, address, position, dateTime));
+						telephone, address, position, dateTime, manday));
 			}
 			rs.close();
 			pStmt.close();
@@ -102,17 +103,17 @@ public class PersonnelMasterDB {
 
 	public void AddPersonnelMaster(String project_code, String personnel_id, String personnel_name,
 			String personnel_lastname, String authen_type, String dow, String dob, String telephone, String address,
-			String position) throws Exception {
+			String position, String manday) throws Exception {
 		// DateUtil dateUtil = new DateUtil();
 		conn = agent.getConnectMYSql();
 
 		String encrypPass = encrypt("password");
 		// String dateTime = dateUtil.curDateTime();
 		String sqlStmt = "INSERT INTO `employee` (project_code, username, `password`, `name`, lastname, authen_type, dow, "
-				+ "dob, telephone, address, position, datetime) " + "VALUES ('" + project_code + "', '" + personnel_id
+				+ "dob, telephone, address, position, manday, datetime) " + "VALUES ('" + project_code + "', '" + personnel_id
 				+ "', '" + encrypPass + "', '" + personnel_name + "','" + personnel_lastname + "','" + authen_type
 				+ "', " + "'" + dow + "','" + dob + "','" + telephone + "','" + address + "','" + position
-				+ "', now())";
+				+ "', '" + manday + "', now())";
 		// System.out.println(sqlStmt);
 		pStmt = conn.createStatement();
 		pStmt.executeUpdate(sqlStmt);
@@ -157,13 +158,13 @@ public class PersonnelMasterDB {
 
 	public void UpdatePersonnelMaster(String project_code, String personnel_id, String personnel_name,
 			String personnel_lastname, String authen_type, String dow, String dob, String telephone, String address,
-			String position) throws Exception {
+			String position, String manday) throws Exception {
 		conn = agent.getConnectMYSql();
 
 		String sqlStmt = "UPDATE employee set project_code = '" + project_code + "', name = '" + personnel_name
 				+ "', lastname = '" + personnel_lastname + "',authen_type = '" + authen_type + "', " + "dow = '" + dow
 				+ "', dob = '" + dob + "', telephone = '" + telephone + "', address = '" + address + "', position = '"
-				+ position + "', datetime = now()" + "WHERE username = '" + personnel_id + "'";
+				+ position + "', manday = '" + manday + "', datetime = now()" + "WHERE username = '" + personnel_id + "'";
 		// System.out.println(sqlStmt);
 		pStmt = conn.createStatement();
 		pStmt.executeUpdate(sqlStmt);

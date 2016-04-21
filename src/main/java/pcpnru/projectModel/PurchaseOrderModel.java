@@ -1,5 +1,7 @@
 package pcpnru.projectModel;
 
+import java.io.File;
+
 import pcpnru.masterModel.RecordApproveModel;
 
 public class PurchaseOrderModel extends RecordApproveModel {
@@ -26,6 +28,11 @@ public class PurchaseOrderModel extends RecordApproveModel {
 	private String amount;
 	private String amounttotal;
 	private String remark;
+	
+	private File toBeUploaded;
+	private String vendor_name,vendor_id,toBeUploadedFileName,toBeUploadedContentType,img_path;
+	
+	private String alertmsg;
 
 	public PurchaseOrderModel() {
 	}
@@ -43,6 +50,12 @@ public class PurchaseOrderModel extends RecordApproveModel {
 		this.remark = remark;
 	}
 
+	public PurchaseOrderModel(String img_path, String docno, String year) {
+		this.img_path = img_path;
+		this.docno = docno;
+		this.year = year;
+	}
+	
 	public String getProject_code() {
 		return project_code;
 	}
@@ -241,5 +254,61 @@ public class PurchaseOrderModel extends RecordApproveModel {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getAlertmsg() {
+		return alertmsg;
+	}
+
+	public void setAlertmsg(String alertmsg) {
+		this.alertmsg = alertmsg;
+	}
+
+	public File getToBeUploaded() {
+		return toBeUploaded;
+	}
+
+	public void setToBeUploaded(File toBeUploaded) {
+		this.toBeUploaded = toBeUploaded;
+	}
+
+	public String getVendor_name() {
+		return vendor_name;
+	}
+
+	public void setVendor_name(String vendor_name) {
+		this.vendor_name = vendor_name;
+	}
+
+	public String getVendor_id() {
+		return vendor_id;
+	}
+
+	public void setVendor_id(String vendor_id) {
+		this.vendor_id = vendor_id;
+	}
+
+	public String getToBeUploadedFileName() {
+		return toBeUploadedFileName;
+	}
+
+	public void setToBeUploadedFileName(String toBeUploadedFileName) {
+		this.toBeUploadedFileName = toBeUploadedFileName;
+	}
+
+	public String getToBeUploadedContentType() {
+		return toBeUploadedContentType;
+	}
+
+	public void setToBeUploadedContentType(String toBeUploadedContentType) {
+		this.toBeUploadedContentType = toBeUploadedContentType;
+	}
+
+	public String getImg_path() {
+		return img_path;
+	}
+
+	public void setImg_path(String img_path) {
+		this.img_path = img_path;
 	}
 }

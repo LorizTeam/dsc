@@ -129,7 +129,7 @@
 										RecordApproveModel RAM = (RecordApproveModel) ListIter.next();
 							%>
 										<tr>
-											<td align="center"><a onclick="Opener('<%=RAM.getDocno() %>')"><span class="mif-checkmark" ></span></a></td>
+											<td align="center"><a onclick="Opener('<%=RAM.getDocno() %>','<%=RAM.getRecord_approve_date() %>')"><span class="mif-checkmark" ></span></a></td>
 											<td align="center">
 											<%
 												if(RAM.getApprove_status().equals("CC")){
@@ -194,10 +194,11 @@ $(function(){
     });
 
 });
-function Opener(pre_loadpr) {
+function Opener(pre_loadpr,date_loadpr) {
     
     window.opener.document.getElementById ("pre_loadpr").value = pre_loadpr;
-
+    window.opener.document.getElementById ("pre_loadpr1").value = pre_loadpr;
+    window.opener.document.getElementById ("date_loadpr").value = date_loadpr;
     window.close();
 }
 function viewDetail(docno,year){

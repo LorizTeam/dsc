@@ -144,13 +144,19 @@
 			    </div>
 			    <div class="row cells12"> 
 			    	<div class="cell colspan1"> </div>
+			    	<div class="cell colspan2"> 
+			        	man/day
+				        <div class="input-control text full-size">
+						    <s:textfield name="personnelMasterModel.manday" id="manday" required=""/>
+						</div>
+					</div>
 			  		<div class="cell colspan2"> 
 			        	เบอร์โทรศัพท์
 				        <div class="input-control text full-size">
 						    <s:textfield name="personnelMasterModel.telephone" id="telephone" maxlength="10" required=""/>
 						</div>
 					</div>
-			        <div class="cell colspan8"> 
+			        <div class="cell colspan6"> 
 			        	ที่อยู่
 				        <div class="input-control text full-size">
 						    <s:textfield name="personnelMasterModel.address" id="address" required=""/>
@@ -176,7 +182,8 @@
                 	<th>รหัส -ชื่อโครงการ</th>
                     <th>รหัส-ชื่อ บุคลากร</th>
                     <th>ตำแหน่ง</th>
-                    <th>สิทธิ์การใช้งาน</th> 
+                    <th>สิทธิ์การใช้งาน</th>
+                    <th>man/day</th> 
                     <th>วันที่เริ่มงาน</th> 
                     <th>เบอร์โทรศัพท์</th> 
                 </tr>
@@ -201,6 +208,7 @@
                     <td class="tdpersonnel" align="left"><%=pmInfo.getPersonnel_id()%> - <%=pmInfo.getPersonnel_name()%> <%=pmInfo.getPersonnel_lastname()%></td>
                     <td class="tdposition" align="left"><%=pmInfo.getPosition()%></td>
                     <td align="left"><%=pmInfo.getAuthen_type_name()%></td> 
+                    <td class="tdmanday" align="right"><%=pmInfo.getManday()%></td>
                     <td class="tddow" align="left"><%=pmInfo.getDow()%></td>
                     <td class="tdtelephone" align="left"><%=pmInfo.getTelephone()%></td>  
                 	</tr>
@@ -254,6 +262,7 @@
     	            $("#telephone").val("");
     	            $("#address").val(""); 
     	            $("#position").val(""); 
+    	            $("#manday").val("");
     	        }
     	        else {
     	            table.$('tr.selected').removeClass('selected');
@@ -272,6 +281,7 @@
     	            $("#authen_type").val($(".tdhidden > #atn").eq($index).val());
     	            $("#dow").val($(".tddow").eq($index).text());
     	            $("#dob").val($(".tdhidden > #dobhd").eq($index).val());
+    	            $("#manday").val($(".tdmanday").eq($index).text());
     	            $("#telephone").val($(".tdtelephone").eq($index).text()); 
     	            $("#position").val($(".tdposition").eq($index).text());
     	            $("#address").val($(".tdhidden > #addresshd").eq($index).val());
