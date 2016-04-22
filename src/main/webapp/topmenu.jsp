@@ -141,8 +141,10 @@
         </li>
         <li><a href="" class="dropdown-toggle"><span class="mif-drive"></span> คลังสินค้า </a>
          	<ul class="d-menu" data-role="dropdown">
-         		<li><a href="" class="dropdown-toggle"> ข้อมูลสินค้า</a>
+         		<li><a href="" class="dropdown-toggle"> ข้อมูลทั่วไป</a>
          			<ul class="d-menu" data-role="dropdown">
+	         			<li><a href="stockmaster" > สร้างคลังสินค้า</a></li>
+	         			<li class="divider"></li>
          				<li><a href="product">สินค้า</a></li>
 		                <li class="divider"></li>
 		                <li><a href="unitMaster">หน่วยนับ</a></li>
@@ -154,6 +156,7 @@
 		                <li><a href="brandmaster">แบรนด์สินค้า</a></li>
 		            </ul>
          		</li>
+         		
          		<li class="divider"></li>
          		<li><a href="vendor" > ผู้ขาย</a></li>
          		<li class="divider"></li>

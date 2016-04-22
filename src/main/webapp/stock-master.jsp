@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>แบรนด์สินค้า</title>
+		<title>คลังสินค้าสินค้า</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width; initial-scale=1.0">
@@ -19,7 +19,7 @@
 		
 	</head>
 	<body>
-		<s:set name="fromwindow" value="brandmodel.fromwindow"/>
+		<s:set name="fromwindow" value="stockmodel.fromwindow"/>
 		
 		<s:if test="%{#fromwindow=='true'}">
 			<div><%@include file="window-topmenu.jsp" %></div>
@@ -28,14 +28,14 @@
 			<div><%@include file="topmenu.jsp" %></div>
 		</s:else>
 		
-		<form action="brandmaster" method="post">
+		<form action="stockmaster" method="post">
 			<div class="grid" >
 				 <div class="row cells12 " >
 		 			<div class="cell align-center colspan2">
 	         	 	</div>
 	         	 	<div class="cell align-center colspan3">
 	         	 	</div>
-		 			<div class="cell align-left colspan5"><h3>ข้อมูลแบรนด์สินค้า </h3></div>
+		 			<div class="cell align-left colspan5"><h3>ข้อมูลคลังสินค้า </h3></div>
 		 			<div class="cell align-left colspan2">
 					</div>
 				</div>
@@ -43,15 +43,15 @@
 			        <div class="row cells12 ">
 				 		<div class="cell colspan1"> </div>
 				 		<div class="cell colspan4">
-				 			รหัสแบรนด์สินค้า
+				 			รหัสคลังสินค้า
 				 			<div class="input-control text"> 
-				 				<s:textfield name="brandmodel.brand_id" id="brand_id" readonly="true"/>
+				 				<s:textfield name="stockmodel.stock_id" id="stock_id" readonly="true"/>
 				 			</div>
 				 		</div>
 				 		<div class="cell colspan4"> 
-				 			ชื่อแบรนด์สินค้า
+				 			ชื่อคลังสินค้า
 				 			<div class="input-control text">
-				 				<s:textfield name="brandmodel.brand_name" id="brand_name" required=""/>
+				 				<s:textfield name="stockmodel.stock_name" id="stock_name" required=""/>
 				 			</div>
 				 			
 				 			<button type="submit" class="button success" name="add" id="add"><span class="mif-plus mif-lg fg-white"></span></button>
@@ -65,30 +65,30 @@
 		                <thead>
 		                <tr>  
 		                	<th>ลบข้อมูล <input type="checkbox" id="checkall"></th>
-		                	<th>รหัสแบรนด์สินค้า</th>
-		                	<th>ชื่อแบรนด์สินค้า</th>
+		                	<th>รหัสคลังสินค้า</th>
+		                	<th>ชื่อคลังสินค้า</th>
 		                    <th>วันที่เพิ่มข้อมูล</th>
 		                    
 		                </tr>
 		                </thead> 
 		                <tbody>
 		                <%
-			         		if(request.getAttribute("brandList") != null){
-			         			List<BrandModel> brandList = (List) request.getAttribute("brandList");
-			         			for(BrandModel brandmodel:brandList){
+			         		if(request.getAttribute("stockList") != null){
+			         			List<StockModel> stockList = (List) request.getAttribute("stockList");
+			         			for(StockModel stockmodel:stockList){
 			         				
 			         	%>		
 			         			
 									<tr>
-										<td><input type="checkbox" name="delbrand" id="delbrand" value="<%=brandmodel.getBrand_id() %>"> </td>
+										<td><input type="checkbox" name="delbrand" id="delbrand" value="<%=stockmodel.getStock_id() %>"> </td>
 										<s:if test="%{#fromwindow=='true'}">
-											<td class="brand_id"><a href="#" onclick="getBrand('<%=brandmodel.getBrand_id() %>','<%=brandmodel.getBrand_name() %>')"><%=brandmodel.getBrand_id() %></a></td>
+											<td class="stock_id"><a href="#" onclick="getBrand('<%=stockmodel.getStock_id() %>','<%=stockmodel.getStock_name() %>')"><%=stockmodel.getStock_id() %></a></td>
 										</s:if>
 										<s:else>
-											<td class="brand_id"><%=brandmodel.getBrand_id() %></td>
+											<td class="stock_id"><%=stockmodel.getStock_id() %></td>
 										</s:else>
-					                	<td class="brand_name"><%=brandmodel.getBrand_name() %></td>
-					                    <td><%=brandmodel.getCreate_datetime() %></td>
+					                	<td class="stock_name"><%=stockmodel.getStock_name() %></td>
+					                    <td><%=stockmodel.getCreate_datetime() %></td>
 					                    
 					                </tr>
 								
@@ -108,8 +108,8 @@
 				 	</div>
 			    </div> 
 		 	</div>
-		 	<s:hidden name="brandmodel.alertmsg" id="alertmsg"/>
-		 	<s:hidden name="brandmodel.fromwindow" id="fromwindow"/>
+		 	<s:hidden name="stockmodel.alertmsg" id="alertmsg"/>
+		 	<s:hidden name="stockmodel.fromwindow" id="fromwindow"/>
 		</form>
 		
 		<script src="js/jquery-2.1.3.min.js"></script>
@@ -118,9 +118,9 @@
 	    <script src="js/sweetalert.min.js"></script>
 	    
 		<script type="text/javascript">
-		function getBrand(brand_id,brand_name){
-			window.opener.document.getElementById("brand_id").value= brand_id;
-			window.opener.document.getElementById("brand_name").value= brand_name;
+		function getBrand(stock_id,stock_name){
+			window.opener.document.getElementById("stock_id").value= stock_id;
+			window.opener.document.getElementById("stock_name").value= stock_name;
 			window.close();
 		}
 		$(function(){
@@ -143,20 +143,20 @@
 			});
 			
 			$("#delete").click(function(){
-				$("#brand_name").val("-");
+				$("#stock_name").val("-");
 			});
 			$('#table_brand tbody').on( 'click', 'tr', function () {
 		        if ( $(this).hasClass('selected') ) {
 		            $(this).removeClass('selected');
-		            $("#brand_id").val("");
-		            $("#brand_name").val("");
+		            $("#stock_id").val("");
+		            $("#stock_name").val("");
 		        }
 		        else {
 		            table.$('tr.selected').removeClass('selected');
 		            $(this).addClass('selected');
 		            var $index = $(this).index();
-		            $("#brand_id").val($(".brand_id").eq($index).text());
-		            $("#brand_name").val($(".brand_name").eq($index).text());
+		            $("#stock_id").val($(".stock_id").eq($index).text());
+		            $("#stock_name").val($(".stock_name").eq($index).text());
 		        }
 		    });
 			
