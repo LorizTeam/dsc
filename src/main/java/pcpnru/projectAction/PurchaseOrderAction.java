@@ -234,7 +234,7 @@ public class PurchaseOrderAction extends ActionSupport {
 
 		if (search != null) { 
 			request.setAttribute("ListResultPOSearch",
-					new PurchaseOrderDB().GetListPO_Header(pomodel.getDocno(), pomodel.getVender(), pomodel.getPo_day(),
+					new PurchaseOrderDB().GetListPO_Header(pomodel.getPo_docno(), pomodel.getVender(), pomodel.getPo_day(),
 							pomodel.getPo_month(),pomodel.getPo_year(), pomodel.getApprove_status(), pomodel.getType()));
 
 		} else if (save != null) {
@@ -248,7 +248,7 @@ public class PurchaseOrderAction extends ActionSupport {
 					String docno = split_value[0];
 					String year = String.valueOf(Integer.parseInt(split_value[1]) - 543);
 					int array = Integer.parseInt(split_value[2]);
-					new RecordApproveDB().approve_pr(docno, year, approveStatus[array]);
+					new PurchaseOrderDB().approve_po(docno, year, approveStatus[array]);
 				}
 
 			}

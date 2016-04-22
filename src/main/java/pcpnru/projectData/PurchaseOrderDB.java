@@ -311,7 +311,7 @@ public List<PurchaseOrderModel> GET_PurchaseRequest_Image(String docno,String ye
 public List<PurchaseOrderModel> GetListPO_Header(String po_number, String vender, String po_date, String po_month,
 		String po_year, String approve_status, String type) throws IOException, Exception {
 
-	List<PurchaseOrderModel> ListPR = new ArrayList<PurchaseOrderModel>();
+	List<PurchaseOrderModel> ListPO = new ArrayList<PurchaseOrderModel>();
 
 	String sqlQuery = "SELECT po_docno,`year`+543 as year,"
 			+ "CONCAT(substr(docdate from 9 for 2),\"-\",substr(docdate from 6 for 2),\"-\",year(docdate)+543) as docdate," 
@@ -352,7 +352,7 @@ public List<PurchaseOrderModel> GetListPO_Header(String po_number, String vender
 
 	 
 	while (rs.next()) {
-		ListPR.add(new PurchaseOrderModel(rs.getString("po_docno"), rs.getString("vendor_name"), rs.getString("year"),
+		ListPO.add(new PurchaseOrderModel(rs.getString("po_docno"), rs.getString("vendor_name"), rs.getString("year"),
 				rs.getString("docdate"), rs.getString("approve_status"), rs.getString("type"), rs.getString("create_name")));
 	}
 
@@ -363,7 +363,22 @@ public List<PurchaseOrderModel> GetListPO_Header(String po_number, String vender
 	if (!conn.isClosed())
 		conn.close();
 
-	return ListPR;
+	return ListPO;
+}
+public void approve_po(String docno, String year, String approve_status) throws IOException, Exception {
+	String sqlQuery = "update po_hd set approve_status = ? where po_docno = ? and year = ?";
+	PreparedStatement ppStmt = null;
+	conn = agent.getConnectMYSql();
+	ppStmt = conn.prepareStatement(sqlQuery);
+	ppStmt.setString(1, approve_status);
+	ppStmt.setString(2, docno);
+	ppStmt.setString(3, year);
+	ppStmt.executeUpdate();
+
+	if (!ppStmt.isClosed())
+		ppStmt.close();
+	if (!conn.isClosed())
+		conn.close();
 }
 
 }

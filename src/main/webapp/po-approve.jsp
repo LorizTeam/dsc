@@ -25,8 +25,8 @@
 	
 	<body>
 		<div><%@include file="topmenu.jsp" %></div>
-		<h3 class="align-center">อนุมัติ ใบขออนุมัติเซื้อ</h3>
-		<form action="prApprove" method="post">
+		<h3 class="align-center">อนุมัติ ใบสั่งซื้อ</h3>
+		<form action="poApprove" method="post">
 			<div class="example" data-text="ค้นหาข้อมูล"> 
 		         <div class="grid">
 		         	<div class="row cells12">
@@ -41,7 +41,7 @@
 				        	ผู้ขาย
 					        <div class="input-control text full-size"  data-role="input">
 							    <s:hidden name="pomodel.vender" id="vendor_id"  />
-							    <s:textfield name="pomodel.vender_name" id="vendor_name" readonly="" />
+							    <s:textfield name="pomodel.vender_name" id="vendor_name" readonly="true" />
 							    <div class="button-group">
 							 	<button class="button primary" type="button" onclick="getvendor()"> <span class="mif-search"></span></button>
 								<button class="button danger" type="button" id="delete_vendor"><span class="mif-bin"></span></button>
@@ -51,6 +51,7 @@
 						<div class="cell colspan3"></div>
 				 	</div>
 				 	<div class="row cells12">
+				 		 <div class="cell colspan3"></div>
 		         		 <div class="cell colspan1">
 							วัน
 							<div class="input-control text full-size"  data-role="input">
@@ -68,7 +69,28 @@
 							<div class="input-control text full-size"  data-role="input">
 		         				<s:textfield name="pomodel.po_year" id="po_year" />
 		         			</div>
-						</div>				
+						</div>	
+						<div class="cell colspan1">
+							ประเภท
+							<div class="input-control text full-size"  data-role="input">
+								<select name="pomodel.type" id="pomodel" >
+								    <option value="">ทั้งหมด</option>
+									<option value="P">จัดซื้อ</option>
+									<option value="H">จัดจ้าง</option>
+								</select>
+							</div>
+						</div>		
+						<div class="cell colspan2">
+							สถานะ
+							<div class="input-control text full-size"  data-role="input">
+								<select name="pomodel.approve_status" id="approve_status" >
+								    <option value="">ทั้งหมด</option>
+									<option value="WA">รออนุมัติ</option>
+									<option value="AP">อนุมัติแล้ว</option>
+									<option value="CC">ยกเลิก</option>
+								</select>
+							</div>
+						</div>		
 				 	</div>
 				 	<div class="row cells12">
 		         		 <div class="cell colspan4"></div>
@@ -147,7 +169,7 @@
 											<td><%=RAM.getCreate_by()%></td>
 											<td><%=RAM.getYear() %></td>
 											<td><%=RAM.getPo_docdate()%></td>
-											<td><button class="button primary" type="button" onclick="getDetail('<%=RAM.getDocno() %>','<%=RAM.getYear() %>')" id="viewDetail"> <span class="mif-search"></span></button></td>
+											<td align="center"><button class="button primary" type="button" onclick="getDetail('<%=RAM.getPo_docno() %>','<%=RAM.getYear() %>')" id="viewDetail"> <span class="mif-search"></span></button></td>
 										</tr>
 							<%
 									}
@@ -204,7 +226,7 @@
 			    minViewMode: 2,
 			    maxViewMode: 2,clearBtn: true
 		    });
-			$('#pr_table tbody').on( 'click', 'tr', function () { 
+			$('#po_table tbody').on( 'click', 'tr', function () { 
     	        //if ( $(this).hasClass('selected') ) {
     	        	var $index = $(this).index();
     	        	var data_chkrow = $(".chkrow").eq($index).val().substr(0,10);

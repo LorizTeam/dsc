@@ -27,7 +27,7 @@
 	
 	<body>
 		<div><%@include file="topmenu.jsp" %></div>
-		<h3 class="align-center">อนุมัติ ใบขออนุมัติเซื้อ</h3>
+		<h3 class="align-center">อนุมัติ ใบขออนุมัติซื้อ</h3>
 		<form action="prApprove" method="post">
 			<div class="example" data-text="ค้นหาข้อมูล"> 
 		         <div class="grid">
@@ -140,7 +140,7 @@
 											<td><%=RAM.getCreate_name() %></td>
 											<td><%=RAM.getYear() %></td>
 											<td><%=RAM.getRecord_approve_date() %></td>
-											<td><button class="button primary" type="button" onclick="getDetail('<%=RAM.getDocno() %>','<%=RAM.getYear() %>')" id="viewDetail"> <span class="mif-search"></span></button></td>
+											<td align="center"><button class="button primary" type="button" onclick="getDetail('<%=RAM.getDocno() %>','<%=RAM.getYear() %>')" id="viewDetail"> <span class="mif-search"></span></button></td>
 										</tr>
 							<%
 									}
@@ -159,7 +159,7 @@
 		</form>
 		<script>
 		function getDetail(docno,year) {
-   			var load = window.open('/pcpnru/window_viewDetail?docno='+docno+'&year='+year,'pr',
+   			var load = window.open('/dsc/window_viewDetail?docno='+docno+'&year='+year,'pr',
    			             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
    		}
 		$(function(){

@@ -183,7 +183,7 @@ String project_code = "";
 			        	เรียนผู้ขาย
 				        <div class="input-control text full-size"  data-role="input">
 						    <s:hidden name="pomodel.vender" id="vendor_id"  />
-						    <s:textfield name="pomodel.vender_name" id="vendor_name" readonly="" />
+						    <s:textfield name="pomodel.vender_name" id="vendor_name" readonly="true" />
 						    <div class="button-group">
 						 	<button class="button primary" type="button" onclick="getvendor()"> <span class="mif-search"></span></button>
 							<button class="button danger" type="button" id="delete_vendor"><span class="mif-bin"></span></button>
