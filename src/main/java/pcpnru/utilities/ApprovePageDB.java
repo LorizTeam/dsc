@@ -28,7 +28,9 @@ public class ApprovePageDB {
 				+ "UNION ALL "
 				+ "SELECT count(approve_status) as cap FROM rocking_budget_central a RIGHT JOIN projectplan_header b on(a.project_code = b.project_code) WHERE approve_status in ('WA') "
 				+ "UNION ALL "
-				+ "SELECT count(approve_status) as cap FROM record_approve_hd a WHERE approve_status in ('WA') ";
+				+ "SELECT count(approve_status) as cap FROM record_approve_hd a WHERE approve_status in ('WA') "
+				+ "UNION ALL "
+				+ "SELECT count(approve_status) as cap FROM po_hd a WHERE approve_status in ('WA') ";
 
 		pStmt = conn.createStatement();
 		rs = pStmt.executeQuery(sqlStmt);

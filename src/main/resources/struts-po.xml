@@ -20,7 +20,18 @@
     	</action>
     	
     	<action name="poche" class="pcpnru.projectAction.PurchaseOrderAction" method="execute">
+    		<interceptor-ref name="defaultStack"/>
+	        <interceptor-ref name="fileUpload">
+				<param name="maximumSize">5000000</param>
+				<param name="allowedTypes"> image/jpeg,image/gif,image/png</param>
+			</interceptor-ref>
+		    <interceptor-ref name="validation"/>
+    		<interceptor-ref name="workflow"/>
       		<result name="success">/purchaseorder.jsp</result>
+    	</action>
+		
+		<action name="poApprove" class="pcpnru.projectAction.PurchaseOrderAction" method="entrancPoApprove">
+      		<result name="success">/po-approve.jsp</result>
     	</action>
 		
     </package>

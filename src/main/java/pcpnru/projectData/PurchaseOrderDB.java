@@ -84,12 +84,12 @@ public class PurchaseOrderDB {
 	}
 
 	public void AddPOHD(String po_docno, String year, String po_docdate, String type, String vender, int credit_day,
-			double mulct_day, String quotation_number, String quotation_date) throws Exception {
+			double mulct_day, String quotation_number, String quotation_date, String username) throws Exception {
 		conn = agent.getConnectMYSql();
 
-		String sqlStmt = "INSERT IGNORE INTO po_hd(po_docno, year, docdate, type, vender, creditday, penaltype_perday, ref_quotation, ref_quotationdate) "
+		String sqlStmt = "INSERT IGNORE INTO po_hd(po_docno, year, docdate, type, vender, creditday, penaltype_perday, ref_quotation, ref_quotationdate, approve_status, create_by) "
 				+ "VALUES ('" + po_docno + "','" + year + "','" + po_docdate + "','" + type + "','" + vender + "',"
-				+ credit_day + "," + mulct_day + ",'" + quotation_number + "','" + quotation_date + "')";
+				+ credit_day + "," + mulct_day + ",'" + quotation_number + "','" + quotation_date + "', 'WA', '"+username+"')";
 		// System.out.println(sqlStmt);
 		pStmt = conn.createStatement();
 		pStmt.executeUpdate(sqlStmt);
@@ -308,6 +308,62 @@ public List<PurchaseOrderModel> GET_PurchaseRequest_Image(String docno,String ye
 	
 	return ResultList;
 }
+public List<PurchaseOrderModel> GetListPO_Header(String po_number, String vender, String po_date, String po_month,
+		String po_year, String approve_status, String type) throws IOException, Exception {
 
+	List<PurchaseOrderModel> ListPR = new ArrayList<PurchaseOrderModel>();
+
+	String sqlQuery = "SELECT po_docno,`year`+543 as year,"
+			+ "CONCAT(substr(docdate from 9 for 2),\"-\",substr(docdate from 6 for 2),\"-\",year(docdate)+543) as docdate," 
+			+ "a.create_by,"
+			+ "CONCAT(b.name,' ',b.lastname) as create_name,approve_status, type, vendor_name "
+			+ "FROM `po_hd` a "
+			+ "INNER JOIN employee b on (a.create_by = b.username) "
+			+ "INNER JOIN vendor_master c on (a.vender = c.vendor_id) "
+
+			+ "where ";
+
+	if (!po_number.equals(""))
+		sqlQuery += "docno = '" + po_number + "' and ";
+	
+	if (!vender.equals(""))
+		sqlQuery += "vender = '" + vender + "' and ";
+	
+	if (!po_date.equals(""))
+		sqlQuery += "docdate = '" + po_date + "' and ";
+
+	if (!po_month.equals(""))
+		sqlQuery += "MONTH(docdate) = '" + po_month + "' and ";
+
+	if (!po_year.equals(""))
+		sqlQuery += "YEAR(docdate) = '" + po_year + "' and ";
+	
+	if (!approve_status.equals(""))
+		sqlQuery += "approve_status = '" + approve_status + "' and ";
+	
+	if (!type.equals(""))
+		sqlQuery += "type = '" + type + "' and ";
+
+	sqlQuery += "po_docno != ''";
+
+	conn = agent.getConnectMYSql();
+	pStmt = conn.createStatement();
+	rs = pStmt.executeQuery(sqlQuery);
+
+	 
+	while (rs.next()) {
+		ListPR.add(new PurchaseOrderModel(rs.getString("po_docno"), rs.getString("vendor_name"), rs.getString("year"),
+				rs.getString("docdate"), rs.getString("approve_status"), rs.getString("type"), rs.getString("create_name")));
+	}
+
+	if (!rs.isClosed())
+		rs.close();
+	if (pStmt.isClosed())
+		pStmt.close();
+	if (!conn.isClosed())
+		conn.close();
+
+	return ListPR;
+}
 
 }

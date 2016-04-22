@@ -20,6 +20,9 @@ public class PurchaseOrderModel extends RecordApproveModel {
 	private String quotation_number;
 	private String quotation_date;
 
+	private String approve_status;
+	private String create_by;
+	
 	private String docno;
 	private String itemno;
 	private String year;
@@ -28,6 +31,10 @@ public class PurchaseOrderModel extends RecordApproveModel {
 	private String amount;
 	private String amounttotal;
 	private String remark;
+	
+	private String po_day;
+	private String po_month;
+	private String po_year;
 	
 	private File toBeUploaded;
 	private String vendor_name,vendor_id,toBeUploadedFileName,toBeUploadedContentType,img_path;
@@ -49,7 +56,16 @@ public class PurchaseOrderModel extends RecordApproveModel {
 		this.amounttotal = amounttotal;
 		this.remark = remark;
 	}
-
+	public PurchaseOrderModel(String s1, String s2, String s3, String s4, String s5, String s6, String s7) {
+			this.po_docno = s1;
+			this.vender = s2;
+			this.year = s3;
+			this.po_docdate = s4; 
+			this.approve_status = s5;
+			this.type = s6;
+			this.create_by = s7;
+	}
+	
 	public PurchaseOrderModel(String img_path, String docno, String year) {
 		this.img_path = img_path;
 		this.docno = docno;
@@ -310,5 +326,45 @@ public class PurchaseOrderModel extends RecordApproveModel {
 
 	public void setImg_path(String img_path) {
 		this.img_path = img_path;
+	}
+
+	public String getApprove_status() {
+		return approve_status;
+	}
+
+	public void setApprove_status(String approve_status) {
+		this.approve_status = approve_status;
+	}
+
+	public String getCreate_by() {
+		return create_by;
+	}
+
+	public void setCreate_by(String create_by) {
+		this.create_by = create_by;
+	}
+
+	public String getPo_day() {
+		return po_day;
+	}
+
+	public void setPo_day(String po_day) {
+		this.po_day = po_day;
+	}
+
+	public String getPo_month() {
+		return po_month;
+	}
+
+	public void setPo_month(String po_month) {
+		this.po_month = po_month;
+	}
+
+	public String getPo_year() {
+		return po_year;
+	}
+
+	public void setPo_year(String po_year) {
+		this.po_year = po_year;
 	}
 }

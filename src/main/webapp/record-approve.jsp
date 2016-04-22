@@ -232,7 +232,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    <s:textfield name="recordApproveModel.vendor_name" id="vendor_name" readonly="true"/>
 						    <div class="button-group">
 						 	<button class="button primary" type="button" onclick="getvendor()"> <span class="mif-search"></span></button>
-							<button class="button danger" type="button" id="delete"><span class="mif-bin"></span></button>
+							<button class="button danger" type="button" id="delete_vendor"><span class="mif-bin"></span></button>
 							</div>
 						</div>
 					</div>  
@@ -348,6 +348,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	$("#delete_product").click(function(){
         		$("#product_code").val("-");
         		$("#qty").val(0);
+        	});
+        	$("#delete_vendor").click(function(){
+        		$("#vendor_id").val("");
+        		$("#vendor_name").val("");
         	});
         	$("#send_approve").click(function(){
         		

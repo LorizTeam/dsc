@@ -1,6 +1,7 @@
 package pcpnru.projectAction;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.junit.runner.Request;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import pcpnru.masterData.RecordApproveDB;
 import pcpnru.projectData.PurchaseOrderDB;
 import pcpnru.projectModel.PurchaseOrderModel;
 import pcpnru.utilities.DateUtil;
@@ -70,9 +72,11 @@ public class PurchaseOrderAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	public String execute() throws Exception {
-
-		HttpServletRequest request = ServletActionContext.getRequest();
+	public String execute() throws Exception { 
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("username");
+		
 		PurchaseOrderDB purchaseOrderDB = new PurchaseOrderDB();
 		String po_docno = "";
 		String year = "";
@@ -95,6 +99,9 @@ public class PurchaseOrderAction extends ActionSupport {
 			List PRList = purchaseOrderDB.GetPRList(po_docno, year);
 			request.setAttribute("PRList", PRList);
 
+			List ResultImageList = purchaseOrderDB.GET_PurchaseRequest_Image(po_docno, year, "");
+			request.setAttribute("ResultImageList", ResultImageList);
+			
 			pomodel.setPo_docno(po_docno);
 			String type = pomodel.getType();
 			request.setAttribute("type", type);
@@ -107,6 +114,12 @@ public class PurchaseOrderAction extends ActionSupport {
 			pomodel.setPre_loadpr("");
 			String type = pomodel.getType();
 			request.setAttribute("type", type);
+			
+			List PRList = purchaseOrderDB.GetPRList(po_docno, year);
+			request.setAttribute("PRList", PRList);
+			
+			List ResultImageList = purchaseOrderDB.GET_PurchaseRequest_Image(po_docno, year, "");
+			request.setAttribute("ResultImageList", ResultImageList);
 		}
 		if (update_price != null) {
 
@@ -125,8 +138,17 @@ public class PurchaseOrderAction extends ActionSupport {
 				List PRList = purchaseOrderDB.GetPRList(po_docno, year);
 				request.setAttribute("PRList", PRList);
 
-				pomodel.setPo_docdate("");
-				pomodel.setQuotation_date("");
+				List ResultImageList = purchaseOrderDB.GET_PurchaseRequest_Image(po_docno, year, "");
+				request.setAttribute("ResultImageList", ResultImageList);
+				
+				String po_docdate = pomodel.getPo_docdate();
+				String quotation_date = pomodel.getQuotation_date();
+				if(po_docdate.equals("-")) pomodel.setPo_docdate("");
+				if(quotation_date.equals("-")) pomodel.setQuotation_date("");
+				
+				pomodel.setPo_docno(po_docno);
+				String type = pomodel.getType();
+				request.setAttribute("type", type);
 			}
 
 		}
@@ -168,7 +190,7 @@ public class PurchaseOrderAction extends ActionSupport {
 				if (!quotation_date.equals("") || !quotation_date.equals("-"))
 					quotation_date = dateUtil.CnvToYYYYMMDDEngYear(quotation_date, '-');
 
-				purchaseOrderDB.AddPOHD(po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date);
+				purchaseOrderDB.AddPOHD(po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date, username);
 			}  
 
 			Validate valid = new Validate();
@@ -199,6 +221,41 @@ public class PurchaseOrderAction extends ActionSupport {
 			request.setAttribute("ResultImageList", ResultImageList);
 		}
 		 
+
+		return SUCCESS;
+	}
+	
+	public String entrancPoApprove() throws IOException, Exception {
+
+		HttpServletRequest request = ServletActionContext.getRequest();
+
+		String save = request.getParameter("save");
+		String search = request.getParameter("search");
+
+		if (search != null) { 
+			request.setAttribute("ListResultPOSearch",
+					new PurchaseOrderDB().GetListPO_Header(pomodel.getDocno(), pomodel.getVender(), pomodel.getPo_day(),
+							pomodel.getPo_month(),pomodel.getPo_year(), pomodel.getApprove_status(), pomodel.getType()));
+
+		} else if (save != null) {
+
+			if (request.getParameterValues("chkrow") != null) {
+				String[] chkrow = request.getParameterValues("chkrow");
+				String[] approveStatus = request.getParameterValues("approveStatus");
+
+				for (String data_row : chkrow) {
+					String[] split_value = data_row.split("-");
+					String docno = split_value[0];
+					String year = String.valueOf(Integer.parseInt(split_value[1]) - 543);
+					int array = Integer.parseInt(split_value[2]);
+					new RecordApproveDB().approve_pr(docno, year, approveStatus[array]);
+				}
+
+			}
+			request.setAttribute("ListResultPOSearch", new PurchaseOrderDB().GetListPO_Header("", "", "", "", "", "", ""));
+		} else {
+			request.setAttribute("ListResultPOSearch", new PurchaseOrderDB().GetListPO_Header("", "", "", "", "", "", ""));
+		}
 
 		return SUCCESS;
 	}

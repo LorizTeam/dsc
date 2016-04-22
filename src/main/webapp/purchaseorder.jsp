@@ -182,7 +182,12 @@ String project_code = "";
 					<div class="cell colspan3 "> 
 			        	เรียนผู้ขาย
 				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield name="pomodel.vender" id="vender" required=""/>
+						    <s:hidden name="pomodel.vender" id="vendor_id"  />
+						    <s:textfield name="pomodel.vender_name" id="vendor_name" readonly="" />
+						    <div class="button-group">
+						 	<button class="button primary" type="button" onclick="getvendor()"> <span class="mif-search"></span></button>
+							<button class="button danger" type="button" id="delete_vendor"><span class="mif-bin"></span></button>
+							</div>
 						</div>
 					</div>
 					<div class="cell colspan3"> </div>
@@ -273,7 +278,8 @@ String project_code = "";
 		        	<button class="button success savehd" type="submit" id="savehd" name="savehd" ><span class="mif-floppy-disk mif-lg fg-white"></span></button>
 		        	<a class="button danger" type="submit" href=""><span class="mif-cross mif-lg fg-white"></span></a>
 				</div>
-				<div class="cell colspan5"> 
+				<div class="cell colspan5" align="right"> 
+					<a class="button success next" id="next" href="pocheckauthen"><span class="mif-lg fg-white">ทำรายการใหม่</span></a>
 		 		</div>
 			</div>
 		</div>
@@ -283,8 +289,15 @@ function getpr() {
 	var load = window.open('/dsc/po_openwindowsPR','pr',
 	             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
 }
-
+function getvendor() {
+		var load = window.open('/dsc/windows_entrancvendor','pr',
+		             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
+	}
 $(function(){
+	$("#delete_vendor").click(function(){
+		$("#vendor_id").val("");
+		$("#vendor_name").val("");
+	});
 	
 	if($("#alertmsg").val() != ""){
 		swal("Error",$("#alertmsg").val() , "error");

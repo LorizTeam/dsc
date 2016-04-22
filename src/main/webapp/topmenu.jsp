@@ -178,6 +178,8 @@
          		<li><a href="cbgBegin"><span class="tag warning"><%=listAP.get(1)%></span> อนุมัติการโยกงบกลาง</a></li>
          		<li class="divider"></li>
          		<li><a href="prApprove"><span class="tag warning"><%=listAP.get(2)%></span> อนุมัติใบขออนุมัติซื้อ</a></li>
+         		<li class="divider"></li>
+         		<li><a href="poApprove"><span class="tag warning"><%=listAP.get(3)%></span> อนุมัติใบสั่งซื้อ</a></li>
          	</ul>
          </li> 
          

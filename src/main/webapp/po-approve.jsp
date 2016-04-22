@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" pageEncoding="utf-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ page import="pcpnru.masterModel.*" %>
+<%@ page import="pcpnru.projectModel.*" %>
 <%@ page import="pcpnru.utilities.*" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +15,10 @@
         <link href="css/metro-icons.css" rel="stylesheet">
 		<link href="css/metro-schemes.css" rel="stylesheet"> 
 		<link href="css/select2.css" rel="stylesheet">
-		<link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 		<link href="css/jquery.dataTables.min.css" rel="stylesheet">
 		
 	 	<script src="js/jquery-2.1.3.min.js"></script>
 	    <script src="js/metro.js"></script>
-	    <script src="js/bootstrap-datepicker-th.js"></script>
 	    <script src="js/select2.js"></script>
         <script src="js/jquery.dataTables.min.js"></script> 
 	</head>
@@ -34,36 +32,41 @@
 		         	<div class="row cells12">
 			       		<div class="cell colspan3"></div>
 						<div class="cell colspan3"> 
-				        	รหัส PR
+				        	รหัส PO
 					        <div class="input-control text full-size"  data-role="input">
-							    <s:textfield name="recordApproveModel.docno" id="docno" />
+							    <s:textfield name="pomodel.po_docno" id="po_docno" />
 							</div>
 						</div>
 						<div class="cell colspan3"> 
-				        	เรื่อง
+				        	ผู้ขาย
 					        <div class="input-control text full-size"  data-role="input">
-							    <s:textfield name="recordApproveModel.record_approve_title" id="record_approve_title" />
+							    <s:hidden name="pomodel.vender" id="vendor_id"  />
+							    <s:textfield name="pomodel.vender_name" id="vendor_name" readonly="" />
+							    <div class="button-group">
+							 	<button class="button primary" type="button" onclick="getvendor()"> <span class="mif-search"></span></button>
+								<button class="button danger" type="button" id="delete_vendor"><span class="mif-bin"></span></button>
+								</div>
 							</div>
 						</div>
 						<div class="cell colspan3"></div>
 				 	</div>
 				 	<div class="row cells12">
-		         		 <div class="cell colspan4">
+		         		 <div class="cell colspan1">
 							วัน
 							<div class="input-control text full-size"  data-role="input">
-		         				<s:textfield name="recordApproveModel.record_approve_date" id="record_approve_date" />
+		         				<s:textfield name="pomodel.po_day" id="po_day" />
 		         			</div>
 						</div>
-						<div class="cell colspan4">
+						<div class="cell colspan1">
 							เดือน
 							<div class="input-control text full-size"  data-role="input">
-		         				<s:textfield name="recordApproveModel.record_approve_month" id="record_approve_month" />
+		         				<s:textfield name="pomodel.po_month" id="po_month" />
 		         			</div>
 		         		</div>
-						<div class="cell colspan4">
+						<div class="cell colspan1">
 							ปี
 							<div class="input-control text full-size"  data-role="input">
-		         				<s:textfield name="recordApproveModel.year" id="year" />
+		         				<s:textfield name="pomodel.po_year" id="po_year" />
 		         			</div>
 						</div>				
 				 	</div>
@@ -82,7 +85,7 @@
 			</div>
 			<div class="example" data-text="รายการ PR">
 				<div class="cell colspan12">
-					<table id="pr_table" class="cell-border hover display compact nowrap" cellspacing="0" width="100%">
+					<table id="po_table" class="cell-border hover display compact nowrap" cellspacing="0" width="100%">
 						<thead>
 							<tr>
 								<th><label class="input-control small-check checkbox"> 
@@ -90,8 +93,8 @@
 		                		<span class="check"></span> 
 		                        </label> เลือกทั้งหมด</th>
 								<th>รหัส PR</th>
-								<th>เรื่อง</th>
-								<th>ผู้อนุมัติ</th>
+								<th>ผู้ขาย</th> 
+								<th>ประเภท</th>
 								<th>ผู้ทำรายการ</th>
 								<th>ปี</th>
 								<th>วันที่ทำรายการ</th>
@@ -100,9 +103,9 @@
 						</thead>
 						<tbody>
 							<%
-								List<RecordApproveModel> ListResultPRSearch = (List) request.getAttribute("ListResultPRSearch");
-								if(new Validate().CheckListNotNull(ListResultPRSearch)){
-									for(RecordApproveModel RAM:ListResultPRSearch){
+								List<PurchaseOrderModel> ListResultPOSearch = (List) request.getAttribute("ListResultPOSearch");
+								if(new Validate().CheckListNotNull(ListResultPOSearch)){
+									for(PurchaseOrderModel RAM:ListResultPOSearch){
 							%>
 										<tr>
 											<td align="center">
@@ -110,7 +113,7 @@
 												if(RAM.getApprove_status().equals("CC")){
 											%>
 												<label class="input-control small-check checkbox"> 
-						                			<input type="checkbox" class="chkrow" name="chkrow" value="<%=RAM.getDocno() %>-<%=RAM.getYear() %>" data-show="indeterminate" disabled />
+						                			<input type="checkbox" class="chkrow" name="chkrow" value="<%=RAM.getPo_docno()%>-<%=RAM.getYear() %>" data-show="indeterminate" disabled />
 						                		<span class="check"></span> 
 						                        </label>
 						                        <input type="hidden" name="approveStatus" value="CC" /><input type="text" value=" ยกเลิกรายการ" size="8" readonly="readonly" />
@@ -118,7 +121,7 @@
 												}else{
 											%>
 												<label class="input-control small-check checkbox"> 
-						                			<input type="checkbox" class="chkrow" name="chkrow" value="<%=RAM.getDocno() %>-<%=RAM.getYear() %>" data-show="indeterminate" />
+						                			<input type="checkbox" class="chkrow" name="chkrow" value="<%=RAM.getPo_docno() %>-<%=RAM.getYear() %>" data-show="indeterminate" />
 						                		<span class="check"></span> 
 						                        </label>
 						                        
@@ -134,12 +137,16 @@
 											%>
 												
 											</td>
-											<td><%=RAM.getDocno() %>  </td>
-											<td><%=RAM.getRecord_approve_title() %></td>
-											<td><%=RAM.getRecord_approve_cen() %></td>
-											<td><%=RAM.getCreate_name() %></td>
+											<td><%=RAM.getPo_docno()%></td>
+											<td><%=RAM.getVender()%></td>
+											<%if(RAM.getType().equals("P")){%>
+												<td>จัดซื้อ</td>
+											<%}else{ %>
+												<td>จัดจ้าง</td>
+											<%} %>
+											<td><%=RAM.getCreate_by()%></td>
 											<td><%=RAM.getYear() %></td>
-											<td><%=RAM.getRecord_approve_date() %></td>
+											<td><%=RAM.getPo_docdate()%></td>
 											<td><button class="button primary" type="button" onclick="getDetail('<%=RAM.getDocno() %>','<%=RAM.getYear() %>')" id="viewDetail"> <span class="mif-search"></span></button></td>
 										</tr>
 							<%
@@ -162,8 +169,17 @@
    			var load = window.open('/pcpnru/window_viewDetail?docno='+docno+'&year='+year,'pr',
    			             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
    		}
-		$(function(){
-			var table = $("#pr_table").DataTable( { 
+		function getvendor() {
+			var load = window.open('/dsc/windows_entrancvendor','ap_po',
+			             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
+		}
+	$(function(){
+			$("#delete_vendor").click(function(){
+				$("#vendor_id").val("");
+				$("#vendor_name").val("");
+			});
+			
+			var table = $("#po_table").DataTable( { 
               	scrollY: '50vh', 
               	scrollX: true,
               	scrollCollapse: true, 
