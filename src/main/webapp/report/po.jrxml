@@ -26,9 +26,296 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="prmdocno" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prmyear" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT a.po_docno,a.`year`,a.docdate,a.ref_pr,a.ref_prdate,a.type,a.po_offer,a.creditday,a.penaltype_perday,a.ref_quotation,
+a.ref_quotationdate,a.`status`,a.create_by,a.project_code,a.approve_status,a.approve_by,a.create_datetime,a.vender,
+b.qty,b.price,b.po_docno,b.`year`,b.create_date,b.itemno,b.numthai_itemno,b.description,b.qty,b.price,b.numthai_qty,b.unit,b.remark,b.create_by,b.create_datetime,
+c.product_code,c.product_name,c.status_id,c.progroup_id,c.protype_id,c.unit_id,c.brand_id,c.create_by,c.create_datetime,c.update_by,c.update_datetime,
+d.vendor_id,d.vendor_name,d.vendor_address,d.vendor_road,d.vendor_subdistrict,d.vendor_district,d.vendor_province,d.vendor_postcode,d.vendor_mobile,d.vendor_tel,
+d.vendor_tel_ext,d.create_by,d.create_datetime,d.update_by,d.update_datetime,
+e.unit_id,e.unit_name,e.create_by,e.create_datetime,e.update_by,e.update_datetime,
+z.company_name,z.company_address,z.company_tel,z.company_tel_ext,z.company_mobile,z.company_fax,z.company_vat
+FROM
+company z, po_hd a 
+INNER JOIN po_dt b ON a.po_docno = b.po_docno AND a.`year` = b.`year`
+INNER JOIN product c ON b.description = c.product_code
+INNER JOIN vendor_master d ON a.vender = d.vendor_id
+INNER JOIN unit_master e ON c.unit_id = e.unit_id
+WHERE a.po_docno = $P{prmdocno} and a.`year` = $P{prmyear}]]></queryString>
 
+	<field name="po_docno" class="java.lang.String"/>
+	<field name="year" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Timestamp"/>
+	<field name="ref_pr" class="java.lang.String"/>
+	<field name="ref_prdate" class="java.sql.Date"/>
+	<field name="type" class="java.lang.String"/>
+	<field name="po_offer" class="java.lang.String"/>
+	<field name="creditday" class="java.lang.Integer"/>
+	<field name="penaltype_perday" class="java.math.BigDecimal"/>
+	<field name="ref_quotation" class="java.lang.String"/>
+	<field name="ref_quotationdate" class="java.sql.Date"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="create_by" class="java.lang.String"/>
+	<field name="project_code" class="java.lang.String"/>
+	<field name="approve_status" class="java.lang.String"/>
+	<field name="approve_by" class="java.lang.String"/>
+	<field name="create_datetime" class="java.sql.Timestamp"/>
+	<field name="vender" class="java.lang.String"/>
+	<field name="qty" class="java.lang.Integer"/>
+	<field name="price" class="java.lang.Float"/>
+	<field name="create_date" class="java.sql.Timestamp"/>
+	<field name="itemno" class="java.lang.String"/>
+	<field name="numthai_itemno" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="numthai_qty" class="java.lang.String"/>
+	<field name="unit" class="java.lang.String"/>
+	<field name="remark" class="java.lang.String"/>
+	<field name="product_code" class="java.lang.String"/>
+	<field name="product_name" class="java.lang.String"/>
+	<field name="status_id" class="java.lang.String"/>
+	<field name="progroup_id" class="java.lang.String"/>
+	<field name="protype_id" class="java.lang.String"/>
+	<field name="unit_id" class="java.lang.String"/>
+	<field name="brand_id" class="java.lang.String"/>
+	<field name="update_by" class="java.lang.String"/>
+	<field name="update_datetime" class="java.sql.Timestamp"/>
+	<field name="vendor_id" class="java.lang.String"/>
+	<field name="vendor_name" class="java.lang.String"/>
+	<field name="vendor_address" class="java.lang.String"/>
+	<field name="vendor_road" class="java.lang.String"/>
+	<field name="vendor_subdistrict" class="java.lang.String"/>
+	<field name="vendor_district" class="java.lang.String"/>
+	<field name="vendor_province" class="java.lang.String"/>
+	<field name="vendor_postcode" class="java.lang.String"/>
+	<field name="vendor_mobile" class="java.lang.String"/>
+	<field name="vendor_tel" class="java.lang.String"/>
+	<field name="vendor_tel_ext" class="java.lang.String"/>
+	<field name="unit_name" class="java.lang.String"/>
+	<field name="company_name" class="java.lang.String"/>
+	<field name="company_address" class="java.lang.String"/>
+	<field name="company_tel" class="java.lang.String"/>
+	<field name="company_tel_ext" class="java.lang.String"/>
+	<field name="company_mobile" class="java.lang.String"/>
+	<field name="company_fax" class="java.lang.String"/>
+	<field name="company_vat" class="java.lang.Float"/>
+
+	<variable name="amounttotal" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double(  ($F{qty}.intValue()) *($F{price}.floatValue()) )]]></variableExpression>
+	</variable>
+	<variable name="amounttotal_sum" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{price}.floatValue()*$F{qty}.intValue())]]></variableExpression>
+	</variable>
+	<variable name="amounttotal_sum_7" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{price}.floatValue()*$F{qty}.intValue()*$F{company_vat}.floatValue())]]></variableExpression>
+	</variable>
+	<variable name="sum" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new java.lang.Double(  ($V{amounttotal_sum}.doubleValue()) +($V{amounttotal_sum_7}.doubleValue()) )]]></variableExpression>
+	</variable>
 		<background>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="714"  isSplitAllowed="true" >
+				<rectangle radius="5" >
+					<reportElement
+						x="1"
+						y="243"
+						width="534"
+						height="470"
+						key="rectangle-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="372"
+						y="666"
+						width="163"
+						height="0"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="80"
+						y="243"
+						width="1"
+						height="397"
+						key="line-31"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="245"
+						y="243"
+						width="1"
+						height="397"
+						key="line-32"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="307"
+						y="243"
+						width="1"
+						height="397"
+						key="line-33"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="360"
+						width="534"
+						height="1"
+						key="line-34"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="388"
+						width="534"
+						height="1"
+						key="line-35"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="416"
+						width="534"
+						height="1"
+						key="line-36"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="444"
+						width="534"
+						height="1"
+						key="line-37"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="472"
+						width="534"
+						height="1"
+						key="line-38"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="500"
+						width="534"
+						height="1"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="528"
+						width="534"
+						height="1"
+						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="556"
+						width="534"
+						height="1"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="584"
+						width="534"
+						height="1"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="612"
+						width="534"
+						height="1"
+						key="line-43"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="640"
+						width="534"
+						height="1"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="276"
+						width="534"
+						height="1"
+						key="line-48"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="304"
+						width="534"
+						height="1"
+						key="line-49"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="332"
+						width="534"
+						height="1"
+						key="line-50"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="371"
+						y="243"
+						width="1"
+						height="470"
+						key="line-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="450"
+						y="243"
+						width="1"
+						height="470"
+						key="line-52"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="372"
+						y="690"
+						width="163"
+						height="0"
+						key="line-53"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</background>
 		<title>
@@ -36,38 +323,25 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="229"  isSplitAllowed="true" >
+			<band height="247"  isSplitAllowed="true" >
 				<rectangle radius="5" >
 					<reportElement
-						x="367"
-						y="71"
-						width="166"
+						x="337"
+						y="72"
+						width="197"
 						height="51"
 						key="rectangle-6"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle radius="5" >
 					<reportElement
-						x="391"
+						x="390"
 						y="0"
 						width="144"
 						height="64"
 						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
-				<staticText>
-					<reportElement
-						x="84"
-						y="1"
-						width="108"
-						height="22"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isBold="true" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
-					</textElement>
-				<text><![CDATA[บริษัท ตัวอย่าง จำกัด]]></text>
-				</staticText>
 				<staticText>
 					<reportElement
 						x="400"
@@ -82,23 +356,10 @@
 				<text><![CDATA[ใบขอสั่งซื้อ (PO)
 PURCHASE ORDER]]></text>
 				</staticText>
-				<staticText>
-					<reportElement
-						x="84"
-						y="23"
-						width="291"
-						height="22"
-						key="staticText-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="14" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
-					</textElement>
-				<text><![CDATA[222/22...]]></text>
-				</staticText>
 				<rectangle>
 					<reportElement
 						x="1"
-						y="-1"
+						y="1"
 						width="78"
 						height="63"
 						key="rectangle-2"/>
@@ -107,7 +368,7 @@ PURCHASE ORDER]]></text>
 				<staticText>
 					<reportElement
 						x="7"
-						y="-2"
+						y="0"
 						width="66"
 						height="66"
 						key="staticText-4"/>
@@ -118,23 +379,10 @@ PURCHASE ORDER]]></text>
 				<text><![CDATA[Company
 Logo]]></text>
 				</staticText>
-				<staticText>
-					<reportElement
-						x="84"
-						y="44"
-						width="291"
-						height="22"
-						key="staticText-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="14" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
-					</textElement>
-				<text><![CDATA[โทร...]]></text>
-				</staticText>
 				<rectangle radius="5" >
 					<reportElement
 						x="0"
-						y="125"
+						y="131"
 						width="263"
 						height="102"
 						key="rectangle-3"/>
@@ -143,7 +391,7 @@ Logo]]></text>
 				<rectangle radius="5" >
 					<reportElement
 						x="272"
-						y="125"
+						y="131"
 						width="263"
 						height="102"
 						key="rectangle-4"/>
@@ -152,7 +400,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="6"
-						y="131"
+						y="137"
 						width="43"
 						height="22"
 						key="staticText-6"/>
@@ -165,7 +413,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="6"
-						y="154"
+						y="160"
 						width="43"
 						height="22"
 						key="staticText-7"/>
@@ -178,7 +426,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="6"
-						y="200"
+						y="206"
 						width="43"
 						height="22"
 						key="staticText-8"/>
@@ -191,7 +439,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="278"
-						y="130"
+						y="136"
 						width="51"
 						height="22"
 						key="staticText-9"/>
@@ -204,7 +452,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="278"
-						y="153"
+						y="159"
 						width="55"
 						height="22"
 						key="staticText-10"/>
@@ -217,7 +465,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="278"
-						y="176"
+						y="182"
 						width="59"
 						height="22"
 						key="staticText-11"/>
@@ -230,7 +478,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="278"
-						y="199"
+						y="205"
 						width="68"
 						height="22"
 						key="staticText-12"/>
@@ -242,8 +490,8 @@ Logo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="374"
-						y="74"
+						x="345"
+						y="77"
 						width="51"
 						height="22"
 						key="staticText-23"/>
@@ -255,8 +503,8 @@ Logo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="374"
-						y="97"
+						x="345"
+						y="100"
 						width="51"
 						height="22"
 						key="staticText-24"/>
@@ -269,7 +517,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="136"
-						y="199"
+						y="205"
 						width="43"
 						height="22"
 						key="staticText-25"/>
@@ -279,37 +527,156 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[โทรสาร.]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="48"
+						y="137"
+						width="158"
+						height="22"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vendor_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="48"
+						y="162"
+						width="204"
+						height="46"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["เลขที่ "+$F{vendor_address}+" ถนน "+$F{vendor_road}+" ต."+$F{vendor_subdistrict}
++" อ."+$F{vendor_district}+" จ."+$F{vendor_province}+" "+$F{vendor_postcode}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="48"
+						y="205"
+						width="87"
+						height="22"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vendor_mobile}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="179"
+						y="204"
+						width="87"
+						height="22"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vendor_tel}+" ต่อ "+$F{vendor_tel_ext}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="312"
+						y="136"
+						width="158"
+						height="22"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vendor_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="343"
+						y="158"
+						width="158"
+						height="22"
+						key="textField-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{ref_quotationdate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="343"
+						y="182"
+						width="158"
+						height="22"
+						key="textField-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{creditday}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="397"
+						y="77"
+						width="131"
+						height="22"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{po_docno}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="397"
+						y="100"
+						width="131"
+						height="22"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{docdate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="205"
+						width="158"
+						height="22"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ref_quotation}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="85"
+						y="-6"
+						width="299"
+						height="97"
+						key="textField-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{company_name}+"\n"+
+$F{company_address}+"\n"+
+$F{company_tel}+"-"+$F{company_tel_ext}+", "+$F{company_mobile}+", fax"+$F{company_fax}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="28"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="534"
-						height="1"
-						key="line-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="27"
-						width="534"
-						height="1"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="1"
-						y="0"
-						width="1"
-						height="27"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
+			<band height="27"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="16"
@@ -323,15 +690,6 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[รหัสสินค้า]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="80"
-						y="0"
-						width="1"
-						height="27"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<staticText>
 					<reportElement
 						x="133"
@@ -345,33 +703,6 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[รายการ]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="245"
-						y="0"
-						width="1"
-						height="27"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="307"
-						y="0"
-						width="1"
-						height="27"
-						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="534"
-						y="0"
-						width="1"
-						height="27"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<staticText>
 					<reportElement
 						x="252"
@@ -398,24 +729,6 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[จำนวน]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="371"
-						y="0"
-						width="1"
-						height="27"
-						key="line-19"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="450"
-						y="1"
-						width="1"
-						height="27"
-						key="line-21"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<staticText>
 					<reportElement
 						x="468"
@@ -446,78 +759,84 @@ Logo]]></text>
 		</columnHeader>
 		<detail>
 			<band height="28"  isSplitAllowed="true" >
-				<line direction="TopDown">
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="27"
-						width="534"
-						height="1"
-						key="line-8"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
+						x="93"
+						y="4"
+						width="152"
+						height="22"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{product_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1"
-						y="0"
-						width="1"
-						height="27"
-						key="line-9"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
+						x="5"
+						y="4"
+						width="78"
+						height="22"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="80"
-						y="0"
-						width="1"
-						height="27"
-						key="line-10"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
+						x="249"
+						y="4"
+						width="56"
+						height="22"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{unit_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="245"
-						y="0"
-						width="1"
-						height="27"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
+						x="311"
+						y="4"
+						width="56"
+						height="22"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{qty}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="307"
-						y="-1"
-						width="1"
-						height="27"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
+						x="383"
+						y="4"
+						width="56"
+						height="22"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{price}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="534"
-						y="0"
-						width="1"
-						height="27"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="371"
-						y="-1"
-						width="1"
-						height="27"
-						key="line-20"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="450"
-						y="0"
-						width="1"
-						height="27"
-						key="line-22"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
+						x="468"
+						y="4"
+						width="56"
+						height="22"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{amounttotal}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
@@ -525,11 +844,11 @@ Logo]]></text>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="93"  isSplitAllowed="true" >
+			<band height="159"  isSplitAllowed="true" >
 				<rectangle radius="5" >
 					<reportElement
-						x="0"
-						y="7"
+						x="1"
+						y="77"
 						width="534"
 						height="82"
 						key="rectangle-5"/>
@@ -537,17 +856,17 @@ Logo]]></text>
 				</rectangle>
 				<line direction="TopDown">
 					<reportElement
-						x="0"
-						y="29"
-						width="204"
-						height="1"
+						x="1"
+						y="97"
+						width="260"
+						height="3"
 						key="line-14"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
 						x="6"
-						y="10"
+						y="80"
 						width="110"
 						height="17"
 						key="staticText-17"/>
@@ -560,7 +879,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="5"
-						y="31"
+						y="101"
 						width="209"
 						height="18"
 						key="staticText-18"/>
@@ -573,7 +892,7 @@ Logo]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="261"
-						y="48"
+						y="118"
 						width="110"
 						height="1"
 						key="line-15"/>
@@ -582,7 +901,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="262"
-						y="51"
+						y="121"
 						width="110"
 						height="17"
 						key="staticText-19"/>
@@ -595,7 +914,7 @@ Logo]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="398"
-						y="61"
+						y="131"
 						width="110"
 						height="1"
 						key="line-16"/>
@@ -604,7 +923,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="398"
-						y="67"
+						y="137"
 						width="109"
 						height="17"
 						key="staticText-21"/>
@@ -617,7 +936,7 @@ Logo]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="261"
-						y="7"
+						y="78"
 						width="1"
 						height="81"
 						key="line-17"/>
@@ -626,7 +945,7 @@ Logo]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="370"
-						y="7"
+						y="78"
 						width="1"
 						height="81"
 						key="line-18"/>
@@ -635,7 +954,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="5"
-						y="48"
+						y="118"
 						width="247"
 						height="18"
 						key="staticText-33"/>
@@ -647,8 +966,8 @@ Logo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="7"
-						y="66"
+						x="5"
+						y="136"
 						width="236"
 						height="18"
 						key="staticText-34"/>
@@ -661,7 +980,7 @@ Logo]]></text>
 				<staticText>
 					<reportElement
 						x="374"
-						y="11"
+						y="81"
 						width="77"
 						height="17"
 						key="staticText-35"/>
@@ -671,27 +990,23 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[ในนาม]]></text>
 				</staticText>
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="71"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="4"
-						y="4"
+						y="1"
 						width="49"
 						height="22"
 						key="staticText-28"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="14" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
 					</textElement>
 				<text><![CDATA[หมายเหตุ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="21"
-						y="27"
+						x="26"
+						y="17"
 						width="178"
 						height="22"
 						key="staticText-29"/>
@@ -701,73 +1016,10 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[ต้องการสินค้าภายใน 3 วัน]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="1"
-						width="1"
-						height="67"
-						key="line-23"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="370"
-						y="0"
-						width="1"
-						height="68"
-						key="line-24"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="450"
-						y="0"
-						width="1"
-						height="68"
-						key="line-25"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="1"
-						width="534"
-						height="1"
-						key="line-26"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="69"
-						width="534"
-						height="1"
-						key="line-27"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="533"
-						y="1"
-						width="1"
-						height="67"
-						key="line-28"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="371"
-						y="22"
-						width="163"
-						height="0"
-						key="line-29"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<staticText>
 					<reportElement
-						x="374"
-						y="2"
+						x="375"
+						y="3"
 						width="49"
 						height="18"
 						key="staticText-30"/>
@@ -777,32 +1029,23 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[รวมเงิน]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="371"
-						y="45"
-						width="163"
-						height="0"
-						key="line-30"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<staticText>
 					<reportElement
-						x="373"
-						y="25"
-						width="77"
+						x="375"
+						y="26"
+						width="76"
 						height="18"
 						key="staticText-31"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="14" isBold="true" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
 					</textElement>
-				<text><![CDATA[ภาษีมูลค่าเพิ่ม     7%]]></text>
+				<text><![CDATA[ภาษีมูลค่าเพิ่ม  7%]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="373"
-						y="48"
+						x="374"
+						y="49"
 						width="77"
 						height="18"
 						key="staticText-32"/>
@@ -812,6 +1055,49 @@ Logo]]></text>
 					</textElement>
 				<text><![CDATA[จำนวนเงินทั้งสิ้น]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="450"
+						y="0"
+						width="60"
+						height="22"
+						key="textField-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{amounttotal_sum}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="450"
+						y="24"
+						width="60"
+						height="22"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{amounttotal_sum_7}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="450"
+						y="47"
+						width="60"
+						height="22"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="Angsana New" pdfFontName="angsd___.ttf" size="16" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{sum}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</summary>
 </jasperReport>

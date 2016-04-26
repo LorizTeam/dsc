@@ -30,8 +30,17 @@
       		<result name="success">/purchaseorder.jsp</result>
     	</action>
 		
+		<action name="poHistory" class="pcpnru.projectAction.PurchaseOrderAction" method="history">
+      		<result name="success">/po-history.jsp</result>
+      		<result name="next">/purchaseorder-history.jsp</result>
+    	</action>
+		
 		<action name="poApprove" class="pcpnru.projectAction.PurchaseOrderAction" method="entrancPoApprove">
       		<result name="success">/po-approve.jsp</result>
+    	</action>
+    	
+    	<action name="window_viewDetail" class="pcpnru.projectAction.PurchaseOrderAction" method="window_viewDetail">
+      		<result name="success">/window-purchaseorder.jsp</result>
     	</action>
 		
     </package>

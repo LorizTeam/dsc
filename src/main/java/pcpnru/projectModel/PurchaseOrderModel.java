@@ -56,7 +56,7 @@ public class PurchaseOrderModel extends RecordApproveModel {
 		this.amounttotal = amounttotal;
 		this.remark = remark;
 	}
-	public PurchaseOrderModel(String s1, String s2, String s3, String s4, String s5, String s6, String s7) {
+	public PurchaseOrderModel(String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8, String s9, int s10, double s11, String s12, String s13) {
 			this.po_docno = s1;
 			this.vender = s2;
 			this.year = s3;
@@ -64,6 +64,12 @@ public class PurchaseOrderModel extends RecordApproveModel {
 			this.approve_status = s5;
 			this.type = s6;
 			this.create_by = s7;
+			this.ref_pr = s8;
+			this.ref_prdate = s9;
+			this.credit_day = s10;
+			this.mulct_day = s11;
+			this.quotation_number = s12;
+			this.quotation_date = s13;
 	}
 	
 	public PurchaseOrderModel(String img_path, String docno, String year) {

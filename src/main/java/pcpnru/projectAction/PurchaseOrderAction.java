@@ -3,6 +3,7 @@ package pcpnru.projectAction;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.junit.runner.Request;
 import com.opensymphony.xwork2.ActionSupport;
 
 import pcpnru.masterData.RecordApproveDB;
+import pcpnru.masterModel.RecordApproveModel;
 import pcpnru.projectData.PurchaseOrderDB;
 import pcpnru.projectModel.PurchaseOrderModel;
 import pcpnru.utilities.DateUtil;
@@ -156,6 +158,8 @@ public class PurchaseOrderAction extends ActionSupport {
 		if (savehd != null) {
 			
 			String type = "";
+			String ref_pr 	  = request.getParameter("ref_pr");
+			String ref_prdate = request.getParameter("ref_prdate");
 			
 			if (!pomodel.getPo_docno().equals("")) {
 				po_docno = pomodel.getPo_docno();
@@ -173,7 +177,7 @@ public class PurchaseOrderAction extends ActionSupport {
 				if (!quotation_date.equals("") || !quotation_date.equals("-"))
 					quotation_date = dateUtil.CnvToYYYYMMDDEngYear(quotation_date, '-');
 
-				purchaseOrderDB.UpdatePOHD(po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date);
+				purchaseOrderDB.UpdatePOHD(ref_pr, ref_prdate, po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date);
 			} else {
 				year = dateUtil.curYear();
 				po_docno = purchaseOrderDB.SelectUpdateDocNo(year);
@@ -190,7 +194,7 @@ public class PurchaseOrderAction extends ActionSupport {
 				if (!quotation_date.equals("") || !quotation_date.equals("-"))
 					quotation_date = dateUtil.CnvToYYYYMMDDEngYear(quotation_date, '-');
 
-				purchaseOrderDB.AddPOHD(po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date, username);
+				purchaseOrderDB.AddPOHD(ref_pr, ref_prdate, po_docno, year, po_docdate, type, vender, credit_day, mulct_day, quotation_number, quotation_date, username);
 			}  
 
 			Validate valid = new Validate();
@@ -225,6 +229,85 @@ public class PurchaseOrderAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	public String history() throws IOException, Exception {
+
+		HttpServletRequest request = ServletActionContext.getRequest();
+
+		String forwardText = "";
+		
+		String save = request.getParameter("save");
+		String search = request.getParameter("search");
+		String next = request.getParameter("next");
+
+		if (search != null) { 
+			request.setAttribute("ListResultPOSearch",
+					new PurchaseOrderDB().GetListPO_Header(pomodel.getPo_docno(), pomodel.getVender(), pomodel.getPo_day(),
+							pomodel.getPo_month(),pomodel.getPo_year(), pomodel.getApprove_status(), pomodel.getType()));
+
+			forwardText = "success";
+			
+		} else if (save != null) {
+
+			if (request.getParameterValues("chkrow") != null) {
+				String[] chkrow = request.getParameterValues("chkrow");
+				String[] approveStatus = request.getParameterValues("approveStatus");
+
+				for (String data_row : chkrow) {
+					String[] split_value = data_row.split("-");
+					String docno = split_value[0];
+					String year = String.valueOf(Integer.parseInt(split_value[1]) - 543);
+					int array = Integer.parseInt(split_value[2]);
+					new PurchaseOrderDB().approve_po(docno, year, approveStatus[array]);
+				}
+
+			}
+			request.setAttribute("ListResultPOSearch", new PurchaseOrderDB().GetListPO_Header("", "", "", "", "", "", ""));
+			
+			forwardText = "success";
+		} else {
+			request.setAttribute("ListResultPOSearch", new PurchaseOrderDB().GetListPO_Header("", "", "", "", "", "", ""));
+			
+			forwardText = "success";
+		}
+		if(next!=null){
+			PurchaseOrderDB purchaseOrderDB = new PurchaseOrderDB();
+			
+			String po_docno = pomodel.getPo_docno();
+			String year 	= pomodel.getYear();
+			year = String.valueOf(Integer.parseInt(year)-543);
+			
+			Map MapResultValue = purchaseOrderDB.GetAllValueHeader_byDocno(po_docno, year);
+			
+			pomodel = new PurchaseOrderModel();
+			pomodel.setPo_docno(MapResultValue.get("po_docno").toString());
+			pomodel.setPo_docdate(MapResultValue.get("docdate").toString());
+			pomodel.setRef_pr(MapResultValue.get("ref_pr").toString());
+			pomodel.setRef_prdate(MapResultValue.get("ref_prdate").toString());
+			pomodel.setMulct_day(Double.valueOf(MapResultValue.get("penaltype_perday").toString()));
+			pomodel.setCredit_day(Integer.valueOf(MapResultValue.get("creditday").toString()));
+			pomodel.setVendor_name(MapResultValue.get("vender").toString()); 
+			pomodel.setQuotation_number(MapResultValue.get("ref_quotation").toString()); 
+			pomodel.setQuotation_date(MapResultValue.get("ref_quotationdate").toString());  
+			pomodel.setYear(MapResultValue.get("year").toString());
+			
+			String type = MapResultValue.get("type").toString();
+			request.setAttribute("type", type);
+			
+			String chkA = purchaseOrderDB.chk_poapprove(po_docno, year);
+			request.setAttribute("chkA", chkA);
+			
+			List PRList = purchaseOrderDB.GetPRList(po_docno, year);
+			request.setAttribute("PRList", PRList);
+			
+			List ResultImageList = purchaseOrderDB.GET_PurchaseRequest_Image(po_docno, year, "");
+			request.setAttribute("ResultImageList", ResultImageList);
+			
+			forwardText = "next";
+		} 
+
+		return forwardText;
+	}
+	
 	public String entrancPoApprove() throws IOException, Exception {
 
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -257,6 +340,45 @@ public class PurchaseOrderAction extends ActionSupport {
 			request.setAttribute("ListResultPOSearch", new PurchaseOrderDB().GetListPO_Header("", "", "", "", "", "", ""));
 		}
 
+		return SUCCESS;
+	}
+	
+	public String window_viewDetail() throws Exception {
+
+		HttpServletRequest request = ServletActionContext.getRequest();
+
+		String po_docno = request.getParameter("po_docno");
+		String year		= request.getParameter("year");
+		if(year!=null) year = String.valueOf(Integer.parseInt(year)-543);
+		String docdate = request.getParameter("docdate");
+		String type		= request.getParameter("type");
+		
+		String pr_docno 	= request.getParameter("pr_docno");
+		String pr_docdate	= request.getParameter("pr_docdate");
+		String vendor 		= request.getParameter("vendor");
+		String credit	= request.getParameter("credit");
+		String mulct 	= request.getParameter("mulct");
+		String qut_n	= request.getParameter("qut_n");
+		String qut_d 	= request.getParameter("qut_d"); 
+		
+		PurchaseOrderDB purchaseOrderDB = new PurchaseOrderDB();
+		
+		List PRList = purchaseOrderDB.GetPRList(po_docno, year);
+		request.setAttribute("PRList", PRList);
+
+		List ResultImageList = purchaseOrderDB.GET_PurchaseRequest_Image(po_docno, year, "");
+		request.setAttribute("ResultImageList", ResultImageList);
+		   
+		request.setAttribute("pr_docno", pr_docno);
+		request.setAttribute("pr_docdate", pr_docdate);
+		request.setAttribute("po_docno", po_docno);
+		request.setAttribute("docdate", docdate);
+		request.setAttribute("type", type);
+		request.setAttribute("vender", vendor);
+		request.setAttribute("credit_day", credit);
+		request.setAttribute("mulct_day", mulct);
+		request.setAttribute("quotation_number", qut_n);
+		request.setAttribute("quotation_date", qut_d); 
 		return SUCCESS;
 	}
 }

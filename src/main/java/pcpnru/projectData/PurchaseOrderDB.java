@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pcpnru.masterModel.RecordApproveModel;
 import pcpnru.projectModel.CentralBudgetForm;
@@ -83,12 +85,12 @@ public class PurchaseOrderDB {
 		return PRList;
 	}
 
-	public void AddPOHD(String po_docno, String year, String po_docdate, String type, String vender, int credit_day,
+	public void AddPOHD(String ref_pr, String ref_prdate, String po_docno, String year, String po_docdate, String type, String vender, int credit_day,
 			double mulct_day, String quotation_number, String quotation_date, String username) throws Exception {
 		conn = agent.getConnectMYSql();
 
-		String sqlStmt = "INSERT IGNORE INTO po_hd(po_docno, year, docdate, type, vender, creditday, penaltype_perday, ref_quotation, ref_quotationdate, approve_status, create_by) "
-				+ "VALUES ('" + po_docno + "','" + year + "','" + po_docdate + "','" + type + "','" + vender + "',"
+		String sqlStmt = "INSERT IGNORE INTO po_hd(ref_pr, ref_prdate, po_docno, year, docdate, type, vender, creditday, penaltype_perday, ref_quotation, ref_quotationdate, approve_status, create_by) "
+				+ "VALUES ('"+ref_pr+ "','"+ ref_prdate+"','"+po_docno+ "','"+ year+"','" + po_docdate + "','" + type + "','" + vender + "',"
 				+ credit_day + "," + mulct_day + ",'" + quotation_number + "','" + quotation_date + "', 'WA', '"+username+"')";
 		// System.out.println(sqlStmt);
 		pStmt = conn.createStatement();
@@ -96,11 +98,11 @@ public class PurchaseOrderDB {
 		pStmt.close();
 		conn.close();
 	}
-	public void UpdatePOHD(String po_docno, String year, String po_docdate, String type, String vender, int credit_day,
+	public void UpdatePOHD(String ref_pr, String ref_prdate, String po_docno, String year, String po_docdate, String type, String vender, int credit_day,
 			double mulct_day, String quotation_number, String quotation_date) throws Exception {
 		conn = agent.getConnectMYSql();
 
-		String sqlStmt = "UPDATE po_hd set docdate = '"+po_docdate+"', type = '" + type
+		String sqlStmt = "UPDATE po_hd set ref_pr = '"+ref_pr+"', ref_prdate = '"+ref_prdate+"', docdate = '"+po_docdate+"', type = '" + type
 				+ "' , vender = '" + vender + "'," + "creditday = " + credit_day + " , penaltype_perday = " + mulct_day + ", ref_quotation = '"+quotation_number+"', "
 				+ "ref_quotationdate = '"+quotation_date+"' "
 				+ "WHERE po_docno = '" + po_docno + "' and year = '" + year + "'";
@@ -147,8 +149,8 @@ public class PurchaseOrderDB {
 			pStmt.close();
 		}
 
-		sqlStmt = "INSERT INTO po_dt(po_docno,year,itemno,description,qty) " + "SELECT '" + po_docno
-				+ "',year,itemno,product_code,qty FROM record_approve_dt WHERE docno = '" + pr_docno + "' and year = '"
+		sqlStmt = "INSERT INTO po_dt(po_docno,year,itemno,description,qty,unit) " + "SELECT '" + po_docno
+				+ "',year,itemno,product_code,qty,unit_id FROM record_approve_dt WHERE docno = '" + pr_docno + "' and year = '"
 				+ year + "' ";
 		// System.out.println(sqlStmt);
 		pStmt = conn.createStatement();
@@ -315,8 +317,11 @@ public List<PurchaseOrderModel> GetListPO_Header(String po_number, String vender
 
 	String sqlQuery = "SELECT po_docno,`year`+543 as year,"
 			+ "CONCAT(substr(docdate from 9 for 2),\"-\",substr(docdate from 6 for 2),\"-\",year(docdate)+543) as docdate," 
-			+ "a.create_by,"
-			+ "CONCAT(b.name,' ',b.lastname) as create_name,approve_status, type, vendor_name "
+			+ "a.create_by," 
+			+ "CONCAT(b.name,' ',b.lastname) as create_name,approve_status, type, vendor_name, "
+			+ "ref_pr, creditday, penaltype_perday, ref_quotation, "
+			+ "CONCAT(substr(ref_prdate from 9 for 2),\"-\",substr(ref_prdate from 6 for 2),\"-\",year(ref_prdate)+543) as ref_prdate, "
+			+ "CONCAT(substr(ref_quotationdate from 9 for 2),\"-\",substr(ref_quotationdate from 6 for 2),\"-\",year(ref_quotationdate)+543) as ref_quotationdate " 
 			+ "FROM `po_hd` a "
 			+ "INNER JOIN employee b on (a.create_by = b.username) "
 			+ "INNER JOIN vendor_master c on (a.vender = c.vendor_id) "
@@ -344,7 +349,7 @@ public List<PurchaseOrderModel> GetListPO_Header(String po_number, String vender
 	if (!type.equals(""))
 		sqlQuery += "type = '" + type + "' and ";
 
-	sqlQuery += "po_docno != ''";
+	sqlQuery += "po_docno != '' order by approve_status desc";
 
 	conn = agent.getConnectMYSql();
 	pStmt = conn.createStatement();
@@ -353,7 +358,9 @@ public List<PurchaseOrderModel> GetListPO_Header(String po_number, String vender
 	 
 	while (rs.next()) {
 		ListPO.add(new PurchaseOrderModel(rs.getString("po_docno"), rs.getString("vendor_name"), rs.getString("year"),
-				rs.getString("docdate"), rs.getString("approve_status"), rs.getString("type"), rs.getString("create_name")));
+				rs.getString("docdate"), rs.getString("approve_status"), rs.getString("type"), rs.getString("create_name")
+				, rs.getString("ref_pr"), rs.getString("ref_prdate"), rs.getInt("creditday"), rs.getDouble("penaltype_perday")
+				, rs.getString("ref_quotation"), rs.getString("ref_quotationdate")));
 	}
 
 	if (!rs.isClosed())
@@ -380,5 +387,67 @@ public void approve_po(String docno, String year, String approve_status) throws 
 	if (!conn.isClosed())
 		conn.close();
 }
+public Map GetAllValueHeader_byDocno(String po_docno, String year) throws IOException, Exception {
+	Map mapresultGet = new HashMap();
 
+	String sqlQuery = "SELECT po_docno,`year`+543 as year,"
+				+ "CONCAT(substr(docdate from 9 for 2),\"-\",substr(docdate from 6 for 2),\"-\",year(docdate)+543) as docdate," 
+				+ "a.create_by," 
+				+ "CONCAT(b.name,' ',b.lastname) as create_name, approve_status, type, vendor_name, "
+				+ "ref_pr, creditday, penaltype_perday, ref_quotation, "
+				+ "CONCAT(substr(ref_prdate from 9 for 2),\"-\",substr(ref_prdate from 6 for 2),\"-\",year(ref_prdate)+543) as ref_prdate, "
+				+ "CONCAT(substr(ref_quotationdate from 9 for 2),\"-\",substr(ref_quotationdate from 6 for 2),\"-\",year(ref_quotationdate)+543) as ref_quotationdate " 
+				+ "FROM `po_hd` a "
+				+ "INNER JOIN employee b on (a.create_by = b.username) "
+				+ "INNER JOIN vendor_master c on (a.vender = c.vendor_id) WHERE "
+				+ "po_docno = '"+po_docno+"' and year = '"+year+"'";
+	
+	conn = agent.getConnectMYSql();
+	pStmt = conn.createStatement();
+	rs = pStmt.executeQuery(sqlQuery);
+
+	while (rs.next()) {
+		mapresultGet.put("po_docno", rs.getString("po_docno"));
+		mapresultGet.put("year", rs.getString("year"));
+		mapresultGet.put("docdate", rs.getString("docdate"));
+		mapresultGet.put("ref_pr", rs.getString("ref_pr"));
+		mapresultGet.put("ref_prdate", rs.getString("ref_prdate"));
+		mapresultGet.put("creditday", rs.getInt("creditday"));
+		mapresultGet.put("penaltype_perday", rs.getDouble("penaltype_perday"));
+		mapresultGet.put("ref_quotation", rs.getString("ref_quotation"));
+		mapresultGet.put("ref_quotationdate", rs.getString("ref_quotationdate"));
+		mapresultGet.put("vender", rs.getString("vendor_name"));
+		mapresultGet.put("type", rs.getString("type"));
+	}
+
+	if (!rs.isClosed())
+		rs.close();
+	if (pStmt.isClosed())
+		pStmt.close();
+	if (!conn.isClosed())
+		conn.close();
+
+	return mapresultGet;
+}
+public String chk_poapprove(String po_docno, String year) throws Exception {
+	String ck = "";
+	try {
+		conn = agent.getConnectMYSql();
+
+		String sqlStmt = "SELECT approve_status FROM po_hd " + "WHERE po_docno = '"+po_docno+"' and year = '"+year+"' group by po_docno ";
+		// System.out.println(sqlStmt);
+		pStmt = conn.createStatement();
+		rs = pStmt.executeQuery(sqlStmt);
+		while (rs.next()) { 
+				ck = rs.getString("approve_status"); 
+		}
+
+		rs.close();
+		pStmt.close();
+		conn.close();
+	} catch (Exception e) {
+		throw new Exception(e.getMessage());
+	}
+	return ck;
+}
 }

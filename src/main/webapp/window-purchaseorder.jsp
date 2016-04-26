@@ -20,6 +20,25 @@ String project_code = "";
 		}
 	}
 %>
+<% 	String pr_docno = "";
+	if(request.getAttribute("pr_docno")!=null) pr_docno = (String) request.getAttribute("pr_docno"); 
+	String pr_docdate = "";
+	if(request.getAttribute("pr_docdate")!=null) pr_docdate = (String) request.getAttribute("pr_docdate");
+	String po_docno = "";
+	if(request.getAttribute("po_docno")!=null) po_docno = (String) request.getAttribute("po_docno");
+	String docdate = "";
+	if(request.getAttribute("docdate")!=null) docdate = (String) request.getAttribute("docdate");
+	String vender = "";
+	if(request.getAttribute("vender")!=null) vender = (String) request.getAttribute("vender");
+	String credit_day = "";
+	if(request.getAttribute("credit_day")!=null) credit_day = (String) request.getAttribute("credit_day");
+	String mulct_day = "";
+	if(request.getAttribute("mulct_day")!=null) mulct_day = (String) request.getAttribute("mulct_day");
+	String quotation_number = "";
+	if(request.getAttribute("quotation_number")!=null) quotation_number = (String) request.getAttribute("quotation_number");
+	String quotation_date = "";
+	if(request.getAttribute("quotation_date")!=null) quotation_date = (String) request.getAttribute("quotation_date");
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -53,29 +72,10 @@ String project_code = "";
 <title>สร้างใบ PO</title>
 </head>
 <body>
-	<div><%@include file="topmenu.jsp" %></div>
+	<div><%@include file="window-topmenu.jsp" %></div>
 	<h3 class="align-center">ทำรายการสั่งซื้อ/สั่งจ้าง</h3>
-	<form action="poche" method="post" enctype="multipart/form-data">
-		<div class="example" data-text="ข้อมูลใบ PR"> 
-	         <div class="grid">
-	         	<div class="row cells12">
-	         		<div class="cell colspan4"> </div> 
-					<div class="cell colspan4 "> 
-			        	รหัส PR
-				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield name="pomodel.pre_loadpr" id="pre_loadpr" required="" />
-						    <div class="button-group">
-						    <button class="button primary" type="button" onclick="getpr()"> <span class="mif-search"></span></button>
-							<button class="button danger" type="submit" id="delete_detailpr" name="delete_detailpr"><span class="mif-bin"></span></button>
-				 	 		<button class="button success" type="submit" id="pull_detailpr" name="pull_detailpr"><span class="mif-download"></span></button>
-				 	 		</div>
-						</div>
-					</div>
-					<div class="cell colspan4"> </div> 
-			 	</div>
-			</div>
-		</div>
-	
+	<form >
+		  
 		<div class="example" data-text="ข้อมูลรายละเอียด PO"> 
 	         <div class="grid">
 	         	<div class="row cells12">
@@ -83,13 +83,13 @@ String project_code = "";
 					<div class="cell colspan3 "> 
 			        	รหัส PR
 				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield id="pre_loadpr1" name="ref_pr" readonly="true" />
+						    <input type="text" value="<%=pr_docno%>" readonly="readonly" /> 
 						</div>
 					</div>
 					<div class="cell colspan3"> 
 						วันที่สร้าง PR
 				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield id="date_loadpr" name="ref_prdate" readonly="true"/>
+						    <input type="text" value="<%=pr_docdate%>" readonly="readonly" /> 
 						</div>
 					</div>
 					<div class="cell colspan3"> </div>
@@ -132,29 +132,20 @@ String project_code = "";
 			 				</tbody>
 			 			</table>
 			 		</div>
-			 	</div>
-			 	<div class="row cells12">
-			 		<div class="cell colspan5"> </div>
-			 		<div class="cell colspan2">
-			 			 <button class="button primary" type="submit" name="update_price">คำนวณราคา <span class="mif-loop2"></span></button>
-			 		</div>
-			 		<div class="cell colspan5"> </div>
-			 	</div>
+			 	</div> 
 			 	 
 			 	<div class="row cells12">
 	         		<div class="cell colspan3"> </div> 
 					<div class="cell colspan3 "> 
 			        	รหัส PO
 				        <div class="input-control text full-size"  data-role="input">
-				        	<s:property value="pomodel.po_docno" />
-				        	<s:hidden name="pomodel.po_docno" id="po_docno"/>
-				        	<s:hidden name="pomodel.project_code" id="project_code"/>
+				        	<input type="text" value="<%=po_docno%>" readonly="readonly" /> 
 						</div>
 					</div>
 					<div class="cell colspan3"> 
 						วันที่ทำรายการ PO
-						<div class="input-control text full-size">
-						    <s:textfield name="pomodel.po_docdate" id="po_docdate" required=""/>
+						<div class="input-control text full-size"> 
+						    <input type="text" value="<%=docdate%>" readonly="readonly">
 						</div>
 					</div>
 					<div class="cell colspan3"> </div>
@@ -182,12 +173,7 @@ String project_code = "";
 					<div class="cell colspan3 "> 
 			        	เรียนผู้ขาย
 				        <div class="input-control text full-size"  data-role="input">
-						    <s:hidden name="pomodel.vender" id="vendor_id"  />
-						    <s:textfield name="pomodel.vender_name" id="vendor_name" readonly="true" />
-						    <div class="button-group">
-						 	<button class="button primary" type="button" onclick="getvendor()"> <span class="mif-search"></span></button>
-							<button class="button danger" type="button" id="delete_vendor"><span class="mif-bin"></span></button>
-							</div>
+						    <input type="text" value="<%=vender%>" readonly="readonly" /> 
 						</div>
 					</div>
 					<div class="cell colspan3"> </div>
@@ -196,15 +182,15 @@ String project_code = "";
 	         		<div class="cell colspan3"> </div> 
 	         		<div class="cell colspan3"> 
 						จะส่งมอบงานจ้างหรือสิ่งของภายใน
-						<div class="input-control text full-size"  data-role="input">
-						    <s:textfield type="number" name="pomodel.credit_day" id="credit_day" required=""/>
+						<div class="input-control text full-size"  data-role="input"> 
+						    <input type="text" value="<%=credit_day%>" readonly="readonly" /> 
 						</div>
 						วัน
 					</div>
 					<div class="cell colspan3 "> 
 			        	ค่าปรับวันละ
-				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield type="number" step="0.01" name="pomodel.mulct_day" id="mulct_day" required="" />
+				        <div class="input-control text full-size"  data-role="input"> 
+						    <input type="text" value="<%=mulct_day%>" readonly="readonly" /> 
 						</div>
 						หากส่งของช้า
 					</div>
@@ -218,14 +204,14 @@ String project_code = "";
 	         		<div class="cell colspan3"> </div> 
 					<div class="cell colspan3 "> 
 			        	อ้างอิงหมายเลขใบเสนอราคา
-				        <div class="input-control text full-size"  data-role="input">
-						    <s:textfield name="pomodel.quotation_number" id="quotation_number" required=""/>
+				        <div class="input-control text full-size"  data-role="input"> 
+						    <input type="text" value="<%=quotation_number%>" readonly="readonly" /> 
 						</div>
 					</div>
 					<div class="cell colspan3"> 
 						ลงวันที่ของใบเสนอราคา
-						<div class="input-control text full-size">
-						    <s:textfield name="pomodel.quotation_date" id="quotation_date" required=""/>
+						<div class="input-control text full-size"> 
+						    <input type="text" value="<%=quotation_date%>" readonly="readonly" /> 
 						</div>
 					</div>
 					<div class="cell colspan3"> </div>
@@ -269,20 +255,7 @@ String project_code = "";
 			        </div>
          		</div>
 		</div>
-		</div>
-		
-		<div class="grid">
-         	<div class="row cells12">
-	       		<div class="cell colspan5"> </div> 
-				<div class="cell colspan4"> 
-		        	<button class="button success savehd" type="submit" id="savehd" name="savehd" ><span class="mif-floppy-disk mif-lg fg-white"></span></button>
-		        	<button type="button" class="button warning" onclick="getPrint()" id="print" ><span class="mif-print mif-lg fg-white"> ออกรายงาน</span></button>
-				</div>
-				<div class="cell colspan3" align="right"> 
-					<a class="button success next" id="next" href="pocheckauthen"><span class="mif-lg fg-white">ทำรายการใหม่</span></a>
-		 		</div>
-			</div>
-		</div>
+		</div> 
 	</form>
 <script type="text/javascript">
 function getpr() {

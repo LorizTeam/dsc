@@ -63,7 +63,7 @@
                         	<ul class="d-menu" data-role="dropdown">  
 			                        <li><a href="pocheckauthen">สร้างรายการ</a></li>
 			                        <li class="divider"></li>
-			                        <li><a href="">ดูประวัติ</a></li> 
+			                        <li><a href="poHistory">ดูประวัติ</a></li> 
 			                        <li class="divider"></li>
 			                        <li><a href="">จัดการ ผู้มีอำนาจการอนุมัติ</a></li> 
 			                 </ul>

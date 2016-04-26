@@ -15,18 +15,20 @@
         <link href="css/metro-icons.css" rel="stylesheet">
 		<link href="css/metro-schemes.css" rel="stylesheet"> 
 		<link href="css/select2.css" rel="stylesheet">
+		<link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 		<link href="css/jquery.dataTables.min.css" rel="stylesheet">
 		
-	 	<script src="js/jquery-2.1.3.min.js"></script>
+	 	<script src="js/jquery-2.1.3.min.js"></script> 
 	    <script src="js/metro.js"></script>
 	    <script src="js/select2.js"></script>
         <script src="js/jquery.dataTables.min.js"></script> 
+        <script src="js/bootstrap-datepicker-th.js"></script>
 	</head>
 	
 	<body>
 		<div><%@include file="topmenu.jsp" %></div>
 		<h3 class="align-center">อนุมัติ ใบสั่งซื้อ</h3>
-		<form action="poApprove" method="post">
+		<form action="poHistory" method="post">
 			<div class="example" data-text="ค้นหาข้อมูล"> 
 		         <div class="grid">
 		         	<div class="row cells12">
@@ -35,6 +37,7 @@
 				        	รหัส PO
 					        <div class="input-control text full-size"  data-role="input">
 							    <s:textfield name="pomodel.po_docno" id="po_docno" />
+							    <s:hidden name="pomodel.year" id="year" />
 							</div>
 						</div>
 						<div class="cell colspan3"> 
@@ -92,15 +95,10 @@
 							</div>
 						</div>		
 				 	</div>
-				 	<div class="row cells12">
-		         		 <div class="cell colspan4"></div>
-						<div class="cell colspan2">
+				 	<div class="row cells12"> 
+						<div class="cell colspan12" align="center">
 							<button class="button primary" name="search" type="submit"> <span class="mif-search"></span> ค้นหา</button>
-						</div>
-						<div class="cell colspan2">
-							<button class="button success" name="save" type="submit"> <span class="mif-checkmark"></span> บันทึกการอนุมัติ</button>
-						</div>
-						<div class="cell colspan4"></div>		
+						</div>	
 				 	</div>
 				</div>
 				<s:hidden name="recordApproveModel.fromwindow" id="fromwindow" value="true"/>
@@ -109,14 +107,11 @@
 				<div class="cell colspan12">
 					<table id="po_table" class="cell-border hover display compact nowrap" cellspacing="0" width="100%">
 						<thead>
-							<tr>
-								<th><label class="input-control small-check checkbox"> 
-		                		<input type="checkbox" id="checkAll" data-show="indeterminate" />
-		                		<span class="check"></span> 
-		                        </label> เลือกทั้งหมด</th>
-								<th>รหัส PR</th>
+							<tr> 
+								<th>รหัส PO</th>
 								<th>ผู้ขาย</th> 
 								<th>ประเภท</th>
+								<th>สถานะ</th>
 								<th>ผู้ทำรายการ</th>
 								<th>ปี</th>
 								<th>วันที่ทำรายการ</th>
@@ -129,49 +124,26 @@
 								if(new Validate().CheckListNotNull(ListResultPOSearch)){
 									for(PurchaseOrderModel RAM:ListResultPOSearch){
 							%>
-										<tr>
-											<td align="center">
-											<%
-												if(RAM.getApprove_status().equals("CC")){
-											%>
-												<label class="input-control small-check checkbox"> 
-						                			<input type="checkbox" class="chkrow" name="chkrow" value="<%=RAM.getPo_docno()%>-<%=RAM.getYear() %>" data-show="indeterminate" disabled />
-						                		<span class="check"></span> 
-						                        </label>
-						                        <input type="hidden" name="approveStatus" value="CC" /><input type="text" value=" ยกเลิกรายการ" size="8" readonly="readonly" />
-											<%
-												}else{
-											%>
-												<label class="input-control small-check checkbox"> 
-						                			<input type="checkbox" class="chkrow" name="chkrow" value="<%=RAM.getPo_docno() %>-<%=RAM.getYear() %>" data-show="indeterminate" />
-						                		<span class="check"></span> 
-						                        </label>
-						                        
-						                        <select name="approveStatus" id="approveStatus" class="approveStatus">
-							                        <option <%if(RAM.getApprove_status().equals("AP")){ %>selected <%} %> value="AP">อนุมัติ</option>
-										        	<option <%if(RAM.getApprove_status().equals("WA")){ %>selected <%} %> value="WA">รอการอนุมัติ</option>
-										        	<option value="CC">ยกเลิกรายการ</option>
-									        	</select>
-									        	
-											<%	
-												
-												}
-											%>
-												
-											</td>
-											<td><%=RAM.getPo_docno()%></td>
+										<tr> 
+											<td class="tddocno"><%=RAM.getPo_docno()%></td>
 											<td><%=RAM.getVender()%></td>
 											<%if(RAM.getType().equals("P")){%>
 												<td>จัดซื้อ</td>
 											<%}else{ %>
 												<td>จัดจ้าง</td>
 											<%} %>
+											<%if(RAM.getApprove_status().equals("AP")){%>
+												<td>อนุมัติแล้ว</td>
+											<%}else if(RAM.getApprove_status().equals("WA")){ %>
+												<td>รออนุมัติ</td>
+											<%}else{ %>
+												<td>ยกเลิก</td>
+											<%} %>
+											
 											<td><%=RAM.getCreate_by()%></td>
-											<td><%=RAM.getYear() %></td>
+											<td class="tdyear"><%=RAM.getYear() %></td>
 											<td><%=RAM.getPo_docdate()%></td>
-											<td align="center"><button class="button primary" type="button" onclick="getDetail('<%=RAM.getRef_pr()%>','<%=RAM.getRef_prdate()%>',
-											'<%=RAM.getPo_docno()%>','<%=RAM.getYear()%>','<%=RAM.getPo_docdate()%>','<%=RAM.getType()%>','<%=RAM.getVender()%>','<%=RAM.getCredit_day()%>'
-											,'<%=RAM.getMulct_day()%>','<%=RAM.getQuotation_number()%>','<%=RAM.getQuotation_date()%>')" id="viewDetail"> <span class="mif-search"></span></button></td>
+											<td align="center"><button class="button primary" type="submit" name="next" id="next"> <span class="mif-search"></span></button></td>
 										</tr>
 							<%
 									}
@@ -189,15 +161,18 @@
 			</div>	
 		</form>
 		<script>
-		function getDetail(pr_docno,pr_docdate,docno,year,docdate,type,vendor,credit,mulct,qut_n,qut_d) {
-   			var load = window.open('/dsc/window_viewDetail?pr_docno='+pr_docno+'&pr_docdate='+pr_docdate+'&year='+year+'&po_docno='+docno+'&docdate='+docdate+'&type='+type+'&vendor='+vendor+'&credit='+credit+'&mulct='+mulct+'&qut_n='+qut_n+'&qut_d='+qut_d,'po',
-   			             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
-   		}
+		 
 		function getvendor() {
 			var load = window.open('/dsc/windows_entrancvendor','ap_po',
 			             'scrollbars=yes,menubar=no,height=700,width=1280,resizable=yes,toolbar=no,location=yes,status=no');
 		}
 	$(function(){
+		
+		$("#next").click(function(){
+			$("#po_docno").val($(".tddocno").text()); 
+			$("#year").val($(".tdyear").text());
+		});
+		
 			$("#delete_vendor").click(function(){
 				$("#vendor_id").val("");
 				$("#vendor_name").val("");
@@ -211,22 +186,18 @@
                 "lengthMenu": [[10, 25, 50, 100, -1],[10, 25, 50, 100, "All"] ] 
             } );
 			
-			
-			$("#checkAll").change(function () {
-       		    $("input:checkbox").prop('checked', $(this).prop("checked"));
-       		});
-			$("#record_approve_date").datepicker({
-				format: "dd-mm-yyyy",todayBtn: "linked",todayHighlight: true,clearBtn: true
+			$("#po_day").datepicker({
+				format: "dd-mm-yyyy",todayBtn: "linked",todayHighlight: true,clearBtn: true,autoclose: true
 		    });
-			$("#record_approve_month").datepicker({
+			$("#po_month").datepicker({
 			    format: "mm",
 			    minViewMode: 1,
-			    maxViewMode: 1,clearBtn: true
+			    maxViewMode: 1,clearBtn: true,autoclose: true
 		    });
-			$("#record_approve_year").datepicker({
+			$("#po_year").datepicker({
 			    format: "yyyy",
 			    minViewMode: 2,
-			    maxViewMode: 2,clearBtn: true
+			    maxViewMode: 2,clearBtn: true,autoclose: true
 		    });
 			$('#po_table tbody').on( 'click', 'tr', function () { 
     	        //if ( $(this).hasClass('selected') ) {
