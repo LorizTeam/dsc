@@ -3,6 +3,8 @@
 <%@ page import="pcpnru.projectModel.*" %>
 <%@ page import="pcpnru.masterModel.GroupCostCodeMasterModel" %> 
 <%@ page import="pcpnru.projectData.*" %>
+<%@ page import="pcpnru.masterModel.*" %>
+<%@ page import="pcpnru.masterData.*" %>
 <%
 	if(session.getAttribute("username") == null)response.sendRedirect("login.jsp");
 
@@ -21,11 +23,15 @@
 		<link href="css/metro-schemes.css" rel="stylesheet">
 		<link href="css/docs.css" rel="stylesheet"> 
 	 	<link href="css/style.css" rel="stylesheet">  
+	 	<link href="css/select2.css" rel="stylesheet"> 
+	 	<link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 	 	
 	 	<script src="js/jquery-2.1.3.min.js"></script>
 	    <script src="js/metro.js"></script>
 	    <script src="js/angular.min.js"></script>
 		<script src="js/app.js"></script>
+		<script src="js/select2.js"></script>
+		<script src="js/bootstrap-datepicker-th.js"></script>
 	</head>
 	 
 	
@@ -79,6 +85,11 @@
 								    </select>
 								</div>
 							</div>  
+							<%if(freeze.equals("N")){%>
+							<div class="cell colspan4"><br>
+								 <button class="button success" type="submit" name="add">เพิ่มประมาณการรายได้</button>
+					    	</div>
+					    	<%} %>
 			        	</div>
 					  	<div class="row cells12">
 					        <div class="cell colspan4"> 
@@ -100,18 +111,40 @@
 					        	 <button type="button" class="button primary mif-calculator2" onclick="showCharm('right')"></button> 
 							</div>
 							
-							<div class="cell colspan2"> 
+							<div class="cell colspan3"> 
 					        	จำนวนเงิน
 					        	<div class="input-control text full-size"> 
 			                    	<input id="budget" name="budget" onblur="CommaBudget()">
 			                    </div>
 							</div> 
-							<%if(freeze.equals("N")){%>
-							<div class="cell colspan5"><br>
-								 <button class="button success" type="submit" name="add">เพิ่มประมาณการรายได้</button>
-					    	</div>
-					    	<%} %>
+							
 					</div>
+					<div class="row cells12">
+		         		<div class="cell colspan8"> 
+							พนักงาน
+							<div class="input-control full-size" >
+	                            <select name="emp" class="js-example-basic-multiple" multiple="multiple" data-placeholder="เลือก พนักงาน" required="required" >
+	                            	<%List grouPersonnelMasterList = null;
+	                                PersonnelMasterDB pn = new PersonnelMasterDB();
+	                                grouPersonnelMasterList = pn.GetPersonnelList("", "", "", "", "");
+	                                for (Iterator iterEpm = grouPersonnelMasterList.iterator(); iterEpm.hasNext();) {
+	                                	PersonnelMasterModel pmInfo = (PersonnelMasterModel) iterEpm.next(); 
+	                                %>
+	                                	<option value="<%=pmInfo.getPersonnel_id()%>-<%=pmInfo.getManday()%>" ><%=pmInfo.getPersonnel_name()%> <%=pmInfo.getPersonnel_lastname()%> - <%=pmInfo.getManday()%></option>
+	                                <%		}  
+									%> 
+	                            </select>
+	                        </div>
+						</div>
+						<div class="cell colspan4"> 
+		        		วันที่โครงการ
+			        	 	<div class="input-daterange " id="daterange">
+							    <input type="text" id="start" name="date_start" size="10" />
+							    <span class="input-group-addon"> - </span>
+							    <input type="text" id="endstart" name="date_end" size="10" />
+							</div>
+						</div> 
+	         		</div>
 				</div>  
 			</div>
 				  
@@ -398,7 +431,7 @@
         }
 		
 		$(function(){
-			  
+			$(".js-example-basic-multiple").select2();  
 			// load
 			var subjobcode = $("#subjobcode").val();
 			var out = ''; 
@@ -479,6 +512,16 @@
    				text = text1[0];  
    				$("#gcostcode").val(text); 
    			}); 
+			
+			$(".input-daterange").datepicker({
+		        format: "dd-mm-yyyy",
+		        startDate: "-0d",
+		        maxViewMode: 1,
+		        todayBtn: true,
+		        clearBtn: true,
+		        autoclose: true,
+		        todayHighlight: true
+		    });
 		});  
 		 
 		</script>

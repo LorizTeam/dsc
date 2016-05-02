@@ -303,4 +303,35 @@ public class ProjectDTChargesDB {
 		conn.close();
 		return freeze;
 	}
+	public double getAmtValueEmp(String emp, String date_start, String date_end) throws Exception {
+
+		String amountTotalTXT = "", dateD = "";
+		double amountTotal = 0;
+
+		conn = agent.getConnectMYSql();
+
+		String sqlStmt = "SELECT sum(manday) as att , DATEDIFF('"+date_end+"','"+date_start+"') AS DiffDate FROM employee WHERE username in "+emp+"";
+
+		pStmt = conn.createStatement();
+		rs = pStmt.executeQuery(sqlStmt);
+
+		while (rs.next()) {
+			amountTotalTXT = rs.getString("att");
+			if (amountTotalTXT != null){
+				amountTotal = Double.parseDouble(rs.getString("att"));
+				dateD	= rs.getString("DiffDate");
+				amountTotal = amountTotal*Double.parseDouble(dateD);
+			}
+			else{
+				amountTotal = 0;
+			}
+		} 
+
+		
+		rs.close();
+		pStmt.close();
+		conn.close();
+
+		return amountTotal;
+	}
 }

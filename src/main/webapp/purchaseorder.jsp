@@ -274,11 +274,10 @@ String project_code = "";
 		<div class="grid">
          	<div class="row cells12">
 	       		<div class="cell colspan5"> </div> 
-				<div class="cell colspan4"> 
+				<div class="cell colspan2" align="center"> 
 		        	<button class="button success savehd" type="submit" id="savehd" name="savehd" ><span class="mif-floppy-disk mif-lg fg-white"></span></button>
-		        	<button type="button" class="button warning" onclick="getPrint()" id="print" ><span class="mif-print mif-lg fg-white"> ออกรายงาน</span></button>
 				</div>
-				<div class="cell colspan3" align="right"> 
+				<div class="cell colspan5" align="right"> 
 					<a class="button success next" id="next" href="pocheckauthen"><span class="mif-lg fg-white">ทำรายการใหม่</span></a>
 		 		</div>
 			</div>

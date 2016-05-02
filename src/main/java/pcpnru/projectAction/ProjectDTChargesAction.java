@@ -11,6 +11,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import pcpnru.projectData.ProjectDTChargesDB;
 import pcpnru.projectModel.ProjectModel;
+import pcpnru.utilities.DateUtil;
 
 public class ProjectDTChargesAction extends ActionSupport {
 
@@ -30,7 +31,8 @@ public class ProjectDTChargesAction extends ActionSupport {
 
 		String projectcode = (String) request.getParameter("projectcode");
 		String year = (String) request.getParameter("year");
-
+		 
+		
 		String freeze = projDtC.SelectProjFreeze(projectcode, year);
 
 		if (freeze.equals("N")) {
@@ -106,6 +108,29 @@ public class ProjectDTChargesAction extends ActionSupport {
 								budget);
 					}
 
+				}else if(request.getParameterValues("emp")!=null&&request.getParameterValues("date_start")!=null&&request.getParameterValues("date_end")!=null){
+					String[] emp = request.getParameterValues("emp");
+					String empin = "";
+					for(int i=0; i<emp.length; i++){
+						String[] empAr = emp[i].split("-");
+						String emp1 = empAr[0];
+						empin = empin+",'"+emp1+"'";
+					}
+					empin = "("+empin+")";
+					empin = empin.replace("(,", "(");
+					
+					DateUtil dateUtil = new DateUtil();
+					String date_start = (String) request.getParameter("date_start");
+						if(date_start!=null) date_start = dateUtil.CnvToYYYYMMDDEngYear(date_start, '-');
+					String date_end = (String) request.getParameter("date_end");
+						if(date_end!=null) date_end = dateUtil.CnvToYYYYMMDDEngYear(date_end, '-');
+					
+					double ampAmt = projDtC.getAmtValueEmp(empin,date_start,date_end);
+					
+					if (Double.parseDouble(balance) >= ampAmt) {
+						projDtC.AddProjDTCharges(projectcode, year, subjobcode, childsubjobcode, gcostcode,
+								gcostname, String.valueOf(ampAmt));
+					}
 				} else {
 					Pattern pattern = Pattern.compile("NaN");
 					Matcher matcher = pattern.matcher(budget);
